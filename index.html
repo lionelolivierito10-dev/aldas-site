@@ -1975,6 +1975,252 @@
       .currency-toggle { width: 48px; }
       .stat-card .stat-value { font-size: 1.05rem; }
     }
+
+    /* ===================================================================
+       THÈME PREMIUM — boutons, icônes, onglets, cartes
+       =================================================================== */
+    :root {
+      --prem-green-1: #4CC26A;
+      --prem-green-2: #2E8B4A;
+      --prem-green-3: #1F6B38;
+      --prem-navy-1: #2A5A8C;
+      --prem-navy-2: #14304F;
+      --prem-ease: cubic-bezier(.2,.8,.2,1);
+    }
+
+    /* ---- Base des boutons ---- */
+    .btn {
+      position: relative;
+      overflow: hidden;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      letter-spacing: .15px;
+      gap: 8px;
+      transition: transform .22s var(--prem-ease), box-shadow .22s var(--prem-ease), background .22s, border-color .22s, color .22s, filter .22s;
+    }
+    .btn-sm { padding: 6px 12px; font-size: .72rem; border-radius: 999px; gap: 6px; }
+    .btn:focus-visible { outline: 3px solid rgba(76,175,80,.35); outline-offset: 2px; }
+
+    /* Icône dans une pastille */
+    .btn > i:first-child {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.55em; height: 1.55em; border-radius: 50%;
+      font-size: .78em; flex-shrink: 0;
+      background: rgba(255,255,255,.22);
+      transition: transform .25s var(--prem-ease), background .22s;
+    }
+    .btn-sm > i:first-child { width: 1.65em; height: 1.65em; font-size: .72em; }
+    .btn:hover > i:first-child { transform: scale(1.12) rotate(-6deg); }
+
+    /* Reflet « glossy » au survol */
+    .btn::after {
+      content: ''; position: absolute; top: 0; left: -120%; width: 60%; height: 100%;
+      background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent);
+      transform: skewX(-20deg); transition: left .6s var(--prem-ease); pointer-events: none;
+    }
+    .btn:hover::after { left: 140%; }
+
+    /* ---- Principal (vert) ---- */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--prem-green-1) 0%, var(--prem-green-2) 60%, var(--prem-green-3) 100%);
+      color: #fff; border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 6px 16px rgba(46,139,74,.30), inset 0 1px 0 rgba(255,255,255,.30);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #56CE75 0%, #329A52 60%, #226F3C 100%);
+      color: #fff; border-color: rgba(255,255,255,.28);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(46,139,74,.40), inset 0 1px 0 rgba(255,255,255,.35);
+    }
+    .btn-primary:active { transform: translateY(0); box-shadow: 0 3px 8px rgba(46,139,74,.30); }
+
+    /* ---- Ghost (secondaire) ---- */
+    .btn-ghost {
+      background: linear-gradient(180deg, #FFFFFF, #F6FAF7);
+      color: var(--prem-green-3); border: 1px solid #CFE3D4;
+      box-shadow: 0 1px 2px rgba(16,24,40,.05);
+    }
+    .btn-ghost > i:first-child { background: rgba(76,175,80,.14); color: var(--prem-green-2); }
+    .btn-ghost:hover {
+      background: linear-gradient(180deg, #F3FBF5, #E6F5EA);
+      color: var(--prem-green-3); border-color: var(--secondary);
+      transform: translateY(-1px); box-shadow: 0 6px 16px rgba(76,175,80,.20);
+    }
+    .btn-ghost::after { background: linear-gradient(100deg, transparent, rgba(76,175,80,.16), transparent); }
+
+    /* ---- PDF / Imprimer (bleu marine) ---- */
+    .btn-print {
+      background: linear-gradient(135deg, var(--prem-navy-1), var(--prem-navy-2));
+      color: #fff; border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 6px 16px rgba(26,58,92,.28), inset 0 1px 0 rgba(255,255,255,.22);
+    }
+    .btn-print:hover {
+      background: linear-gradient(135deg, #3470A8, #183A5E);
+      color: #fff; border-color: rgba(255,255,255,.22);
+      transform: translateY(-2px); box-shadow: 0 10px 24px rgba(26,58,92,.38);
+    }
+
+    /* ---- Acompte (violet) ---- */
+    .btn-deposit {
+      background: linear-gradient(135deg, #9F7AEA, #6B3FD4);
+      color: #fff; border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 6px 16px rgba(107,63,212,.30), inset 0 1px 0 rgba(255,255,255,.28);
+    }
+    .btn-deposit:hover {
+      background: linear-gradient(135deg, #AB88F0, #7447E0);
+      color: #fff; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(107,63,212,.40);
+    }
+
+    /* ---- Violet doux (Voir facture) ---- */
+    .btn-purple {
+      background: linear-gradient(180deg, #F5F0FF, #EAE0FF);
+      color: #5B21B6; border: 1px solid #D4C4FA;
+      box-shadow: 0 1px 2px rgba(91,33,182,.08);
+    }
+    .btn-purple > i:first-child { background: rgba(124,58,237,.14); color: #6D28D9; }
+    .btn-purple:hover {
+      background: linear-gradient(135deg, #8B5CF6, #6D28D9); color: #fff; border-color: transparent;
+      transform: translateY(-1px); box-shadow: 0 8px 18px rgba(109,40,217,.30);
+    }
+    .btn-purple:hover > i:first-child { background: rgba(255,255,255,.22); color: #fff; }
+
+    /* ---- Danger (rouge doux → plein) ---- */
+    .btn-danger {
+      background: linear-gradient(180deg, #FFF5F5, #FFE9E9);
+      color: #C62828; border: 1px solid #F8CACA;
+    }
+    .btn-danger > i:first-child { background: rgba(220,38,38,.12); color: #DC2626; }
+    .btn-danger:hover {
+      background: linear-gradient(135deg, #F05252, #C81E1E); color: #fff; border-color: transparent;
+      transform: translateY(-1px); box-shadow: 0 8px 18px rgba(200,30,30,.30);
+    }
+    .btn-danger:hover > i:first-child { background: rgba(255,255,255,.22); color: #fff; }
+
+    /* ---- Dark mode ---- */
+    [data-theme="dark"] .btn-ghost { background: linear-gradient(180deg, #1F2B3F, #19243A); color: #8FE0A6; border-color: #2F4666; }
+    [data-theme="dark"] .btn-ghost > i:first-child { background: rgba(102,187,106,.18); color: #8FE0A6; }
+    [data-theme="dark"] .btn-ghost:hover { background: linear-gradient(180deg, #22364D, #1B2D44); color: #B7F0C6; border-color: var(--secondary); }
+    [data-theme="dark"] .btn-danger { background: rgba(220,38,38,.12); color: #FCA5A5; border-color: rgba(248,113,113,.35); }
+    [data-theme="dark"] .btn-purple { background: rgba(139,92,246,.16); color: #C4B5FD; border-color: rgba(167,139,250,.4); }
+
+    /* ---- CTA « Nouvelle facture » ---- */
+    .btn-cta {
+      padding: 10px 20px; font-size: .84rem; border-radius: 12px; gap: 10px;
+      box-shadow: 0 8px 22px rgba(46,139,74,.38), inset 0 1px 0 rgba(255,255,255,.32);
+    }
+    .btn-cta > i:first-child { width: 1.75em; height: 1.75em; font-size: .85em; }
+
+    /* ---- Bouton flottant mobile (Nouvelle facture) ---- */
+    .fab-new-invoice {
+      display: none; position: fixed; z-index: 120;
+      right: max(16px, env(safe-area-inset-right)); bottom: calc(18px + env(safe-area-inset-bottom));
+      padding: 14px 20px; border-radius: 999px; font-size: .86rem;
+      box-shadow: 0 12px 30px rgba(46,139,74,.45), inset 0 1px 0 rgba(255,255,255,.32);
+    }
+    @media (max-width: 768px) { .fab-new-invoice { display: inline-flex; } }
+
+    /* ---- Sous-onglets (pilules) ---- */
+    .sub-tabs {
+      gap: 6px; padding: 5px; border-radius: 14px;
+      background: linear-gradient(180deg, #F4F7FA, #EAF0F5);
+      border: 1px solid var(--border); box-shadow: inset 0 1px 2px rgba(16,24,40,.05);
+    }
+    [data-theme="dark"] .sub-tabs { background: rgba(255,255,255,.04); }
+    .sub-tab { border: 0; border-radius: 10px; padding: 8px 16px; display: inline-flex; align-items: center; gap: 7px; transition: all .22s var(--prem-ease); }
+    .sub-tab i { font-size: .82em; opacity: .85; }
+    .sub-tab:hover { background: rgba(255,255,255,.9); color: var(--prem-green-2); border: 0; transform: translateY(-1px); }
+    .sub-tab.active {
+      background: linear-gradient(135deg, var(--prem-green-1), var(--prem-green-3)); color: #fff; border: 0;
+      box-shadow: 0 6px 14px rgba(46,139,74,.32), inset 0 1px 0 rgba(255,255,255,.28);
+    }
+    .sub-tab.active i { opacity: 1; }
+    .sub-tab .badge { background: rgba(26,58,92,.08); color: var(--text-light); font-weight: 700; padding: 1px 8px; }
+    .sub-tab.active .badge { background: rgba(255,255,255,.26); color: #fff; }
+
+    /* ---- Filtres de statut ---- */
+    .stat-filter-card {
+      border-radius: 14px; border: 1px solid var(--border); background: var(--panel);
+      box-shadow: 0 1px 2px rgba(16,24,40,.04); transition: all .22s var(--prem-ease);
+    }
+    .stat-filter-card:hover { border-color: var(--secondary); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(26,58,92,.10); }
+    .stat-filter-card.active {
+      background: linear-gradient(135deg, var(--prem-green-1), var(--prem-green-3)); border-color: transparent;
+      box-shadow: 0 8px 20px rgba(46,139,74,.30);
+    }
+    .stat-filter-card.active .stat-label, .stat-filter-card.active .stat-value { color: #fff; }
+
+    /* ---- Cartes facture ---- */
+    .invoice-card {
+      border-radius: 16px; border: 1px solid var(--border);
+      box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(26,58,92,.05);
+      transition: transform .25s var(--prem-ease), box-shadow .25s var(--prem-ease), border-color .25s;
+    }
+    .invoice-card:hover { border-color: rgba(76,175,80,.55); transform: translateY(-2px); box-shadow: 0 14px 34px rgba(26,58,92,.12); }
+    .invoice-card-number { letter-spacing: .2px; }
+    .invoice-card-row .amounts i, .invoice-card-row .date i {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 8px; font-size: .72rem;
+      background: rgba(76,175,80,.10); color: var(--prem-green-2);
+    }
+    .invoice-card-row .date i { background: rgba(59,130,246,.10); color: #2563EB; }
+    .invoice-card-actions { gap: 8px; border-top: 1px dashed var(--border); }
+
+    /* ---- Badges de statut ---- */
+    .badge-status { padding: 3px 11px; font-size: .62rem; letter-spacing: .4px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.05); }
+
+    /* ---- Icônes de documents (listes) ---- */
+    .doc-item { border-radius: 12px; border: 1px solid transparent; }
+    .doc-item:hover { background: rgba(76,175,80,.05); border-color: rgba(76,175,80,.18); }
+    .doc-item .doc-icon { width: 40px; height: 40px; border-radius: 12px; font-size: .9rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 2px 6px rgba(16,24,40,.08); }
+    .doc-item .doc-icon.quote { background: linear-gradient(135deg, #E3EFFF, #C7DDFB); }
+    .doc-item .doc-icon.invoice { background: linear-gradient(135deg, #F0EAFF, #DDD0FB); }
+    .doc-item .doc-icon.credit { background: linear-gradient(135deg, #FFF4D6, #FCE3A0); }
+    .doc-item .doc-icon.deposit { background: linear-gradient(135deg, #DDF7EA, #B5ECCF); }
+
+    /* ---- Menu latéral ---- */
+    .sidebar-item { border: 0; border-radius: 12px; margin: 2px 10px; transition: all .22s var(--prem-ease); }
+    .sidebar-item .icon {
+      width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 9px; background: rgba(26,58,92,.06); font-size: .85rem; transition: all .22s var(--prem-ease);
+    }
+    .sidebar-item:hover { background: rgba(76,175,80,.08); color: var(--prem-green-2); border: 0; transform: translateX(2px); }
+    .sidebar-item:hover .icon { background: rgba(76,175,80,.16); }
+    .sidebar-item.active {
+      background: linear-gradient(135deg, rgba(76,194,106,.16), rgba(46,139,74,.08));
+      color: var(--prem-green-3); border: 0; font-weight: 700;
+      box-shadow: inset 3px 0 0 var(--prem-green-2);
+    }
+    .sidebar-item.active .icon { background: linear-gradient(135deg, var(--prem-green-1), var(--prem-green-3)); color: #fff; box-shadow: 0 4px 10px rgba(46,139,74,.30); }
+    [data-theme="dark"] .sidebar-item .icon { background: rgba(255,255,255,.06); }
+    [data-theme="dark"] .sidebar-item.active { color: #8FE0A6; }
+
+    /* ---- Boutons de la barre du haut ---- */
+    .theme-toggle, .lang-toggle, .currency-toggle {
+      border-radius: 10px; background: linear-gradient(180deg, #FFFFFF, #F1F7F3);
+      box-shadow: 0 1px 3px rgba(16,24,40,.08);
+    }
+    .theme-toggle:hover, .lang-toggle:hover, .currency-toggle:hover {
+      background: linear-gradient(135deg, var(--prem-green-1), var(--prem-green-3));
+      box-shadow: 0 6px 16px rgba(46,139,74,.35);
+    }
+    .menu-toggle { border-radius: 10px; border-width: 1px; background: linear-gradient(180deg, #FFFFFF, #F1F7F3); }
+
+    /* ---- Boutons mobiles de l'éditeur ---- */
+    .m-icon-btn { border-radius: 10px; background: linear-gradient(180deg, var(--panel), var(--bg)); transition: transform .2s var(--prem-ease); }
+    .m-icon-btn:active { transform: scale(.94); }
+    .ra-btn-bottom { border-radius: 10px; }
+    .ra-add-bottom { background: linear-gradient(135deg, var(--prem-green-1), var(--prem-green-3)); color: #fff; border-color: transparent; box-shadow: 0 6px 14px rgba(46,139,74,.28); }
+    .ra-add-bottom:hover { background: linear-gradient(135deg, #56CE75, #226F3C); color: #fff; }
+    .row-del-out { border-radius: 8px; }
+
+    /* ---- Impression / PDF : aucun effet ---- */
+    @media print { .btn::after, .fab-new-invoice { display: none !important; } }
+    .pdf-exporting .btn::after, .pdf-exporting .fab-new-invoice { display: none !important; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .btn, .btn::after, .invoice-card, .sub-tab, .sidebar-item { transition: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -2168,9 +2414,11 @@
             <div class="doc-list" id="quote-list"><div class="empty-state"><div class="icon"><i class="fas fa-file-signature"></i></div><p data-translate="no_docs">Aucun devis</p></div></div>
           </div>
           <div id="tab-invoices" style="display:none;">
+          <button class="btn btn-primary btn-cta fab-new-invoice no-print" onclick="openNewDocModal('invoice')" aria-label="Nouvelle facture"><i class="fas fa-file-circle-plus"></i> <span data-translate="btn_new_invoice">Nouvelle facture</span></button>
             <div class="dashboard-header">
               <h1 data-translate="nav_invoices">Factures</h1>
-              <div class="header-actions" style="display:flex;gap:10px;align-items:center;">
+              <div class="header-actions" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+                <button class="btn btn-primary btn-cta" onclick="openNewDocModal('invoice')" title="Nouvelle facture"><i class="fas fa-file-circle-plus"></i> <span data-translate="btn_new_invoice">Nouvelle facture</span></button>
                 <div class="search-box" style="display:flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 12px;">
                   <i class="fas fa-search" style="color:var(--text-muted);font-size:0.8rem;"></i>
                   <input type="text" id="invoice-search" data-tph="search_placeholder" placeholder="Rechercher..." oninput="renderInvoiceList();" style="border:none;outline:none;font-family:inherit;font-size:0.8rem;background:transparent;color:var(--text);width:160px;">
@@ -2182,13 +2430,13 @@
                 <span data-translate="subtab_all">Tous</span> <span class="badge" id="subtab-all-count">0</span>
               </button>
               <button class="sub-tab" data-subtab="invoices" onclick="switchInvoiceSubTab('invoices', this);">
-                <i class="fas fa-receipt"></i> <span data-translate="subtab_invoices">Factures</span> <span class="badge" id="subtab-invoice-count">0</span>
+                <i class="fas fa-file-invoice"></i> <span data-translate="subtab_invoices">Factures</span> <span class="badge" id="subtab-invoice-count">0</span>
               </button>
               <button class="sub-tab" data-subtab="credits" onclick="switchInvoiceSubTab('credits', this);">
-                <i class="fas fa-undo-alt"></i> <span data-translate="subtab_credits">Avoirs</span> <span class="badge" id="subtab-credit-count">0</span>
+                <i class="fas fa-rotate-left"></i> <span data-translate="subtab_credits">Avoirs</span> <span class="badge" id="subtab-credit-count">0</span>
               </button>
               <button class="sub-tab" data-subtab="deposits" onclick="switchInvoiceSubTab('deposits', this);">
-                <i class="fas fa-hand-holding-usd"></i> <span data-translate="subtab_deposits">Factures d'acompte</span> <span class="badge" id="subtab-deposit-count">0</span>
+                <i class="fas fa-hand-holding-dollar"></i> <span data-translate="subtab_deposits">Factures d'acompte</span> <span class="badge" id="subtab-deposit-count">0</span>
               </button>
             </div>
             <div class="stat-filter-bar" id="invoice-stat-bar">
@@ -3121,10 +3369,10 @@
     };
 
     const ACTION_ICONS = {
-      edit: 'edit', send: 'paper-plane', accept: 'check', refuse: 'times',
-      issue: 'file-invoice', convert: 'exchange-alt', pay: 'money-bill-wave',
-      payDeposit: 'hand-holding-usd', finalize: 'file-invoice-dollar',
-      cancel: 'ban', viewLinked: 'eye', duplicate: 'copy', archive: 'archive'
+      edit: 'pen-to-square', send: 'paper-plane', accept: 'circle-check', refuse: 'circle-xmark',
+      issue: 'file-invoice', convert: 'right-left', pay: 'sack-dollar',
+      payDeposit: 'hand-holding-dollar', finalize: 'file-circle-check',
+      cancel: 'ban', viewLinked: 'eye', duplicate: 'clone', archive: 'box-archive'
     };
 
     let currentLang = 'fr';
