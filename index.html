@@ -2221,6 +2221,54 @@
     @media (prefers-reduced-motion: reduce) {
       .btn, .btn::after, .invoice-card, .sub-tab, .sidebar-item { transition: none !important; }
     }
+
+    /* ===================================================================
+       DOCUMENT : pagination stable, arrière-plan fixe, mise en page pro
+       =================================================================== */
+    /* L'image d'arrière-plan est ancrée sur la hauteur d'une page A4 : elle ne bouge plus
+       quand la page change de hauteur ou qu'on ajoute une ligne */
+    .bg-image-container { bottom: auto; height: 1123px; align-items: center; justify-content: center; }
+    .bg-image-container img { flex-shrink: 0; max-width: none; }
+
+    /* Bouton « Ajouter » hors flux : il ne consomme plus de place dans la page */
+    .inv-table-container { position: relative; }
+    .row-actions-bottom { position: absolute; left: 0; top: 100%; margin: 5px 0 0 0; z-index: 3; }
+
+    /* Numéro de page (positionné dans la marge basse : aucun impact sur la mise en page) */
+    .inv-page-footer { position: relative; }
+    .inv-page-num {
+      position: absolute; right: 18mm; top: -22px;
+      font-size: calc(8.5px * var(--doc-fs)); font-weight: 600; letter-spacing: .4px;
+      color: #6B8068;
+    }
+
+    /* Tableau : colonnes alignées et lisibles */
+    .inv-table { table-layout: auto; }
+    .inv-table thead tr th:first-child { width: 124px; }
+    .inv-table thead tr th:nth-child(4) { text-align: center; }
+    .inv-table tbody tr td { padding: 8px 10px; }
+    .inv-table tbody tr:nth-child(even) td { background: rgba(26,58,58,.028); }
+    .inv-table tbody tr { page-break-inside: avoid; break-inside: avoid; }
+    .inv-table-container { margin-bottom: 18px; }
+
+    /* Totaux : bloc net, aligné à droite */
+    .inv-totals { margin-top: 10px; }
+    .inv-totals-box { min-width: 270px; border-radius: 8px; box-shadow: 0 2px 10px rgba(26,58,58,.06); }
+    .inv-total-row { padding: 6px 14px; }
+    .inv-total-final { padding: 9px 14px; }
+    .inv-totals, .inv-cond-rib, .inv-payment-conditions { page-break-inside: avoid; break-inside: avoid; }
+
+    /* Blocs Émetteur / Facturé à : même hauteur, libellés alignés */
+    .inv-meta { align-items: stretch; }
+    .inv-client, .inv-emitter { border-radius: 8px; }
+    .inv-client-label { min-width: 82px; }
+
+    @media print {
+      /* Hauteur fixe légèrement inférieure à A4 : plus de page blanche en fin de document */
+      .invoice-page { height: 296.5mm !important; min-height: 0 !important; overflow: hidden !important; }
+      .bg-image-container { height: 100% !important; bottom: 0 !important; }
+      .row-actions-bottom { display: none !important; }
+    }
   </style>
 </head>
 <body>
@@ -5855,6 +5903,7 @@
         calcTotals();
         updateAutosaveIndicator();
         refreshDocTitle();
+        repaginateIfNeeded();
       }, 250);
     }
 
@@ -5963,6 +6012,8 @@
       if (previewPane) scrollPosition = previewPane.scrollTop;
 
       saveCurrentRowValues();
+      // Garde la hauteur actuelle pendant la reconstruction : évite que le défilement / l'aperçu saute
+      container.style.minHeight = container.offsetHeight + 'px';
       container.innerHTML = '';
 
       const budget = measurePageContentBudget();
@@ -6005,6 +6056,14 @@
           const totalsEl = appendTotalsBlock(pageRefs.content);
           if (usedContentHeight(pageRefs.content) > budget) {
             totalsEl.remove();
+            if (addedOnThisPage > 1) {
+              // Les totaux ne tiennent pas : la dernière ligne passe avec eux sur la page suivante
+              // (jamais de page contenant uniquement les totaux)
+              pageRefs.tbody.removeChild(pageRefs.tbody.lastElementChild);
+              rowIndex--;
+              pageNum++;
+              continue;
+            }
             if (!isDeposit) appendRowActionButtons(pageRefs);
             pageNum++;
             const totalsPage = createPageShell(pageNum, false, false);
@@ -6020,16 +6079,79 @@
         pageNum++;
       }
 
+      numberInvoicePages(container);
       syncDate();
       calcTotals();
       translatePage();
       updateAllPreviews();
 
+      if (previewPane) previewPane.scrollTop = scrollPosition;
       const scrollToSaved = () => {
         if (previewPane) previewPane.scrollTop = scrollPosition;
+        container.style.minHeight = '';
       };
       if (window.requestAnimationFrame) requestAnimationFrame(scrollToSaved);
       else setTimeout(scrollToSaved, 0);
+    }
+
+    function numberInvoicePages(container) {
+      const pages = container.querySelectorAll('.invoice-page');
+      pages.forEach(function(pg, i) {
+        const f = pg.querySelector('.inv-page-footer');
+        if (!f) return;
+        const old = f.querySelector('.inv-page-num');
+        if (old) old.remove();
+        if (pages.length < 2) return;
+        const n = document.createElement('div');
+        n.className = 'inv-page-num';
+        n.textContent = 'Page ' + (i + 1) + ' / ' + pages.length;
+        f.appendChild(n);
+      });
+    }
+
+    // Vrai si le contenu d'une page dépasse la zone utile (ex. description devenue plus longue)
+    function pagesOverflow() {
+      const contents = document.querySelectorAll('#invoice .invoice-page-content');
+      if (!contents.length) return false;
+      const budget = measurePageContentBudget();
+      for (let i = 0; i < contents.length; i++) {
+        if (usedContentHeight(contents[i]) > budget + 2) return true;
+      }
+      return false;
+    }
+
+    // Repagine si nécessaire en conservant le champ et le curseur en cours d'édition
+    function repaginateIfNeeded() {
+      if (!currentEditorDocId || !pagesOverflow()) return;
+      const ae = document.activeElement;
+      let focusId = null, caret = 0;
+      if (ae && ae.isContentEditable && ae.id && /^(desc|prix|qte)-\d+$/.test(ae.id)) {
+        focusId = ae.id;
+        const sel = window.getSelection();
+        if (sel && sel.rangeCount && ae.contains(sel.anchorNode)) {
+          const r = sel.getRangeAt(0).cloneRange();
+          r.selectNodeContents(ae);
+          r.setEnd(sel.anchorNode, sel.anchorOffset);
+          caret = r.toString().length;
+        } else caret = (ae.textContent || '').length;
+      }
+      rebuildInvoice();
+      if (focusId) {
+        const el = document.getElementById(focusId);
+        if (el) {
+          el.focus();
+          try {
+            const tn = el.firstChild;
+            const range = document.createRange();
+            if (tn && tn.nodeType === 3) range.setStart(tn, Math.min(caret, tn.length));
+            else range.selectNodeContents(el);
+            range.collapse(tn && tn.nodeType === 3 ? true : false);
+            const sel2 = window.getSelection();
+            sel2.removeAllRanges();
+            sel2.addRange(range);
+          } catch (e) {}
+        }
+      }
     }
 
     function usedContentHeight(content) {
@@ -6049,7 +6171,7 @@
       probe.style.left = '-99999px';
       probe.style.top = '0';
       probe.style.visibility = 'hidden';
-      if (document.documentElement.clientWidth < 794) probe.style.width = '794px';
+      probe.style.width = '794px'; // largeur réelle d'une page A4 : le pied de page doit être mesuré à cette largeur
       const content = document.createElement('div');
       content.className = 'invoice-page-content';
       probe.appendChild(content);
@@ -6088,8 +6210,8 @@
       btnContainer.innerHTML =
         '<button class="ra-btn-bottom ra-add-bottom" onclick="addRow();">' +
         '<span class="icon"><i class="fas fa-plus"></i></span> ' + esc(t('btn_add')) + '</button>';
-      if (pageRefs.tableContainer && pageRefs.tableContainer.parentNode) {
-        pageRefs.tableContainer.parentNode.insertBefore(btnContainer, pageRefs.tableContainer.nextSibling);
+      if (pageRefs.tableContainer) {
+        pageRefs.tableContainer.appendChild(btnContainer);
       } else {
         pageRefs.content.appendChild(btnContainer);
       }
