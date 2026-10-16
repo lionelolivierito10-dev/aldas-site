@@ -2683,6 +2683,14 @@
       #sidebar .sidebar-item.active > span:not(.icon) { display: inline; }
       .stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
+    /* ===== Barre du bas : réponse immédiate au toucher ===== */
+    @media (max-width: 768px) {
+      #sidebar, #sidebar .sidebar-item { touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+      #sidebar .sidebar-item { transition: background .12s ease, color .12s ease, flex-grow .16s ease; cursor: pointer; }
+      #sidebar .sidebar-item:active { background: rgba(62,197,76,0.18); }
+      #sidebar .sidebar-item.active:active { background: var(--forest-2); }
+      #sidebar .sidebar-item * { pointer-events: none; }
+    }
   </style>
 </head>
 <body>
@@ -7961,6 +7969,38 @@
     wrap('initApp', updateGreeting);
     wrap('toggleLanguage', updateGreeting);
     wrap('refreshUIFromLocalData', updateGreeting);
+  })();
+  </script>
+  <script>
+  (function () {
+    'use strict';
+    // Navigation instantanée : on réagit dès le toucher (pointerdown), sans attendre le "click"
+    var sb = document.getElementById('sidebar');
+    if (!sb) return;
+    var lastHandled = 0;
+    function tabOf(item) {
+      var m = /switchDashboardTab\('(\w+)'\)/.exec(item.getAttribute('onclick') || '');
+      return m ? m[1] : null;
+    }
+    sb.addEventListener('pointerdown', function (e) {
+      if (!window.matchMedia('(max-width: 768px)').matches) return;
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      var item = e.target.closest ? e.target.closest('.sidebar-item') : null;
+      var tab = item ? tabOf(item) : null;
+      if (!tab) return;
+      lastHandled = Date.now();
+      // retour visuel immédiat
+      sb.querySelectorAll('.sidebar-item').forEach(function (it) { it.classList.toggle('active', it === item); });
+      if (typeof window.switchDashboardTab === 'function') window.switchDashboardTab(tab);
+    }, true);
+    // Évite un double déclenchement par le "click" qui suit le toucher
+    sb.addEventListener('click', function (e) {
+      var item = e.target.closest ? e.target.closest('.sidebar-item') : null;
+      if (item && tabOf(item) && Date.now() - lastHandled < 800) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    }, true);
   })();
   </script>
 </body>
