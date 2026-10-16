@@ -1,44 +1,40 @@
-﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
   <meta name="description" content="Gestfac – Application de gestion des devis, factures et clients pour Áldás." />
-  <meta name="theme-color" content="#1A3A5C" />
-  <!-- Utilisation sur téléphone : installable sur l'écran d'accueil -->
+  <meta name="theme-color" content="#F2F6F6" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="Gestfac" />
   <meta name="format-detection" content="telephone=no" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231A3A5C'/%3E%3Ctext x='50' y='68' font-size='55' font-family='Arial, sans-serif' font-weight='bold' fill='%234CAF50' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232D5D67'/%3E%3Ctext x='50' y='68' font-size='55' font-family='Arial, sans-serif' font-weight='bold' fill='%233EC54C' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E" />
   <title>Áldás – Gestion Complète</title>
 
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Urbanist:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- SDK Supabase (synchronisation cloud) -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     /* ===== VARIABLES & RESET ===== */
     :root {
-      --doc-fs: 1.2; /* taille des écritures des devis/factures : 1 = ancienne taille, 1.2 = +20 % */
-      --primary: #1A3A5C;
-      --primary-light: #2A5A8C;
-      --primary-dark: #0F2A44;
-      --secondary: #4CAF50;
-      --secondary-light: #66BB6A;
-      --secondary-dark: #388E3C;
-      --bg: #F0F4F8;
+      --doc-fs: 1.2;
+      --primary: #2D5D67;
+      --primary-light: #577E86;
+      --primary-dark: #1F4650;
+      --secondary: #3EC54C;
+      --secondary-light: #6BD276;
+      --secondary-dark: #2D5D67;
+      --bg: #F2F6F6;
       --panel: #FFFFFF;
       --border: #E2E8F0;
-      --text: #1A2A3A;
+      --text: #1B3A42;
       --text-light: #6B7A8A;
       --text-muted: #94A3B8;
       --shadow: 0 1px 3px rgba(0,0,0,0.08);
@@ -46,35 +42,35 @@
       --radius: 12px;
       --radius-sm: 8px;
       --sidebar-w: 240px;
-      --accent-blue: #3B82F6;
+      --accent-blue: #577E86;
       --accent-green: #22C55E;
       --accent-orange: #F59E0B;
       --accent-red: #EF4444;
-      --accent-purple: #8B5CF6;
-      --green: #2d6a4f;
-      --green-hdr: #1b4332;
-      --teal-dark: #1a3a3a;
+      --accent-purple: #577E86;
+      --green: #3EC54C;
+      --green-hdr: #2D5D67;
+      --teal-dark: #1F4650;
       --topbar-height: 60px;
       --transition: all .2s ease;
       --glass-bg: rgba(255,255,255,0.62);
       --glass-bg-strong: rgba(255,255,255,0.78);
       --glass-border: rgba(255,255,255,0.5);
-      --glass-shadow: 0 8px 32px rgba(26,58,92,0.12);
+      --glass-shadow: 0 8px 32px rgba(45,93,103,0.12);
       --glass-blur: 18px;
     }
     
     [data-theme="dark"] {
-      --bg: #0F1724;
-      --panel: #1A2332;
-      --border: #2A3A5C;
+      --bg: #0E1A1D;
+      --panel: #162529;
+      --border: #243A40;
       --text: #E8EDF5;
       --text-light: #8899AA;
       --text-muted: #6A7A8A;
       --shadow: 0 1px 3px rgba(0,0,0,0.3);
       --shadow-hover: 0 4px 20px rgba(0,0,0,0.4);
-      --primary: #2A5A8C;
-      --primary-light: #3A7AB0;
-      --primary-dark: #1A3A5C;
+      --primary: #577E86;
+      --primary-light: #82A0A4;
+      --primary-dark: #2D5D67;
       --glass-bg: rgba(26,35,50,0.55);
       --glass-bg-strong: rgba(26,35,50,0.75);
       --glass-border: rgba(255,255,255,0.08);
@@ -93,7 +89,6 @@
       transition: background .3s, color .3s;
     }
 
-    /* ===== ÉCRAN DE CONNEXION / INSCRIPTION (CLOUD) ===== */
     #auth-screen {
       position: fixed; inset: 0; z-index: 2000;
       display: none; align-items: center; justify-content: center;
@@ -110,13 +105,13 @@
     }
     #auth-screen::before {
       width: 420px; height: 420px;
-      background: rgba(76,175,80,0.35);
+      background: rgba(62,197,76,0.35);
       top: -120px; left: -100px;
       animation: auth-float 12s ease-in-out infinite;
     }
     #auth-screen::after {
       width: 380px; height: 380px;
-      background: rgba(59,130,246,0.3);
+      background: rgba(45,93,103,0.3);
       bottom: -140px; right: -90px;
       animation: auth-float 14s ease-in-out infinite reverse;
     }
@@ -152,7 +147,7 @@
       font-family: inherit; font-size: 0.9rem; transition: var(--transition);
     }
     [data-theme="dark"] .auth-field input { background: rgba(15,23,36,0.5); }
-    .auth-field input:focus { outline: none; border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(76,175,80,0.18); }
+    .auth-field input:focus { outline: none; border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(62,197,76,0.18); }
     .auth-field-password-wrap { position: relative; }
     .auth-field-password-wrap input { padding-right: 40px; }
     .auth-password-toggle {
@@ -168,9 +163,9 @@
     .auth-btn {
       width: 100%; padding: 12px; border: none; border-radius: var(--radius-sm);
       background: linear-gradient(135deg, var(--secondary), var(--secondary-dark)); color: #fff; font-weight: 700; font-size: 0.9rem;
-      cursor: pointer; transition: var(--transition); box-shadow: 0 6px 18px rgba(76,175,80,0.35);
+      cursor: pointer; transition: var(--transition); box-shadow: 0 6px 18px rgba(62,197,76,0.35);
     }
-    .auth-btn:hover { filter: brightness(1.06); transform: translateY(-1px); box-shadow: 0 8px 22px rgba(76,175,80,0.45); }
+    .auth-btn:hover { filter: brightness(1.06); transform: translateY(-1px); box-shadow: 0 8px 22px rgba(62,197,76,0.45); }
     .auth-btn:active { transform: translateY(0); }
     .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
     .auth-switch {
@@ -179,9 +174,8 @@
     .auth-switch a { color: var(--primary); cursor: pointer; font-weight: 600; text-decoration: none; }
     .auth-switch a:hover { text-decoration: underline; }
 
-    /* ===== INDICATEUR DE SYNCHRONISATION CLOUD (CACHÉ) ===== */
     .sync-indicator {
-      display: none; /* <--- MODIFICATION : Icône de synchronisation cachée */
+      display: none;
       align-items: center; justify-content: center;
       width: 30px; height: 30px; border-radius: 50%; font-size: 0.95rem;
       background: transparent; border: none; cursor: default;
@@ -191,12 +185,11 @@
     .sync-indicator[data-state="offline"], .sync-indicator[data-state="error"] { color: var(--accent-red); }
     @keyframes sync-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-    /* ===== TOPBAR (glassmorphism) ===== */
     .topbar {
       background: var(--glass-bg-strong);
       backdrop-filter: blur(var(--glass-blur)) saturate(160%);
       -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(160%);
-      color: #1A2A3A;
+      color: #1B3A42;
       padding: 8px 24px;
       display: flex;
       align-items: center;
@@ -260,11 +253,10 @@
       flex-shrink: 0;
     }
     
-    /* ===== MODIFICATION : Boutons de la barre supérieure (fond blanc, bordure verte épaisse) ===== */
     .theme-toggle, .lang-toggle, .currency-toggle {
-      background: #FFFFFF; /* Fond blanc */
+      background: #FFFFFF;
       border: 1px solid var(--secondary);
-      color: var(--secondary); /* Texte vert */
+      color: var(--secondary);
       width: 36px;
       height: 28px;
       border-radius: var(--radius-sm);
@@ -275,16 +267,16 @@
       justify-content: center;
       transition: var(--transition);
       font-family: 'DM Sans', sans-serif;
-      font-weight: 600; /* Texte un peu plus gras */
+      font-weight: 600;
       flex-shrink: 0;
     }
     
     .theme-toggle:hover, .lang-toggle:hover, .currency-toggle:hover {
-      background: var(--secondary); /* Fond vert au survol */
-      color: #FFFFFF; /* Texte blanc au survol */
+      background: var(--secondary);
+      color: #FFFFFF;
       border-color: var(--secondary);
       transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+      box-shadow: 0 4px 12px rgba(62,197,76, 0.3);
     }
     
     .theme-toggle:active, .lang-toggle:active, .currency-toggle:active {
@@ -356,10 +348,10 @@
       text-align: left;
     }
     .currency-dropdown-item:hover { 
-      background: rgba(76, 175, 80, 0.08); 
+      background: rgba(62,197,76, 0.08); 
     }
     .currency-dropdown-item.active { 
-      background: rgba(76, 175, 80, 0.12); 
+      background: rgba(62,197,76, 0.12); 
       color: var(--secondary); 
       font-weight: 600; 
     }
@@ -394,18 +386,17 @@
       text-decoration: none;
     }
     
-    /* ===== MODIFICATION : Bouton Principal (fond blanc, bordure verte épaisse) ===== */
     .btn-primary {
-      background: #FFFFFF; /* Fond blanc */
-      color: var(--secondary); /* Texte vert */
+      background: #FFFFFF;
+      color: var(--secondary);
       border: 1px solid var(--secondary);
     }
     .btn-primary:hover {
-      background: var(--secondary); /* Fond vert au survol */
-      color: #FFFFFF; /* Texte blanc au survol */
+      background: var(--secondary);
+      color: #FFFFFF;
       border-color: var(--secondary);
       transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+      box-shadow: 0 4px 12px rgba(62,197,76, 0.3);
     }
     .btn-primary:active {
       transform: translateY(0);
@@ -425,7 +416,6 @@
       font-size: 0.7rem;
     }
     
-    /* ===== MODIFICATION : Boutons Ghost (fond blanc, bordure verte épaisse) ===== */
     .btn-ghost {
       background: #FFFFFF;
       border: 1px solid var(--secondary);
@@ -448,37 +438,35 @@
     }
     
     .btn-purple {
-      background: #EDE9FE;
-      border: 1px solid #A78BFA;
-      color: #7C3AED;
+      background: #D5DFE1;
+      border: 1px solid #82A0A4;
+      color: #2D5D67;
     }
     .btn-purple:hover {
-      background: #DDD6FE;
-      border-color: #8B5CF6;
+      background: #ABBEC2;
+      border-color: #577E86;
     }
     
-    /* ===== MODIFICATION : Bouton Imprimer (fond blanc, bordure bleue épaisse) ===== */
     .btn-print {
       background: #FFFFFF;
-      border: 1px solid #3B82F6;
+      border: 1px solid #577E86;
       color: #2563EB;
     }
     .btn-print:hover {
-      background: #3B82F6;
+      background: #577E86;
       color: #FFFFFF;
       border-color: #2563EB;
     }
     
-    /* ===== MODIFICATION : Bouton Dépôt (fond blanc, bordure violette épaisse) ===== */
     .btn-deposit {
       background: #FFFFFF;
-      border: 1px solid #8B5CF6;
-      color: #5B21B6;
+      border: 1px solid #577E86;
+      color: #2D5D67;
     }
     .btn-deposit:hover {
-      background: #8B5CF6;
+      background: #577E86;
       color: #FFFFFF;
-      border-color: #7C3AED;
+      border-color: #2D5D67;
     }
 
     .main-content { flex: 1; overflow: hidden; position: relative; }
@@ -499,13 +487,12 @@
     .sidebar-brand .brand-sub { font-size: 0.6rem; color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase; }
     .sidebar-section { padding: 6px 16px 4px; font-size: 0.6rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; }
     
-    /* ===== MODIFICATION : Boutons du menu latéral (fond blanc, bordure verte épaisse) ===== */
     .sidebar-item {
       display: flex; align-items: center; gap: 10px; padding: 8px 16px;
       font-size: 0.82rem; font-weight: 500; color: var(--text-light); cursor: pointer;
       transition: var(--transition); border-left: 3px solid transparent; text-decoration: none;
       border: 1px solid transparent;
-      margin: 2px 8px; /* Espace pour que la bordure soit visible */
+      margin: 2px 8px;
       border-radius: var(--radius-sm);
     }
     .sidebar-item:hover { 
@@ -520,7 +507,7 @@
       font-weight: 700; 
     }
     .sidebar-item .icon { font-size: 1rem; width: 22px; text-align: center; flex-shrink: 0; font-weight: 400; }
-    .sidebar-item .badge { margin-left: auto; background: rgba(76, 175, 80, 0.12); color: var(--secondary); font-size: 0.6rem; font-weight: 700; padding: 1px 8px; border-radius: 12px; }
+    .sidebar-item .badge { margin-left: auto; background: rgba(62,197,76, 0.12); color: var(--secondary); font-size: 0.6rem; font-weight: 700; padding: 1px 8px; border-radius: 12px; }
     .sidebar-divider { height: 1px; background: var(--border); margin: 8px 16px; }
     .sidebar-footer { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); }
 
@@ -540,7 +527,7 @@
       transition: var(--transition);
       box-shadow: var(--glass-shadow);
     }
-    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(26,58,92,0.18); }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(45,93,103,0.18); }
     .stat-card .stat-label { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
     .stat-card .stat-value { font-size: 1.8rem; font-weight: 700; color: var(--text); margin: 6px 0 2px; }
     .stat-card .stat-sub { font-size: 0.75rem; color: var(--text-light); }
@@ -572,12 +559,12 @@
     .recent-search-box .clear-search:hover { color: var(--accent-red); }
     .doc-list { display: flex; flex-direction: column; gap: 6px; }
     .doc-item { display: flex; align-items: center; padding: 10px 12px; border-radius: var(--radius-sm); transition: var(--transition); cursor: pointer; }
-    .doc-item:hover { background: rgba(76, 175, 80, 0.04); }
+    .doc-item:hover { background: rgba(62,197,76, 0.04); }
     .doc-item .doc-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; margin-right: 12px; text-transform: uppercase; }
     .doc-item .doc-icon.quote { background: #DBEAFE; color: #2563EB; }
-    .doc-item .doc-icon.invoice { background: #EDE9FE; color: #7C3AED; }
+    .doc-item .doc-icon.invoice { background: #D5DFE1; color: #2D5D67; }
     .doc-item .doc-icon.credit { background: #FEF3C7; color: #92400E; }
-    .doc-item .doc-icon.deposit { background: #D1FAE5; color: #065F46; }
+    .doc-item .doc-icon.deposit { background: #D8F3DB; color: #2D5D67; }
     .doc-item .doc-info { flex: 1; min-width: 0; }
     .doc-item .doc-info .doc-name { font-size: 0.82rem; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .doc-item .doc-info .doc-meta { font-size: 0.68rem; color: var(--text-light); display: flex; gap: 12px; flex-wrap: wrap; }
@@ -586,10 +573,10 @@
     .badge-status { display: inline-flex; align-items: center; padding: 2px 10px; border-radius: 20px; font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
     .badge-status.draft { background: #F1F5F9; color: #475569; }
     .badge-status.sent { background: #FEF3C7; color: #92400E; }
-    .badge-status.accepted { background: #D1FAE5; color: #065F46; }
-    .badge-status.converted { background: #EDE9FE; color: #5B21B6; }
-    .badge-status.issued { background: #EDE9FE; color: #5B21B6; }
-    .badge-status.paid { background: #D1FAE5; color: #065F46; }
+    .badge-status.accepted { background: #D8F3DB; color: #2D5D67; }
+    .badge-status.converted { background: #D5DFE1; color: #2D5D67; }
+    .badge-status.issued { background: #D5DFE1; color: #2D5D67; }
+    .badge-status.paid { background: #D8F3DB; color: #2D5D67; }
     .badge-status.refused { background: #FEE2E2; color: #991B1B; }
     .badge-status.cancelled { background: #FEE2E2; color: #991B1B; }
     .badge-status.archived { background: #F1F5F9; color: #64748B; }
@@ -597,7 +584,6 @@
     .empty-state .icon { font-size: 1.8rem; margin-bottom: 8px; opacity: 0.4; }
     .empty-state p { font-size: 0.85rem; }
 
-    /* ===== MODIFICATION : Sous-onglets (fond blanc, bordure verte épaisse) ===== */
     .sub-tabs {
       display: flex;
       gap: 4px;
@@ -626,7 +612,7 @@
       background: #FFFFFF;
       color: var(--secondary);
       border: 2px solid var(--secondary);
-      box-shadow: 0 2px 8px rgba(76, 175, 80, 0.25);
+      box-shadow: 0 2px 8px rgba(62,197,76, 0.25);
     }
     .sub-tab .badge {
       background: rgba(255,255,255,0.2);
@@ -635,9 +621,8 @@
       font-size: 0.6rem;
       margin-left: 4px;
     }
-    .sub-tab.active .badge { background: rgba(76, 175, 80, 0.2); color: var(--secondary); }
+    .sub-tab.active .badge { background: rgba(62,197,76, 0.2); color: var(--secondary); }
 
-    /* ===== MODIFICATION : Cartes de filtre (fond blanc, bordure verte épaisse) ===== */
     .stat-filter-bar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; overflow-x: auto; }
     .stat-filter-card {
       flex: 1; min-width: 110px; text-align: left; cursor: pointer;
@@ -651,9 +636,96 @@
     .stat-filter-card.active .stat-label,
     .stat-filter-card.active .stat-value { color: var(--secondary); }
 
-    .invoice-card-list { display: flex; flex-direction: column; gap: 12px; }
-    .invoice-card-pair { display: flex; gap: 12px; align-items: stretch; flex-wrap: wrap; }
-    .invoice-card-pair .invoice-card { flex: 1 1 260px; min-width: 0; margin: 0; }
+    .invoice-card-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
+    .invoice-card-list > .empty-state { grid-column: 1 / -1; }
+    .invoice-card-list > .invoice-card { margin: 0; }
+    .invoice-card-pair { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: stretch; }
+    .invoice-card-pair .invoice-card { min-width: 0; margin: 0; }
+    @media (max-width: 768px) {
+      .invoice-card-list, .invoice-card-pair { grid-template-columns: 1fr; }
+    }
+
+    .invoice-stack { position: relative; padding-bottom: 26px; cursor: pointer; outline: none; transition: opacity .25s ease; -webkit-tap-highlight-color: transparent; }
+    .invoice-stack.is-open { opacity: 0; pointer-events: none; }
+    .stack-face { position: relative; z-index: 3; background: var(--panel); border-radius: var(--radius); border-top: 4px solid var(--lime); padding: 18px 22px 20px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 8px 26px rgba(31,70,80,0.12); transition: transform .4s cubic-bezier(.22,1,.36,1), box-shadow .4s ease; }
+    .stack-layer { position: absolute; border-radius: var(--radius); transition: transform .4s cubic-bezier(.22,1,.36,1); }
+    .stack-layer-2 { z-index: 2; left: 14px; right: 14px; top: 14px; bottom: 13px; background: var(--lime-3); box-shadow: 0 4px 12px rgba(31,70,80,0.08); }
+    .stack-layer-3 { z-index: 1; left: 28px; right: 28px; top: 28px; bottom: 0; background: var(--blue-20); }
+    [data-theme="dark"] .stack-layer-2 { background: #1D3B36; }
+    [data-theme="dark"] .stack-layer-3 { background: #1A2F35; }
+    .invoice-stack:hover .stack-face, .invoice-stack:focus-visible .stack-face { transform: translateY(-5px); box-shadow: 0 16px 36px rgba(31,70,80,0.18); }
+    .invoice-stack:hover .stack-layer-2, .invoice-stack:focus-visible .stack-layer-2 { transform: translateY(5px); }
+    .invoice-stack:hover .stack-layer-3, .invoice-stack:focus-visible .stack-layer-3 { transform: translateY(11px); }
+    .stack-face-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .stack-count { display: inline-flex; align-items: center; gap: 7px; background: var(--lime-3); color: var(--forest); padding: 5px 12px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; }
+    [data-theme="dark"] .stack-count { background: rgba(62,197,76,0.16); color: var(--lime-2); }
+    .stack-chevron { width: 32px; height: 32px; border-radius: 50%; background: var(--forest); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 0.72rem; transition: transform .35s cubic-bezier(.22,1,.36,1), background .2s; }
+    .invoice-stack:hover .stack-chevron { transform: scale(1.12); background: var(--lime); }
+    .stack-client { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.3px; color: var(--text); overflow-wrap: anywhere; }
+    .stack-last { font-size: 0.78rem; color: var(--text-light); }
+    .stack-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+
+    .stack-overlay { position: fixed; inset: 0; z-index: 250; overflow-y: auto; -webkit-overflow-scrolling: touch; background: rgba(31,70,80,0); -webkit-backdrop-filter: blur(0px); backdrop-filter: blur(0px); transition: background .5s ease, -webkit-backdrop-filter .5s ease, backdrop-filter .5s ease; }
+    .stack-overlay.show { background: rgba(31,70,80,0.42); -webkit-backdrop-filter: blur(16px) saturate(120%); backdrop-filter: blur(16px) saturate(120%); }
+    .stack-overlay-inner { max-width: 1080px; margin: 0 auto; padding: 34px 20px 70px; }
+    .stack-overlay-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; opacity: 0; transform: translateY(-10px); transition: opacity .35s ease, transform .5s cubic-bezier(.22,1,.36,1); }
+    .stack-overlay.show .stack-overlay-head { opacity: 1; transform: none; transition-delay: .12s; }
+    .stack-overlay-title { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; min-width: 0; }
+    .stack-overlay-title h2 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.5px; color: #fff; overflow-wrap: anywhere; }
+    .stack-overlay-count { background: var(--lime); color: var(--forest-2); padding: 5px 14px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; }
+    .stack-close { width: 44px; height: 44px; border-radius: 50%; border: 0; background: #fff; color: var(--forest); font-size: 1.05rem; cursor: pointer; flex-shrink: 0; transition: transform .3s cubic-bezier(.22,1,.36,1), background .2s, color .2s; }
+    .stack-close:hover { background: var(--lime); color: var(--forest-2); transform: rotate(90deg); }
+    .stack-overlay-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; align-items: stretch; }
+    body.stack-open { overflow: hidden; }
+    @media (max-width: 768px) { .stack-overlay-grid { grid-template-columns: 1fr; } .stack-overlay-inner { padding: 22px 14px 60px; } .stack-overlay-title h2 { font-size: 1.3rem; } }
+    @media (prefers-reduced-motion: reduce) { .stack-face, .stack-layer, .stack-overlay, .stack-overlay-head { transition-duration: .01s !important; } }
+
+    /* ============================================================ */
+    /* CARTES CLIENTS — 4 PAR LIGNE (modification demandée)         */
+    /* ============================================================ */
+    #client-list-container .client-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+    @media (max-width: 1200px) {
+      #client-list-container .client-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (max-width: 900px) {
+      #client-list-container .client-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 600px) {
+      #client-list-container .client-grid { grid-template-columns: 1fr; }
+    }
+
+    .client-card { background: var(--panel); border-radius: 28px; padding: 6px; box-shadow: 0 2px 12px rgba(31,70,80,0.06); transition: transform .25s ease, box-shadow .25s ease; display: flex; flex-direction: column; min-width: 0; }
+    .client-card:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(31,70,80,0.13); }
+    .client-card-top { border-radius: 24px; padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px; min-height: 212px; color: var(--forest-2); }
+    .client-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .client-pill { background: #fff; border-radius: 999px; padding: 8px 16px; font-size: 0.78rem; font-weight: 600; color: #1B3A42; max-width: 70%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .client-icon-btn { width: 34px; height: 34px; border-radius: 50%; border: 0; background: #fff; color: #1B3A42; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; transition: all .2s ease; }
+    .client-icon-btn:hover { background: #1B3A42; color: #fff; }
+    .client-icon-btn.danger:hover { background: #DC2626; }
+    .client-card-mid { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 4px; }
+    .client-card-labels { min-width: 0; }
+    .client-card-sub { font-size: 0.72rem; font-weight: 600; color: rgba(18,23,18,0.7); margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .client-card-name { font-size: 1.35rem; font-weight: 600; line-height: 1.2; letter-spacing: -0.4px; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .client-avatar { width: 46px; height: 46px; border-radius: 50%; background: #1B3A42; color: #fff; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1rem; flex-shrink: 0; }
+    .client-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; }
+    .client-tag { border: 1px solid rgba(18,23,18,0.22); border-radius: 999px; padding: 4px 10px; font-size: 0.68rem; font-weight: 600; color: rgba(18,23,18,0.8); max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .client-card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 14px 14px 10px; }
+    .client-card-contact { min-width: 0; }
+    .client-card-phone { font-weight: 700; font-size: 0.92rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .client-card-addr { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .client-card-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .client-details-btn { background: var(--forest); color: #fff; border: 0; border-radius: 999px; padding: 10px 22px; font-family: inherit; font-weight: 700; font-size: 0.8rem; cursor: pointer; transition: all .2s ease; }
+    .client-details-btn:hover { background: var(--forest-2); transform: translateY(-1px); }
+    [data-theme="dark"] .client-details-btn { background: var(--lime); color: var(--forest-2); }
+    .client-delete-btn { width: 36px; height: 36px; border-radius: 50%; border: 0; background: #FFF1F0; color: #C62828; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 0.78rem; transition: all .2s ease; }
+    .client-delete-btn:hover { background: #DC2626; color: #fff; }
+    .client-c0 { background: #D8F3DB; } .client-c1 { background: #D5DFE1; } .client-c2 { background: #B2E7B7; }
+    .client-c3 { background: #ABBEC2; } .client-c4 { background: #EAF8EC; } .client-c5 { background: #E8EEEF; }
+    .client-c6 { background: #8EDD96; } .client-c7 { background: #82A0A4; }
     .invoice-card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; cursor: pointer; transition: var(--transition); }
     .invoice-card:hover { border-color: var(--secondary); box-shadow: var(--shadow-hover); }
     .invoice-card-top { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
@@ -682,7 +754,7 @@
     .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 22px; }
     .client-select-list { max-height: 150px; overflow-y: auto; border: 1px solid var(--border); border-radius: var(--radius-sm); margin-top: 4px; }
     .client-select-item { padding: 8px 12px; cursor: pointer; border-bottom: 1px solid var(--border); transition: var(--transition); display: flex; justify-content: space-between; align-items: center; }
-    .client-select-item:hover { background: rgba(76, 175, 80, 0.06); }
+    .client-select-item:hover { background: rgba(62,197,76, 0.06); }
     .client-select-item .client-name { font-weight: 500; font-size: 0.85rem; }
     .client-select-item .client-detail { font-size: 0.7rem; color: var(--text-light); }
     .client-select-item .select-btn { padding: 2px 10px; border-radius: 4px; border: 1px solid var(--secondary); background: transparent; color: var(--secondary); font-size: 0.65rem; font-weight: 600; cursor: pointer; transition: var(--transition); }
@@ -695,14 +767,14 @@
     .client-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
     .client-table th { text-align: left; padding: 8px 10px; font-size: 0.65rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid var(--border); }
     .client-table td { padding: 8px 10px; font-size: 0.8rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
-    .client-table tr:hover td { background: rgba(76, 175, 80, 0.03); }
+    .client-table tr:hover td { background: rgba(62,197,76, 0.03); }
     .client-table .client-actions { display: flex; gap: 4px; }
     .client-table .client-actions button { padding: 2px 8px; font-size: 0.6rem; border-radius: 4px; border: none; cursor: pointer; transition: var(--transition); }
     .client-table .client-actions .edit-client { background: #DBEAFE; color: #2563EB; }
     .client-table .client-actions .edit-client:hover { background: #BFDBFE; }
     .client-table .client-actions .delete-client { background: #FEE2E2; color: #DC2626; }
     .client-table .client-actions .delete-client:hover { background: #FECACA; }
-    .highlight-match { background: rgba(76, 175, 80, 0.15); border-radius: 2px; padding: 0 2px; }
+    .highlight-match { background: rgba(62,197,76, 0.15); border-radius: 2px; padding: 0 2px; }
 
     #client-indicatif {
       width: 85px !important;
@@ -744,7 +816,6 @@
       border-color: var(--secondary) !important;
     }
 
-    /* ===== EDITEURS LAYOUT ===== */
     .editor-layout {
       display: flex;
       height: 100%;
@@ -763,7 +834,6 @@
       transition: background .3s, border-color .3s;
     }
     
-    /* ===== TYPE DE DOCUMENT BADGE ===== */
     .doc-type-badge {
       display: inline-flex;
       align-items: center;
@@ -781,21 +851,20 @@
       color: #2563EB;
     }
     .doc-type-badge.invoice {
-      background: #EDE9FE;
-      color: #5B21B6;
+      background: #D5DFE1;
+      color: #2D5D67;
     }
     .doc-type-badge.deposit {
-      background: #D1FAE5;
-      color: #065F46;
+      background: #D8F3DB;
+      color: #2D5D67;
     }
     .doc-type-badge.credit {
       background: #FEF3C7;
       color: #92400E;
     }
 
-    /* ===== DEPOSIT SPECIFIC STYLES ===== */
     .deposit-summary-box {
-      background: rgba(76, 175, 80, 0.06);
+      background: rgba(62,197,76, 0.06);
       border: 1.5px solid var(--secondary);
       border-radius: var(--radius-sm);
       padding: 12px 16px;
@@ -1137,12 +1206,12 @@
       transform: scale(1.03);
     }
     .ra-add-bottom {
-      border-color: #4CAF50;
+      border-color: #3EC54C;
       color: #2a7a2a;
       background: #e8f5e9;
     }
     .ra-add-bottom:hover {
-      background: #4CAF50;
+      background: #3EC54C;
       color: #fff;
     }
     .ra-btn-bottom .icon {
@@ -1278,7 +1347,6 @@
       margin: 0;
     }
 
-    /* Export PDF : mêmes retouches que l'impression (pas de bordures d'édition, pas de boutons) */
     .pdf-exporting #invoice { box-shadow: none !important; }
     .pdf-exporting [contenteditable="true"] { border-bottom: none !important; }
     .pdf-exporting .type-select { border: none !important; background: transparent !important; -webkit-appearance: none !important; appearance: none !important; }
@@ -1546,7 +1614,6 @@
       .doc-item .doc-status { margin-left: 48px; margin-top: 4px; }
       .editor-sidebar { width: 100%; min-width: 0; max-height: none; border-right: none; }
       .editor-layout { flex-direction: column; }
-      /* #invoice garde sa largeur A4 : l'aperçu est réduit par transform (bloc mobile) */
       .row-actions-bottom { flex-wrap: wrap; }
       #client-indicatif { width: 75px !important; font-size: 0.65rem !important; padding: 4px 2px !important; }
       .sub-tabs { gap: 2px; }
@@ -1578,7 +1645,7 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 5px; transition: background .2s; }
     ::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
-    [data-theme="dark"] ::-webkit-scrollbar-thumb { background: #2A3A5C; }
+    [data-theme="dark"] ::-webkit-scrollbar-thumb { background: #243A40; }
     [data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: #3A5A7C; }
     
     @keyframes fadeInUp { 
@@ -1591,7 +1658,6 @@
     .stat-card:nth-child(3) { animation-delay: 0.1s; }
     .stat-card:nth-child(4) { animation-delay: 0.15s; }
 
-    /* ===== SETTINGS PANEL IMPROVED ===== */
     .settings-content {
       display: flex;
       flex-direction: column;
@@ -1668,8 +1734,8 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.3px;
-      background: #D1FAE5;
-      color: #065F46;
+      background: #D8F3DB;
+      color: #2D5D67;
     }
     [data-theme="dark"] .settings-badge {
       background: #0A3A2A;
@@ -1743,9 +1809,9 @@
       display: none;
       align-items: center;
       justify-content: center;
-      background: #FFFFFF; /* Fond blanc */
-      border: 2px solid var(--secondary); /* Bordure épaisse verte */
-      color: var(--secondary); /* Texte vert */
+      background: #FFFFFF;
+      border: 2px solid var(--secondary);
+      color: var(--secondary);
       width: 30px;
       height: 28px;
       border-radius: var(--radius-sm);
@@ -1775,10 +1841,9 @@
       color: var(--secondary);
     }
 
-    /* ===== DEPOSIT EDITOR SPECIFIC ===== */
     .deposit-info-box {
-      background: rgba(139, 92, 246, 0.08);
-      border: 1.5px solid #8B5CF6;
+      background: rgba(87,126,134, 0.08);
+      border: 1.5px solid #577E86;
       border-radius: var(--radius-sm);
       padding: 12px 16px;
       margin-bottom: 8px;
@@ -1817,7 +1882,6 @@
       font-size: 0.55rem;
     }
 
-    /* Conditions & RIB display styles - non-editable */
     .iv_cond_display, .iv_mode_display, .iv_rib_iban_display, .iv_rib_bic_display, .iv_rib_titulaire_display {
       font-weight: 500;
       color: #1a2a1a;
@@ -1842,19 +1906,13 @@
       .deposit-info-box .deposit-amount { font-size: 0.95rem; }
     }
 
-    /* ===================================================================
-       ADAPTATION TÉLÉPHONE
-       =================================================================== */
     html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
-    body { -webkit-tap-highlight-color: rgba(76,175,80,0.18); overflow-x: hidden; }
-    /* 100vh inclut la barre d'adresse sur mobile : dvh = hauteur réellement visible */
+    body { -webkit-tap-highlight-color: rgba(62,197,76,0.18); overflow-x: hidden; }
     @supports (min-height: 100dvh) { body { min-height: 100dvh; } }
 
-    /* éléments propres au téléphone : invisibles sur ordinateur */
     .mobile-editor-bar, .mobile-zoom-bar { display: none; }
     .inv-scale-box { display: contents; }
 
-    /* Export PDF : le document est toujours capturé à sa taille réelle (A4) */
     .pdf-exporting #invoice { transform: none !important; }
     .pdf-exporting .inv-scale-box { width: auto !important; height: auto !important; }
     @media print {
@@ -1866,21 +1924,15 @@
     @media (max-width: 768px) {
       :root { --topbar-height: 52px; }
 
-      /* Le menu latéral vit dans le panneau « tableau de bord » : on masque ce panneau avec
-         visibility (que le menu peut contredire) au lieu d'opacity, pour que le burger
-         ouvre aussi le menu depuis l'éditeur */
       .panel:not(.active) { opacity: 1; visibility: hidden; }
       .sidebar, .sidebar-backdrop { visibility: visible; }
       .sidebar { pointer-events: auto; }
-      /* Le CSS d'origine redéfinit display:none sur ces deux éléments plus bas dans le fichier :
-         on les rétablit ici, sinon le burger et le fond sombre ne s'affichent jamais */
       .menu-toggle { display: inline-flex; }
       .sidebar-backdrop { display: block; }
 
       .topbar { padding-left: max(14px, env(safe-area-inset-left)); padding-right: max(14px, env(safe-area-inset-right)); }
       .auth-card { padding: 28px 20px; max-height: calc(100vh - 40px); max-height: calc(100dvh - 40px); overflow-y: auto; }
 
-      /* ---- Zones tactiles confortables (≥ 36–42px) ---- */
       .menu-toggle { width: 32px; height: 30px; font-size: 0.85rem; }
       .theme-toggle, .lang-toggle { width: 32px; height: 28px; font-size: 0.62rem; }
       .currency-toggle { width: 54px; height: 28px; font-size: 0.58rem; }
@@ -1888,7 +1940,6 @@
       .sidebar-item { padding: 10px 16px; font-size: 0.85rem; }
       .sidebar-section { font-size: 0.65rem; }
 
-      /* ---- Champs : 16px empêche iOS de zoomer la page au focus ---- */
       input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not(#invoice input),
       select:not(#invoice select),
       textarea:not(#invoice textarea) { font-size: 16px !important; }
@@ -1899,7 +1950,6 @@
       .filters-bar .search-box input, .recent-search-box input, #invoice-search { width: 100% !important; flex: 1; min-width: 0; }
       .recent-search-box { flex: 1 1 100%; }
 
-      /* ---- Tableau de bord ---- */
       .dashboard-content { padding: 14px max(12px, env(safe-area-inset-right)) calc(24px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); }
       .dashboard-header { margin-bottom: 16px; }
       .dashboard-header h1 { font-size: 1.3rem; }
@@ -1908,7 +1958,6 @@
       .stat-card:hover { transform: none; }
       .stat-card .stat-value { font-size: 1.15rem; overflow-wrap: anywhere; }
       .stat-card .stat-icon { font-size: 1.2rem; }
-      .stat-card .stat-sub { font-size: 0.68rem; }
       .chart-card, .recent-section { padding: 14px; }
       .chart-wrap { height: 180px; }
       .stat-filter-bar { gap: 8px; }
@@ -1923,14 +1972,12 @@
       .doc-item { padding: 12px 10px; }
       .doc-item .doc-amount { margin-left: auto; }
 
-      /* ---- Fenêtres modales : « tiroir » collé en bas de l'écran ---- */
       .modal-backdrop { align-items: flex-end; }
       .modal { width: 100% !important; max-width: 100vw; border-radius: 18px 18px 0 0; padding: 20px 16px calc(18px + env(safe-area-inset-bottom)); max-height: 92vh; max-height: 92dvh; transform: translateY(32px); }
       .modal-actions { gap: 10px; }
       .modal-actions .btn { flex: 1; justify-content: center; }
       .toast { left: 12px; right: 12px; bottom: calc(16px + env(safe-area-inset-bottom)); text-align: center; }
 
-      /* ---- ÉDITEUR : onglets « Infos » / « Document » ---- */
       #panel-editor .editor-layout { flex-direction: column; height: 100%; }
       .mobile-editor-bar { display: flex; align-items: center; gap: 6px; padding: 6px 8px; background: var(--panel); border-bottom: 1px solid var(--border); flex-shrink: 0; }
       .m-icon-btn { flex-shrink: 0; width: 34px; height: 32px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--panel); color: var(--text); font-size: 0.85rem; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
@@ -1940,7 +1987,6 @@
       .m-tab.active { background: var(--panel); color: var(--secondary-dark); box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
 
       #panel-editor[data-mtab="doc"] .editor-sidebar { display: none; }
-      /* L'aperçu reste mis en page (mais invisible) : la pagination du document en dépend */
       #panel-editor[data-mtab="form"] .preview-pane { position: absolute; left: 0; top: 0; width: 100%; height: 100%; visibility: hidden; pointer-events: none; z-index: -1; }
       .editor-sidebar { flex: 1 1 auto; min-height: 0; padding: 14px 12px calc(16px + env(safe-area-inset-bottom)); }
 
@@ -1957,7 +2003,6 @@
       .mobile-zoom-bar .m-zoom-val { min-width: 38px; text-align: center; font-size: 0.7rem; font-weight: 600; opacity: 0.9; }
     }
 
-    /* Clients : liste en « cartes » plutôt qu'un tableau de 5 colonnes */
     @media (max-width: 640px) {
       .client-table, .client-table tbody { display: block; }
       .client-table thead { display: none; }
@@ -1976,19 +2021,15 @@
       .stat-card .stat-value { font-size: 1.05rem; }
     }
 
-    /* ===================================================================
-       THÈME PREMIUM — boutons, icônes, onglets, cartes
-       =================================================================== */
     :root {
-      --prem-green-1: #4CC26A;
-      --prem-green-2: #2E8B4A;
-      --prem-green-3: #1F6B38;
-      --prem-navy-1: #2A5A8C;
-      --prem-navy-2: #14304F;
+      --prem-green-1: #3EC54C;
+      --prem-green-2: #2FA83C;
+      --prem-green-3: #2D5D67;
+      --prem-navy-1: #577E86;
+      --prem-navy-2: #1F4650;
       --prem-ease: cubic-bezier(.2,.8,.2,1);
     }
 
-    /* ---- Base des boutons ---- */
     .btn {
       position: relative;
       overflow: hidden;
@@ -2000,9 +2041,8 @@
       transition: transform .22s var(--prem-ease), box-shadow .22s var(--prem-ease), background .22s, border-color .22s, color .22s, filter .22s;
     }
     .btn-sm { padding: 6px 12px; font-size: .72rem; border-radius: 999px; gap: 6px; }
-    .btn:focus-visible { outline: 3px solid rgba(76,175,80,.35); outline-offset: 2px; }
+    .btn:focus-visible { outline: 3px solid rgba(62,197,76,.35); outline-offset: 2px; }
 
-    /* Icône dans une pastille */
     .btn > i:first-child {
       display: inline-flex; align-items: center; justify-content: center;
       width: 1.55em; height: 1.55em; border-radius: 50%;
@@ -2013,7 +2053,6 @@
     .btn-sm > i:first-child { width: 1.65em; height: 1.65em; font-size: .72em; }
     .btn:hover > i:first-child { transform: scale(1.12) rotate(-6deg); }
 
-    /* Reflet « glossy » au survol */
     .btn::after {
       content: ''; position: absolute; top: 0; left: -120%; width: 60%; height: 100%;
       background: linear-gradient(100deg, transparent, rgba(255,255,255,.35), transparent);
@@ -2021,71 +2060,65 @@
     }
     .btn:hover::after { left: 140%; }
 
-    /* ---- Principal (vert) ---- */
     .btn-primary {
       background: linear-gradient(135deg, var(--prem-green-1) 0%, var(--prem-green-2) 60%, var(--prem-green-3) 100%);
       color: #fff; border: 1px solid rgba(255,255,255,.18);
-      box-shadow: 0 6px 16px rgba(46,139,74,.30), inset 0 1px 0 rgba(255,255,255,.30);
+      box-shadow: 0 6px 16px rgba(62,197,76,.30), inset 0 1px 0 rgba(255,255,255,.30);
     }
     .btn-primary:hover {
-      background: linear-gradient(135deg, #56CE75 0%, #329A52 60%, #226F3C 100%);
+      background: linear-gradient(135deg, #4FD05B 0%, #2FA83C 60%, #2D5D67 100%);
       color: #fff; border-color: rgba(255,255,255,.28);
       transform: translateY(-2px);
-      box-shadow: 0 10px 24px rgba(46,139,74,.40), inset 0 1px 0 rgba(255,255,255,.35);
+      box-shadow: 0 10px 24px rgba(62,197,76,.40), inset 0 1px 0 rgba(255,255,255,.35);
     }
-    .btn-primary:active { transform: translateY(0); box-shadow: 0 3px 8px rgba(46,139,74,.30); }
+    .btn-primary:active { transform: translateY(0); box-shadow: 0 3px 8px rgba(62,197,76,.30); }
 
-    /* ---- Ghost (secondaire) ---- */
     .btn-ghost {
       background: linear-gradient(180deg, #FFFFFF, #F6FAF7);
       color: var(--prem-green-3); border: 1px solid #CFE3D4;
       box-shadow: 0 1px 2px rgba(16,24,40,.05);
     }
-    .btn-ghost > i:first-child { background: rgba(76,175,80,.14); color: var(--prem-green-2); }
+    .btn-ghost > i:first-child { background: rgba(62,197,76,.14); color: var(--prem-green-2); }
     .btn-ghost:hover {
-      background: linear-gradient(180deg, #F3FBF5, #E6F5EA);
+      background: linear-gradient(180deg, #F3FBF5, #D8F3DB);
       color: var(--prem-green-3); border-color: var(--secondary);
-      transform: translateY(-1px); box-shadow: 0 6px 16px rgba(76,175,80,.20);
+      transform: translateY(-1px); box-shadow: 0 6px 16px rgba(62,197,76,.20);
     }
-    .btn-ghost::after { background: linear-gradient(100deg, transparent, rgba(76,175,80,.16), transparent); }
+    .btn-ghost::after { background: linear-gradient(100deg, transparent, rgba(62,197,76,.16), transparent); }
 
-    /* ---- PDF / Imprimer (bleu marine) ---- */
     .btn-print {
       background: linear-gradient(135deg, var(--prem-navy-1), var(--prem-navy-2));
       color: #fff; border: 1px solid rgba(255,255,255,.14);
-      box-shadow: 0 6px 16px rgba(26,58,92,.28), inset 0 1px 0 rgba(255,255,255,.22);
+      box-shadow: 0 6px 16px rgba(45,93,103,.28), inset 0 1px 0 rgba(255,255,255,.22);
     }
     .btn-print:hover {
-      background: linear-gradient(135deg, #3470A8, #183A5E);
+      background: linear-gradient(135deg, #577E86, #1F4650);
       color: #fff; border-color: rgba(255,255,255,.22);
-      transform: translateY(-2px); box-shadow: 0 10px 24px rgba(26,58,92,.38);
+      transform: translateY(-2px); box-shadow: 0 10px 24px rgba(45,93,103,.38);
     }
 
-    /* ---- Acompte (violet) ---- */
     .btn-deposit {
-      background: linear-gradient(135deg, #9F7AEA, #6B3FD4);
+      background: linear-gradient(135deg, #577E86, #2D5D67);
       color: #fff; border: 1px solid rgba(255,255,255,.18);
-      box-shadow: 0 6px 16px rgba(107,63,212,.30), inset 0 1px 0 rgba(255,255,255,.28);
+      box-shadow: 0 6px 16px rgba(45,93,103,.30), inset 0 1px 0 rgba(255,255,255,.28);
     }
     .btn-deposit:hover {
-      background: linear-gradient(135deg, #AB88F0, #7447E0);
-      color: #fff; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(107,63,212,.40);
+      background: linear-gradient(135deg, #82A0A4, #2D5D67);
+      color: #fff; transform: translateY(-2px); box-shadow: 0 10px 24px rgba(45,93,103,.40);
     }
 
-    /* ---- Violet doux (Voir facture) ---- */
     .btn-purple {
-      background: linear-gradient(180deg, #F5F0FF, #EAE0FF);
-      color: #5B21B6; border: 1px solid #D4C4FA;
-      box-shadow: 0 1px 2px rgba(91,33,182,.08);
+      background: linear-gradient(180deg, #EEF3F4, #D5DFE1);
+      color: #2D5D67; border: 1px solid #ABBEC2;
+      box-shadow: 0 1px 2px rgba(45,93,103,.08);
     }
-    .btn-purple > i:first-child { background: rgba(124,58,237,.14); color: #6D28D9; }
+    .btn-purple > i:first-child { background: rgba(45,93,103,.14); color: #2D5D67; }
     .btn-purple:hover {
-      background: linear-gradient(135deg, #8B5CF6, #6D28D9); color: #fff; border-color: transparent;
-      transform: translateY(-1px); box-shadow: 0 8px 18px rgba(109,40,217,.30);
+      background: linear-gradient(135deg, #577E86, #2D5D67); color: #fff; border-color: transparent;
+      transform: translateY(-1px); box-shadow: 0 8px 18px rgba(45,93,103,.30);
     }
     .btn-purple:hover > i:first-child { background: rgba(255,255,255,.22); color: #fff; }
 
-    /* ---- Danger (rouge doux → plein) ---- */
     .btn-danger {
       background: linear-gradient(180deg, #FFF5F5, #FFE9E9);
       color: #C62828; border: 1px solid #F8CACA;
@@ -2097,30 +2130,26 @@
     }
     .btn-danger:hover > i:first-child { background: rgba(255,255,255,.22); color: #fff; }
 
-    /* ---- Dark mode ---- */
-    [data-theme="dark"] .btn-ghost { background: linear-gradient(180deg, #1F2B3F, #19243A); color: #8FE0A6; border-color: #2F4666; }
-    [data-theme="dark"] .btn-ghost > i:first-child { background: rgba(102,187,106,.18); color: #8FE0A6; }
-    [data-theme="dark"] .btn-ghost:hover { background: linear-gradient(180deg, #22364D, #1B2D44); color: #B7F0C6; border-color: var(--secondary); }
+    [data-theme="dark"] .btn-ghost { background: linear-gradient(180deg, #1F2B3F, #19243A); color: #8EDD96; border-color: #2F4666; }
+    [data-theme="dark"] .btn-ghost > i:first-child { background: rgba(102,187,106,.18); color: #8EDD96; }
+    [data-theme="dark"] .btn-ghost:hover { background: linear-gradient(180deg, #22364D, #1B2D44); color: #B2E7B7; border-color: var(--secondary); }
     [data-theme="dark"] .btn-danger { background: rgba(220,38,38,.12); color: #FCA5A5; border-color: rgba(248,113,113,.35); }
-    [data-theme="dark"] .btn-purple { background: rgba(139,92,246,.16); color: #C4B5FD; border-color: rgba(167,139,250,.4); }
+    [data-theme="dark"] .btn-purple { background: rgba(87,126,134,.16); color: #ABBEC2; border-color: rgba(167,139,250,.4); }
 
-    /* ---- CTA « Nouvelle facture » ---- */
     .btn-cta {
       padding: 10px 20px; font-size: .84rem; border-radius: 12px; gap: 10px;
-      box-shadow: 0 8px 22px rgba(46,139,74,.38), inset 0 1px 0 rgba(255,255,255,.32);
+      box-shadow: 0 8px 22px rgba(62,197,76,.38), inset 0 1px 0 rgba(255,255,255,.32);
     }
     .btn-cta > i:first-child { width: 1.75em; height: 1.75em; font-size: .85em; }
 
-    /* ---- Bouton flottant mobile (Nouvelle facture) ---- */
     .fab-new-invoice {
       display: none; position: fixed; z-index: 120;
       right: max(16px, env(safe-area-inset-right)); bottom: calc(18px + env(safe-area-inset-bottom));
       padding: 14px 20px; border-radius: 999px; font-size: .86rem;
-      box-shadow: 0 12px 30px rgba(46,139,74,.45), inset 0 1px 0 rgba(255,255,255,.32);
+      box-shadow: 0 12px 30px rgba(62,197,76,.45), inset 0 1px 0 rgba(255,255,255,.32);
     }
     @media (max-width: 768px) { .fab-new-invoice { display: inline-flex; } }
 
-    /* ---- Sous-onglets (pilules) ---- */
     .sub-tabs {
       gap: 6px; padding: 5px; border-radius: 14px;
       background: linear-gradient(180deg, #F4F7FA, #EAF0F5);
@@ -2132,89 +2161,81 @@
     .sub-tab:hover { background: rgba(255,255,255,.9); color: var(--prem-green-2); border: 0; transform: translateY(-1px); }
     .sub-tab.active {
       background: linear-gradient(135deg, var(--prem-green-1), var(--prem-green-3)); color: #fff; border: 0;
-      box-shadow: 0 6px 14px rgba(46,139,74,.32), inset 0 1px 0 rgba(255,255,255,.28);
+      box-shadow: 0 6px 14px rgba(62,197,76,.32), inset 0 1px 0 rgba(255,255,255,.28);
     }
     .sub-tab.active i { opacity: 1; }
-    .sub-tab .badge { background: rgba(26,58,92,.08); color: var(--text-light); font-weight: 700; padding: 1px 8px; }
+    .sub-tab .badge { background: rgba(45,93,103,.08); color: var(--text-light); font-weight: 700; padding: 1px 8px; }
     .sub-tab.active .badge { background: rgba(255,255,255,.26); color: #fff; }
 
-    /* ---- Filtres de statut ---- */
     .stat-filter-card {
       border-radius: 14px; border: 1px solid var(--border); background: var(--panel);
       box-shadow: 0 1px 2px rgba(16,24,40,.04); transition: all .22s var(--prem-ease);
     }
-    .stat-filter-card:hover { border-color: var(--secondary); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(26,58,92,.10); }
+    .stat-filter-card:hover { border-color: var(--secondary); transform: translateY(-2px); box-shadow: 0 8px 20px rgba(45,93,103,.10); }
     .stat-filter-card.active {
       background: linear-gradient(135deg, var(--prem-green-1), var(--prem-green-3)); border-color: transparent;
-      box-shadow: 0 8px 20px rgba(46,139,74,.30);
+      box-shadow: 0 8px 20px rgba(62,197,76,.30);
     }
     .stat-filter-card.active .stat-label, .stat-filter-card.active .stat-value { color: #fff; }
 
-    /* ---- Cartes facture ---- */
     .invoice-card {
       border-radius: 16px; border: 1px solid var(--border);
-      box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(26,58,92,.05);
+      box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 8px 24px rgba(45,93,103,.05);
       transition: transform .25s var(--prem-ease), box-shadow .25s var(--prem-ease), border-color .25s;
     }
-    .invoice-card:hover { border-color: rgba(76,175,80,.55); transform: translateY(-2px); box-shadow: 0 14px 34px rgba(26,58,92,.12); }
+    .invoice-card:hover { border-color: rgba(62,197,76,.55); transform: translateY(-2px); box-shadow: 0 14px 34px rgba(45,93,103,.12); }
     .invoice-card-number { letter-spacing: .2px; }
     .invoice-card-row .amounts i, .invoice-card-row .date i {
       display: inline-flex; align-items: center; justify-content: center;
       width: 26px; height: 26px; border-radius: 8px; font-size: .72rem;
-      background: rgba(76,175,80,.10); color: var(--prem-green-2);
+      background: rgba(62,197,76,.10); color: var(--prem-green-2);
     }
-    .invoice-card-row .date i { background: rgba(59,130,246,.10); color: #2563EB; }
+    .invoice-card-row .date i { background: rgba(45,93,103,.10); color: #2563EB; }
     .invoice-card-actions { gap: 8px; border-top: 1px dashed var(--border); }
 
-    /* ---- Badges de statut ---- */
     .badge-status { padding: 3px 11px; font-size: .62rem; letter-spacing: .4px; box-shadow: inset 0 0 0 1px rgba(0,0,0,.05); }
 
-    /* ---- Icônes de documents (listes) ---- */
     .doc-item { border-radius: 12px; border: 1px solid transparent; }
-    .doc-item:hover { background: rgba(76,175,80,.05); border-color: rgba(76,175,80,.18); }
+    .doc-item:hover { background: rgba(62,197,76,.05); border-color: rgba(62,197,76,.18); }
     .doc-item .doc-icon { width: 40px; height: 40px; border-radius: 12px; font-size: .9rem; box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 2px 6px rgba(16,24,40,.08); }
     .doc-item .doc-icon.quote { background: linear-gradient(135deg, #E3EFFF, #C7DDFB); }
-    .doc-item .doc-icon.invoice { background: linear-gradient(135deg, #F0EAFF, #DDD0FB); }
+    .doc-item .doc-icon.invoice { background: linear-gradient(135deg, #F0EAFF, #ABBEC2); }
     .doc-item .doc-icon.credit { background: linear-gradient(135deg, #FFF4D6, #FCE3A0); }
-    .doc-item .doc-icon.deposit { background: linear-gradient(135deg, #DDF7EA, #B5ECCF); }
+    .doc-item .doc-icon.deposit { background: linear-gradient(135deg, #D8F3DB, #B2E7B7); }
 
-    /* ---- Menu latéral ---- */
     .sidebar-item { border: 0; border-radius: 12px; margin: 2px 10px; transition: all .22s var(--prem-ease); }
     .sidebar-item .icon {
       width: 30px; height: 30px; display: inline-flex; align-items: center; justify-content: center;
-      border-radius: 9px; background: rgba(26,58,92,.06); font-size: .85rem; transition: all .22s var(--prem-ease);
+      border-radius: 9px; background: rgba(45,93,103,.06); font-size: .85rem; transition: all .22s var(--prem-ease);
     }
-    .sidebar-item:hover { background: rgba(76,175,80,.08); color: var(--prem-green-2); border: 0; transform: translateX(2px); }
-    .sidebar-item:hover .icon { background: rgba(76,175,80,.16); }
+    .sidebar-item:hover { background: rgba(62,197,76,.08); color: var(--prem-green-2); border: 0; transform: translateX(2px); }
+    .sidebar-item:hover .icon { background: rgba(62,197,76,.16); }
     .sidebar-item.active {
-      background: linear-gradient(135deg, rgba(76,194,106,.16), rgba(46,139,74,.08));
+      background: linear-gradient(135deg, rgba(76,194,106,.16), rgba(62,197,76,.08));
       color: var(--prem-green-3); border: 0; font-weight: 700;
       box-shadow: inset 3px 0 0 var(--prem-green-2);
     }
-    .sidebar-item.active .icon { background: linear-gradient(135deg, var(--prem-green-1), var(--prem-green-3)); color: #fff; box-shadow: 0 4px 10px rgba(46,139,74,.30); }
+    .sidebar-item.active .icon { background: linear-gradient(135deg, var(--prem-green-1), var(--prem-green-3)); color: #fff; box-shadow: 0 4px 10px rgba(62,197,76,.30); }
     [data-theme="dark"] .sidebar-item .icon { background: rgba(255,255,255,.06); }
-    [data-theme="dark"] .sidebar-item.active { color: #8FE0A6; }
+    [data-theme="dark"] .sidebar-item.active { color: #8EDD96; }
 
-    /* ---- Boutons de la barre du haut ---- */
     .theme-toggle, .lang-toggle, .currency-toggle {
       border-radius: 10px; background: linear-gradient(180deg, #FFFFFF, #F1F7F3);
       box-shadow: 0 1px 3px rgba(16,24,40,.08);
     }
     .theme-toggle:hover, .lang-toggle:hover, .currency-toggle:hover {
       background: linear-gradient(135deg, var(--prem-green-1), var(--prem-green-3));
-      box-shadow: 0 6px 16px rgba(46,139,74,.35);
+      box-shadow: 0 6px 16px rgba(62,197,76,.35);
     }
     .menu-toggle { border-radius: 10px; border-width: 1px; background: linear-gradient(180deg, #FFFFFF, #F1F7F3); }
 
-    /* ---- Boutons mobiles de l'éditeur ---- */
     .m-icon-btn { border-radius: 10px; background: linear-gradient(180deg, var(--panel), var(--bg)); transition: transform .2s var(--prem-ease); }
     .m-icon-btn:active { transform: scale(.94); }
     .ra-btn-bottom { border-radius: 10px; }
-    .ra-add-bottom { background: linear-gradient(135deg, var(--prem-green-1), var(--prem-green-3)); color: #fff; border-color: transparent; box-shadow: 0 6px 14px rgba(46,139,74,.28); }
-    .ra-add-bottom:hover { background: linear-gradient(135deg, #56CE75, #226F3C); color: #fff; }
+    .ra-add-bottom { background: linear-gradient(135deg, var(--prem-green-1), var(--prem-green-3)); color: #fff; border-color: transparent; box-shadow: 0 6px 14px rgba(62,197,76,.28); }
+    .ra-add-bottom:hover { background: linear-gradient(135deg, #4FD05B, #2D5D67); color: #fff; }
     .row-del-out { border-radius: 8px; }
 
-    /* ---- Impression / PDF : aucun effet ---- */
     @media print { .btn::after, .fab-new-invoice { display: none !important; } }
     .pdf-exporting .btn::after, .pdf-exporting .fab-new-invoice { display: none !important; }
 
@@ -2222,19 +2243,12 @@
       .btn, .btn::after, .invoice-card, .sub-tab, .sidebar-item { transition: none !important; }
     }
 
-    /* ===================================================================
-       DOCUMENT : pagination stable, arrière-plan fixe, mise en page pro
-       =================================================================== */
-    /* L'image d'arrière-plan est ancrée sur la hauteur d'une page A4 : elle ne bouge plus
-       quand la page change de hauteur ou qu'on ajoute une ligne */
     .bg-image-container { bottom: auto; height: 1123px; align-items: center; justify-content: center; }
     .bg-image-container img { flex-shrink: 0; max-width: none; }
 
-    /* Bouton « Ajouter » hors flux : il ne consomme plus de place dans la page */
     .inv-table-container { position: relative; }
     .row-actions-bottom { position: absolute; left: 0; top: 100%; margin: 5px 0 0 0; z-index: 3; }
 
-    /* Numéro de page (positionné dans la marge basse : aucun impact sur la mise en page) */
     .inv-page-footer { position: relative; }
     .inv-page-num {
       position: absolute; right: 18mm; top: -22px;
@@ -2242,7 +2256,6 @@
       color: #6B8068;
     }
 
-    /* Tableau : colonnes alignées et lisibles */
     .inv-table { table-layout: auto; }
     .inv-table thead tr th:first-child { width: 124px; }
     .inv-table thead tr th:nth-child(4) { text-align: center; }
@@ -2251,28 +2264,428 @@
     .inv-table tbody tr { page-break-inside: avoid; break-inside: avoid; }
     .inv-table-container { margin-bottom: 18px; }
 
-    /* Totaux : bloc net, aligné à droite */
     .inv-totals { margin-top: 10px; }
     .inv-totals-box { min-width: 270px; border-radius: 8px; box-shadow: 0 2px 10px rgba(26,58,58,.06); }
     .inv-total-row { padding: 6px 14px; }
     .inv-total-final { padding: 9px 14px; }
     .inv-totals, .inv-cond-rib, .inv-payment-conditions { page-break-inside: avoid; break-inside: avoid; }
 
-    /* Blocs Émetteur / Facturé à : même hauteur, libellés alignés */
     .inv-meta { align-items: stretch; }
     .inv-client, .inv-emitter { border-radius: 8px; }
     .inv-client-label { min-width: 82px; }
 
     @media print {
-      /* Hauteur fixe légèrement inférieure à A4 : plus de page blanche en fin de document */
       .invoice-page { height: 296.5mm !important; min-height: 0 !important; overflow: hidden !important; }
       .bg-image-container { height: 100% !important; bottom: 0 !important; }
       .row-actions-bottom { display: none !important; }
     }
+
+    :root {
+      --lime: #3EC54C; --lime-2: #8EDD96; --lime-3: #D8F3DB;
+      --forest: #2D5D67; --forest-2: #1F4650;
+      --blue-80: #577E86; --blue-60: #82A0A4; --blue-40: #ABBEC2; --blue-20: #D5DFE1;
+      --green-40: #B2E7B7;
+      --bg: #F2F6F6; --panel: #FFFFFF; --border: #E3EBEC;
+      --text: #1B3A42; --text-light: #62818A; --text-muted: #94ABB0;
+      --primary: #2D5D67; --primary-light: #577E86; --primary-dark: #1F4650;
+      --secondary: #3EC54C; --secondary-light: #8EDD96; --secondary-dark: #2D5D67;
+      --prem-green-1: #3EC54C; --prem-green-2: #2FA83C; --prem-green-3: #2D5D67;
+      --radius: 24px; --radius-sm: 14px;
+      --shadow: none; --shadow-hover: 0 12px 30px rgba(31,70,80,0.09);
+      --glass-bg: #FFFFFF; --glass-bg-strong: #FFFFFF; --glass-border: transparent; --glass-shadow: none;
+    }
+    [data-theme="dark"] {
+      --bg: #0E1A1D; --panel: #162529; --border: #243A40;
+      --text: #E6EFF0; --text-light: #93AEB4; --text-muted: #6F8D94;
+      --primary: #3EC54C; --primary-light: #8EDD96; --primary-dark: #0B1417;
+      --secondary: #3EC54C; --secondary-light: #8EDD96; --secondary-dark: #8EDD96;
+      --glass-bg: #162529; --glass-bg-strong: #162529; --glass-border: transparent; --glass-shadow: none;
+      --shadow: none; --shadow-hover: 0 12px 30px rgba(0,0,0,0.4);
+    }
+
+    body, button, input, select, textarea,
+    .btn, .sub-tab, .form-group input, .form-group select, .form-group textarea,
+    .settings-select, .settings-textarea, .toast, .lang-toggle, .currency-toggle,
+    .currency-dropdown-item, .recent-search-box input, .menu-toggle, .m-tab, .mobile-zoom-bar button {
+      font-family: 'Urbanist', 'DM Sans', sans-serif;
+    }
+    body { background: var(--bg); }
+
+    .topbar { background: var(--bg); backdrop-filter: none; -webkit-backdrop-filter: none; border-bottom: 0; box-shadow: none; color: var(--text); }
+    [data-theme="dark"] .topbar { color: var(--text); }
+    .topbar-logo { color: var(--forest); font-weight: 800; }
+    [data-theme="dark"] .topbar-logo { color: var(--lime); }
+    .topbar-logo:hover { color: var(--forest-2); }
+    #topbar-logo-img { filter: none; border-radius: 12px; }
+    .topnav { display: none; align-items: center; gap: 4px; }
+    .topnav-item {
+      border: 0; background: transparent; color: var(--text-light);
+      font: 600 0.95rem 'Urbanist', 'DM Sans', sans-serif; padding: 9px 18px; border-radius: 999px;
+      cursor: pointer; transition: all .2s ease; white-space: nowrap;
+    }
+    .topnav-item:hover { color: var(--text); background: rgba(0,0,0,0.05); }
+    [data-theme="dark"] .topnav-item:hover { background: rgba(255,255,255,0.07); }
+    .topnav-item.active { background: var(--lime); color: #FFFFFF; }
+    .topbar-hello { display: none; align-items: center; gap: 10px; font-weight: 700; font-size: 1.1rem; color: var(--text); letter-spacing: -0.2px; white-space: nowrap; margin-left: 6px; }
+    .hello-avatar { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--lime), #3EC54C); color: var(--forest-2); display: inline-flex; align-items: center; justify-content: center; font-weight: 800; }
+    .topbar-logout { display: none; order: 10; width: 38px; height: 38px; border: 0; border-radius: 50%; background: var(--panel); color: #DC2626; cursor: pointer; align-items: center; justify-content: center; transition: all .2s ease; }
+    .topbar-logout:hover { background: #FEE2E2; }
+
+    .theme-toggle, .lang-toggle, .currency-toggle,
+    [data-theme="dark"] .theme-toggle, [data-theme="dark"] .lang-toggle, [data-theme="dark"] .currency-toggle {
+      background: var(--panel); border: 0; color: var(--text); border-radius: 999px; box-shadow: none;
+    }
+    .theme-toggle:hover, .lang-toggle:hover, .currency-toggle:hover,
+    [data-theme="dark"] .theme-toggle:hover, [data-theme="dark"] .lang-toggle:hover, [data-theme="dark"] .currency-toggle:hover {
+      background: var(--lime); color: var(--forest-2); border: 0; transform: none; box-shadow: none;
+    }
+    .currency-dropdown { border-radius: 18px; background: var(--panel); border: 0; box-shadow: 0 18px 40px rgba(0,0,0,0.14); padding: 6px; }
+    .currency-dropdown-item { border-radius: 12px; }
+    .currency-dropdown-item:hover { background: var(--lime-3); }
+    .currency-dropdown-item.active { background: var(--lime); color: var(--forest-2); }
+    .menu-toggle { background: var(--panel); border: 0; color: var(--forest); border-radius: 12px; }
+    [data-theme="dark"] .menu-toggle { color: var(--lime); }
+
+    @media (min-width: 769px) {
+      :root { --topbar-height: 76px; }
+      .topbar { padding: 14px 28px; height: var(--topbar-height); min-height: var(--topbar-height); gap: 16px; }
+      .sidebar, .sidebar-backdrop { display: none !important; }
+      .topnav { display: flex; }
+      .topbar-logout { display: inline-flex; }
+      .lang-toggle { width: 46px; height: 38px; font-size: 0.75rem; }
+      .currency-toggle { width: auto; min-width: 84px; height: 38px; padding: 0 14px; font-size: 0.75rem; }
+      .modal { border-radius: 28px; }
+    }
+    @media (min-width: 1360px) { .topbar-hello { display: flex; } }
+
+    .dashboard-layout { justify-content: center; }
+    .dashboard-content { padding: 6px 28px 40px; max-width: 1440px; margin: 0 auto; width: 100%; }
+    .dashboard-header h1 { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.6px; }
+    .dashboard-header .date { background: var(--panel); padding: 8px 16px; border-radius: 999px; font-weight: 600; color: var(--text-light); }
+
+    .stat-card {
+      background: var(--panel); border: 0; border-radius: var(--radius); box-shadow: none;
+      padding: 22px 24px; position: relative; overflow: hidden; backdrop-filter: none; -webkit-backdrop-filter: none;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .stat-card.accent-blue, .stat-card.accent-green, .stat-card.accent-orange, .stat-card.accent-purple { border-left: 0; }
+    .stat-card .stat-label { font-size: 0.8rem; text-transform: none; letter-spacing: 0; font-weight: 600; color: var(--text-light); }
+    .stat-card .stat-value { font-size: 2.1rem; font-weight: 600; letter-spacing: -1.2px; margin: 10px 0 4px; }
+    .stat-card .stat-icon {
+      width: 40px; height: 40px; border-radius: 50%; background: var(--lime-3); color: var(--forest);
+      opacity: 1; display: inline-flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+    [data-theme="dark"] .stat-card .stat-icon { background: rgba(62,197,76,0.14); color: var(--lime); }
+    .stat-card.accent-blue { background: var(--lime); }
+    .stat-card.accent-blue .stat-label, .stat-card.accent-blue .stat-value, .stat-card.accent-blue .stat-sub { color: #FFFFFF; }
+    .stat-card.accent-blue .stat-icon { background: rgba(255,255,255,0.25); color: #FFFFFF; }
+    .stat-card.accent-blue::after {
+      display: none;
+    }
+
+    .chart-card, .recent-section { background: var(--panel); border: 0; border-radius: var(--radius); padding: 22px 24px; }
+    .chart-card:hover { box-shadow: var(--shadow-hover); }
+    .chart-card .chart-title, .recent-section .section-title { font-size: 1.05rem; font-weight: 700; }
+    .chart-card .chart-title .sub { background: var(--lime-3); color: var(--forest); padding: 4px 12px; border-radius: 999px; font-weight: 700; }
+    [data-theme="dark"] .chart-card .chart-title .sub { background: rgba(62,197,76,0.14); color: var(--lime); }
+    .recent-section .view-all { background: var(--lime-3); color: var(--forest); padding: 6px 14px; border-radius: 999px; font-weight: 700; }
+    [data-theme="dark"] .recent-section .view-all { background: rgba(62,197,76,0.14); color: var(--lime); }
+    .recent-search-box { background: var(--bg); border: 1.5px solid transparent; border-radius: 999px; padding: 6px 14px; }
+    .recent-search-box:focus-within { border-color: var(--forest); }
+
+    .doc-list .doc-item { border-radius: 16px; border: 0; padding: 12px 14px; }
+    .doc-list .doc-item:hover { background: rgba(62,197,76,0.12); border: 0; }
+    .doc-item .doc-icon { border-radius: 50%; box-shadow: none; }
+    .doc-item .doc-icon.quote { background: #EDEDED; color: #1B3A42; }
+    .doc-item .doc-icon.invoice { background: var(--lime-3); color: var(--forest); }
+    .doc-item .doc-icon.credit { background: #FFF1D6; color: #92400E; }
+    .doc-item .doc-icon.deposit { background: var(--lime); color: var(--forest-2); }
+    .doc-item .doc-amount { font-weight: 700; font-size: 0.9rem; }
+    .badge-status.paid, .badge-status.accepted { background: var(--lime-3); color: var(--forest); }
+    [data-theme="dark"] .badge-status.paid, [data-theme="dark"] .badge-status.accepted { background: rgba(62,197,76,0.16); color: var(--lime); }
+
+    .btn { border-radius: 999px; box-shadow: none; padding: 9px 18px; font-weight: 600; letter-spacing: 0; }
+    .btn::after { display: none; }
+    .btn > i:first-child { background: transparent; width: auto; height: auto; font-size: .9em; }
+    .btn:hover > i:first-child { transform: none; }
+    .btn-sm { padding: 6px 14px; }
+    .btn-primary { background: var(--forest); color: var(--lime-2); border: 1.5px solid var(--forest); box-shadow: none; }
+    .btn-primary:hover { background: var(--forest-2); color: #fff; border-color: var(--forest-2); transform: translateY(-1px); box-shadow: 0 8px 18px rgba(31,70,80,0.25); }
+    .btn-primary:active { box-shadow: none; }
+    .btn-ghost { background: var(--panel); color: var(--forest); border: 1.5px solid var(--forest); box-shadow: none; }
+    .btn-ghost > i:first-child { background: transparent; color: inherit; }
+    .btn-ghost:hover { background: var(--lime-3); color: var(--forest-2); border-color: var(--forest); transform: translateY(-1px); box-shadow: none; }
+    .btn-print { background: var(--lime); color: var(--forest-2); border: 1.5px solid var(--lime); box-shadow: none; }
+    .btn-print:hover { background: #35B043; color: var(--forest-2); border-color: #35B043; transform: translateY(-1px); box-shadow: none; }
+    .btn-deposit { background: var(--lime-2); color: var(--forest); border: 1.5px solid var(--lime-2); box-shadow: none; }
+    .btn-deposit:hover { background: var(--lime); color: var(--forest-2); transform: translateY(-1px); box-shadow: none; }
+    .btn-purple { background: #F0F0F0; color: #1B3A42; border: 1.5px solid transparent; box-shadow: none; }
+    .btn-purple > i:first-child { background: transparent; color: inherit; }
+    .btn-purple:hover { background: var(--forest); color: var(--lime-2); border-color: transparent; box-shadow: none; }
+    .btn-danger { background: #FFF1F0; color: #C62828; border: 1.5px solid #FAD4D0; }
+    .btn-danger > i:first-child { background: transparent; }
+    [data-theme="dark"] .btn-primary { background: var(--lime); color: var(--forest-2); border-color: var(--lime); }
+    [data-theme="dark"] .btn-primary:hover { background: #35B043; color: var(--forest-2); border-color: #35B043; }
+    [data-theme="dark"] .btn-ghost { background: transparent; color: var(--lime); border-color: var(--lime); }
+    [data-theme="dark"] .btn-ghost:hover { background: rgba(62,197,76,0.14); color: var(--lime); border-color: var(--lime); }
+    [data-theme="dark"] .btn-purple { background: rgba(255,255,255,0.08); color: var(--text); border-color: transparent; }
+    .btn-cta { padding: 11px 22px; font-size: .9rem; box-shadow: none; }
+    .fab-new-invoice { box-shadow: 0 12px 30px rgba(31,70,80,0.35); }
+    .ra-add-bottom { background: var(--forest); color: var(--lime-2); border-color: transparent; box-shadow: none; }
+    .ra-add-bottom:hover { background: var(--forest-2); color: #fff; }
+
+    .sub-tabs, [data-theme="dark"] .sub-tabs { background: var(--panel); border: 0; box-shadow: none; border-radius: 999px; padding: 5px; gap: 4px; }
+    .sub-tab { border-radius: 999px; color: var(--text-light); padding: 8px 18px; }
+    .sub-tab:hover { background: var(--bg); color: var(--text); transform: none; border: 0; }
+    .sub-tab.active { background: var(--lime); color: #FFFFFF; box-shadow: none; border: 0; }
+    .sub-tab .badge { background: var(--bg); color: var(--text-light); }
+    .sub-tab.active .badge { background: rgba(255,255,255,0.55); color: var(--forest-2); }
+    .stat-filter-card { background: var(--panel); border: 0; border-radius: 20px; box-shadow: none; padding: 14px 18px; }
+    .stat-filter-card:hover { border: 0; transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+    .stat-filter-card .stat-value { font-weight: 600; letter-spacing: -0.5px; }
+    .stat-filter-card.active { background: var(--forest); border: 0; box-shadow: none; }
+    .stat-filter-card.active .stat-label { color: var(--lime-2); }
+    .stat-filter-card.active .stat-value { color: #fff; }
+    [data-theme="dark"] .stat-filter-card.active { background: var(--lime); }
+    [data-theme="dark"] .stat-filter-card.active .stat-label, [data-theme="dark"] .stat-filter-card.active .stat-value { color: var(--forest-2); }
+
+    .invoice-card { background: var(--panel); border: 0; border-radius: var(--radius); box-shadow: none; padding: 20px 22px; }
+    .invoice-card:hover { border: 0; transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+    .invoice-card-number { font-size: 1.05rem; }
+    .invoice-card-row .amounts i { background: var(--lime-3); color: var(--forest); }
+    .invoice-card-row .date i { background: #F1F1F1; color: var(--text-light); }
+    .invoice-card-actions { border-top: 1px dashed var(--border); }
+
+    .form-group input, .form-group select, .form-group textarea, .settings-select, .settings-textarea, .auth-field input {
+      background: #F1F5F5; border: 1.5px solid transparent; border-radius: 14px;
+    }
+    [data-theme="dark"] .form-group input, [data-theme="dark"] .form-group select, [data-theme="dark"] .form-group textarea,
+    [data-theme="dark"] .settings-select, [data-theme="dark"] .settings-textarea, [data-theme="dark"] .auth-field input { background: rgba(255,255,255,0.06); }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus,
+    .settings-select:focus, .settings-textarea:focus, .auth-field input:focus { border-color: var(--forest); background: var(--panel); box-shadow: none; }
+    [data-theme="dark"] .form-group input:focus, [data-theme="dark"] .settings-textarea:focus { border-color: var(--lime); }
+    #client-indicatif, #client-tel-number { background: #F1F5F5 !important; border-color: transparent !important; border-radius: 14px !important; }
+    [data-theme="dark"] #client-indicatif, [data-theme="dark"] #client-tel-number { background: rgba(255,255,255,0.06) !important; }
+    .modal { border-radius: 28px; }
+    .modal-backdrop { background: rgba(31,70,80,0.35); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+    @media (max-width: 768px) { .modal { border-radius: 24px 24px 0 0; } }
+    .client-table th { color: var(--text-light); border-bottom: 1.5px solid var(--border); }
+    .client-table tr:hover td { background: rgba(62,197,76,0.12); }
+    .client-select-item .select-btn { border-radius: 999px; border-color: var(--forest); color: var(--forest); }
+    .client-select-item .select-btn:hover { background: var(--forest); color: var(--lime-2); }
+    .toast { background: var(--forest-2); border-radius: 18px; padding: 12px 22px; }
+
+    .settings-section { background: var(--panel); border: 0; border-radius: var(--radius); padding: 26px 30px; }
+    .settings-section:hover { box-shadow: var(--shadow-hover); }
+    .settings-badge, [data-theme="dark"] .settings-badge { background: var(--lime-3); color: var(--forest); }
+    .settings-switch input:checked + .settings-switch-slider { background: var(--forest); }
+    [data-theme="dark"] .settings-switch input:checked + .settings-switch-slider { background: var(--lime); }
+    .settings-upload-area .upload-btn { border-radius: 999px; }
+
+    .sidebar { background: var(--panel); border-right: 0; }
+    .sidebar-item:hover { background: var(--bg); color: var(--text); border: 0; }
+    .sidebar-item.active { background: var(--lime); color: var(--forest-2); box-shadow: none; }
+    [data-theme="dark"] .sidebar-item.active { color: var(--forest-2); }
+    .sidebar-item.active .icon { background: var(--forest); color: var(--lime-2); box-shadow: none; }
+    .sidebar-item .badge { background: var(--lime-3); color: var(--forest); }
+
+    .editor-sidebar { background: var(--panel); border-right: 0; }
+    .preview-pane { background: #E6E6E6; }
+    [data-theme="dark"] .preview-pane { background: #0A1417; }
+
+    #auth-screen { background: linear-gradient(135deg, #1F4650, #2D5D67 55%, #3EC54C); }
+    #auth-screen::before { background: rgba(62,197,76,0.45); }
+    #auth-screen::after { background: rgba(142,221,150,0.25); }
+    .auth-card { background: var(--panel); border: 0; border-radius: 32px; backdrop-filter: none; -webkit-backdrop-filter: none; }
+    .auth-card h1 { color: var(--forest); }
+    [data-theme="dark"] .auth-card h1 { color: var(--lime); }
+    .auth-btn { background: var(--forest); color: var(--lime-2); border-radius: 999px; box-shadow: 0 10px 24px rgba(31,70,80,0.35); }
+    .auth-btn:hover { filter: none; background: var(--forest-2); box-shadow: 0 12px 28px rgba(31,70,80,0.45); }
+    .auth-switch a { color: var(--forest); }
+    [data-theme="dark"] .auth-switch a { color: var(--lime); }
+    /* ===== MOBILE : tableau de bord façon app + barre de navigation en bas ===== */
+    .m-profile { display: none; }
+    .stat-card.accent-clients { display: none; }
+    @media (max-width: 768px) {
+      .menu-toggle, .sidebar-backdrop { display: none !important; }
+
+      /* Barre horizontale en bas */
+      .sidebar {
+        position: fixed !important; left: 0; right: 0; top: auto !important; bottom: 0;
+        width: auto !important; height: auto !important; max-height: none;
+        transform: none !important; flex-direction: row; align-items: stretch;
+        padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); overflow: hidden;
+        background: var(--panel); border-radius: 26px 26px 0 0;
+        box-shadow: 0 -6px 24px rgba(31,70,80,0.12); z-index: 160;
+      }
+      body:has(#panel-editor.active) .sidebar { display: none !important; }
+      .sidebar-brand, .sidebar-section, .sidebar-divider, .sidebar-item .badge { display: none !important; }
+      .sidebar-footer { display: contents; }
+      .sidebar-item, .sidebar-item:hover, .sidebar-item.active {
+        flex: 1 1 0; min-width: 0; margin: 0; padding: 6px 2px; gap: 3px;
+        flex-direction: column; justify-content: center; align-items: center; text-align: center;
+        background: transparent; box-shadow: none; transform: none; border: 0; border-radius: 14px;
+        font-size: 0.62rem; font-weight: 600; color: var(--text-muted);
+      }
+      .sidebar-item > span:not(.icon) { font-size: 0.62rem; line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+      .sidebar-item .icon, .sidebar-item:hover .icon, .sidebar-item.active .icon {
+        width: 28px; height: 28px; background: transparent; box-shadow: none; font-size: 1.05rem; color: inherit;
+      }
+      .sidebar-item.active, .sidebar-item.active .icon { color: var(--lime); font-weight: 700; }
+      .dashboard-content { padding-bottom: calc(104px + env(safe-area-inset-bottom)); }
+      .fab-new-invoice { bottom: calc(92px + env(safe-area-inset-bottom)); }
+      .toast { bottom: calc(96px + env(safe-area-inset-bottom)); }
+
+      /* En-tête profil */
+      #tab-dashboard > .dashboard-header { display: none; }
+      .m-profile { display: block; margin-bottom: 14px; }
+      .m-profile-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+      .m-avatar { width: 58px; height: 58px; border-radius: 50%; border: 3px solid #F59E0B; background: var(--lime-3); color: var(--forest); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1.4rem; flex-shrink: 0; }
+      .m-profile-info { flex: 1; min-width: 0; }
+      .m-name { font-size: 1.1rem; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .m-sub { font-size: 0.78rem; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .m-pill { background: var(--lime); color: #fff; font-weight: 700; font-size: 0.9rem; padding: 9px 14px; border-radius: 14px; display: inline-flex; align-items: center; gap: 6px; flex-shrink: 0; }
+      .m-quick { display: flex; align-items: center; justify-content: space-between; font-size: 0.95rem; font-weight: 600; color: var(--text); padding: 6px 0; margin-bottom: 12px; cursor: pointer; }
+      .m-quick-btn { width: 38px; height: 38px; border-radius: 12px; background: var(--lime); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; }
+      .m-widgets-title { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+
+      /* Cartes colorées */
+      .stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+      .stat-card, .stat-card.accent-blue, .stat-card.accent-orange, .stat-card.accent-purple, .stat-card.accent-green, .stat-card.accent-clients {
+        display: block; color: #fff; border-radius: 22px; padding: 16px 16px 18px; min-height: 128px; box-shadow: none; position: relative; overflow: hidden;
+      }
+      /* Palette Áldás : forest / lime / bleus-verts */
+      .stat-card.accent-blue { grid-column: 1 / -1; min-height: 112px; background: var(--forest-2); }
+      .stat-card.accent-orange { background: var(--lime); }
+      .stat-card.accent-purple { background: var(--blue-80); }
+      .stat-card.accent-green { background: var(--lime-2); }
+      .stat-card.accent-clients { background: var(--blue-40); }
+      .stat-card.accent-orange .stat-label, .stat-card.accent-orange .stat-value,
+      .stat-card.accent-green .stat-label, .stat-card.accent-green .stat-value,
+      .stat-card.accent-clients .stat-label, .stat-card.accent-clients .stat-value { color: var(--forest-2); }
+      .stat-card.accent-orange .stat-icon, .stat-card.accent-green .stat-icon, .stat-card.accent-clients .stat-icon {
+        background: rgba(255,255,255,0.55); color: var(--forest-2);
+      }
+      .stat-card.accent-blue .stat-icon { background: rgba(62,197,76,0.25); color: var(--lime-2); }
+      .stat-card.accent-blue .stat-label { color: var(--lime-2); }
+      .stat-card .stat-label, .stat-card .stat-sub { color: rgba(255,255,255,0.92); font-size: 0.82rem; font-weight: 700; }
+      .stat-card .stat-value { color: #fff; font-size: 2.1rem; font-weight: 400; letter-spacing: -1px; margin: 14px 0 0; overflow-wrap: anywhere; }
+      .stat-card.accent-blue .stat-value { font-size: 1.7rem; font-weight: 600; margin-top: 10px; }
+      .stat-card .stat-icon, .stat-card.accent-blue .stat-icon {
+        float: right; width: 32px; height: 32px; border-radius: 10px; font-size: 0.85rem;
+        background: rgba(255,255,255,0.25); color: #fff; opacity: 1; display: inline-flex; align-items: center; justify-content: center;
+      }
+      .stat-card:hover { transform: none; box-shadow: none; }
+    }
+    /* ===== MOBILE : tailles fluides selon l'écran du téléphone ===== */
+    @media (max-width: 768px) {
+      .theme-toggle, .lang-toggle { width: clamp(28px, 8vw, 36px); height: clamp(26px, 7.5vw, 32px); font-size: clamp(.52rem, 2.4vw, .66rem); }
+      .currency-toggle { width: clamp(44px, 13vw, 58px); height: clamp(26px, 7.5vw, 32px); font-size: clamp(.48rem, 2.2vw, .6rem); }
+      .topbar-actions { gap: clamp(3px, 1.2vw, 6px); }
+      .btn { padding: clamp(6px, 1.9vw, 9px) clamp(10px, 3.2vw, 16px); font-size: clamp(.7rem, 3.1vw, .82rem); }
+      .btn-sm { padding: clamp(5px, 1.6vw, 7px) clamp(8px, 2.8vw, 13px); font-size: clamp(.64rem, 2.9vw, .74rem); }
+      .sidebar { padding: clamp(5px, 1.8vw, 8px) clamp(4px, 2vw, 10px) calc(clamp(5px, 1.8vw, 8px) + env(safe-area-inset-bottom)); }
+      .sidebar-item, .sidebar-item:hover, .sidebar-item.active { padding: clamp(4px, 1.5vw, 7px) 1px; }
+      .sidebar-item > span:not(.icon) { font-size: clamp(.52rem, 2.5vw, .68rem); }
+      .sidebar-item .icon, .sidebar-item:hover .icon, .sidebar-item.active .icon { width: clamp(22px, 7vw, 30px); height: clamp(22px, 7vw, 30px); font-size: clamp(.9rem, 4.5vw, 1.2rem); }
+      .m-avatar { width: clamp(46px, 14vw, 62px); height: clamp(46px, 14vw, 62px); font-size: clamp(1.1rem, 5.5vw, 1.5rem); }
+      .m-name { font-size: clamp(.95rem, 4.4vw, 1.2rem); }
+      .m-sub { font-size: clamp(.68rem, 3.1vw, .8rem); }
+      .m-pill { padding: clamp(7px, 2.2vw, 10px) clamp(10px, 3.4vw, 15px); font-size: clamp(.76rem, 3.4vw, .95rem); border-radius: clamp(11px, 3.5vw, 15px); }
+      .m-quick { font-size: clamp(.85rem, 3.9vw, 1rem); }
+      .m-quick-btn { width: clamp(32px, 10vw, 42px); height: clamp(32px, 10vw, 42px); }
+      .m-widgets-title { font-size: clamp(.95rem, 4.4vw, 1.2rem); }
+      .stats-grid { gap: clamp(8px, 3vw, 14px); }
+      .stat-card, .stat-card.accent-blue, .stat-card.accent-orange, .stat-card.accent-purple, .stat-card.accent-green, .stat-card.accent-clients {
+        min-height: clamp(104px, 33vw, 150px); padding: clamp(12px, 4vw, 18px); border-radius: clamp(18px, 5.5vw, 26px);
+      }
+      .stat-card.accent-blue { min-height: clamp(92px, 28vw, 126px); }
+      .stat-card .stat-label { font-size: clamp(.7rem, 3.2vw, .86rem); }
+      .stat-card .stat-value { font-size: clamp(1.5rem, 8.2vw, 2.4rem); margin-top: clamp(8px, 3vw, 16px); }
+      .stat-card.accent-blue .stat-value { font-size: clamp(1.25rem, 6.6vw, 1.95rem); }
+      .stat-card .stat-icon, .stat-card.accent-blue .stat-icon { width: clamp(26px, 8vw, 34px); height: clamp(26px, 8vw, 34px); font-size: clamp(.7rem, 3.2vw, .9rem); }
+      .fab-new-invoice { padding: clamp(10px, 3.4vw, 14px) clamp(14px, 4.6vw, 20px); font-size: clamp(.74rem, 3.4vw, .88rem); }
+      .modal-actions .btn, .invoice-card-actions .btn { min-height: 38px; }
+    }
+    @media (max-width: 360px) {
+      .sidebar-item > span:not(.icon) { letter-spacing: -0.2px; }
+      .topbar { padding-left: 8px; padding-right: 8px; }
+    }
+    /* Téléphone en paysage : barre compacte */
+    @media (max-width: 900px) and (max-height: 480px) and (orientation: landscape) {
+      .sidebar-item > span:not(.icon) { display: none; }
+      .sidebar { padding-top: 4px; padding-bottom: calc(4px + env(safe-area-inset-bottom)); }
+      .dashboard-content { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+      .stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      .stat-card.accent-blue { grid-column: 1 / -1; }
+    }
+    /* ===== MOBILE v3 : disposition façon maquette ===== */
+    .topbar-settings { display: none; }
+    @media (max-width: 768px) {
+      /* Barre du haut : logo à gauche, FR / devise / réglages / déconnexion à droite */
+      .topbar-settings, .topbar-logout {
+        display: inline-flex !important; align-items: center; justify-content: center; border: 0; border-radius: 50%;
+        width: clamp(28px, 8.4vw, 34px); height: clamp(28px, 8.4vw, 34px); background: var(--panel);
+        cursor: pointer; font-size: clamp(.76rem, 3.5vw, .95rem); flex-shrink: 0;
+      }
+      .topbar-settings { color: var(--lime); order: 9; }
+      .topbar-logout { order: 10; }
+
+      /* Cartes : grand "Chiffre d'affaires" puis 3 cartes sur une ligne */
+      .stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      .stats-grid .stat-card.accent-clients { display: none; }
+      .stats-grid .stat-card.accent-blue { grid-column: 1 / -1; min-height: clamp(90px, 27vw, 120px); }
+      .stats-grid .stat-card.accent-orange, .stats-grid .stat-card.accent-purple, .stats-grid .stat-card.accent-green {
+        min-height: clamp(84px, 25vw, 112px); padding: clamp(10px, 3vw, 14px); border-radius: clamp(16px, 5vw, 22px);
+      }
+      .stats-grid .stat-card.accent-orange .stat-icon, .stats-grid .stat-card.accent-purple .stat-icon, .stats-grid .stat-card.accent-green .stat-icon { display: none; }
+      .stats-grid .stat-card.accent-orange .stat-label, .stats-grid .stat-card.accent-purple .stat-label, .stats-grid .stat-card.accent-green .stat-label {
+        font-size: clamp(.62rem, 2.9vw, .78rem); line-height: 1.2;
+      }
+      .stats-grid .stat-card.accent-orange .stat-value, .stats-grid .stat-card.accent-purple .stat-value, .stats-grid .stat-card.accent-green .stat-value {
+        font-size: clamp(1.3rem, 7vw, 1.9rem); margin-top: clamp(6px, 2.4vw, 12px);
+      }
+
+      /* Barre de navigation flottante en forme de pilule */
+      #sidebar.sidebar {
+        left: clamp(10px, 4vw, 18px); right: clamp(10px, 4vw, 18px);
+        bottom: calc(clamp(8px, 3vw, 14px) + env(safe-area-inset-bottom));
+        border-radius: 999px; padding: clamp(5px, 1.6vw, 8px); gap: 4px; align-items: center;
+        box-shadow: 0 10px 30px rgba(31,70,80,0.18);
+      }
+      #sidebar .sidebar-item[onclick*="'settings'"], #sidebar .sidebar-footer { display: none !important; }
+      #sidebar .sidebar-item, #sidebar .sidebar-item:hover {
+        flex: 1 1 0; flex-direction: row; justify-content: center; align-items: center; gap: 0;
+        height: clamp(42px, 12.5vw, 52px); padding: 0; border-radius: 999px; color: var(--text-light); background: transparent;
+      }
+      #sidebar .sidebar-item > span:not(.icon) { display: none; }
+      #sidebar .sidebar-item .icon { width: auto; height: auto; font-size: clamp(1rem, 5vw, 1.3rem); color: inherit; background: transparent; }
+      #sidebar .sidebar-item.active {
+        flex: 2.4 1 0; gap: 8px; padding: 0 clamp(8px, 3vw, 14px); background: var(--forest-2); color: #fff;
+      }
+      #sidebar .sidebar-item.active > span:not(.icon) {
+        display: inline; color: #fff; font-size: clamp(.68rem, 3.1vw, .84rem); font-weight: 700;
+      }
+      #sidebar .sidebar-item.active .icon { color: var(--lime-2); }
+      [data-theme="dark"] #sidebar .sidebar-item.active { background: var(--lime); }
+      [data-theme="dark"] #sidebar .sidebar-item.active > span:not(.icon), [data-theme="dark"] #sidebar .sidebar-item.active .icon { color: var(--forest-2); }
+      .dashboard-content { padding-bottom: calc(116px + env(safe-area-inset-bottom)); }
+      .fab-new-invoice { display: none !important; }
+      .toast { bottom: calc(100px + env(safe-area-inset-bottom)); }
+
+      /* Devis / Factures : bouton pleine largeur, recherche en dessous */
+      #tab-quotes .header-actions, #tab-invoices .header-actions { flex-direction: column !important; align-items: stretch !important; gap: 10px !important; width: 100%; }
+      #tab-quotes .header-actions .btn-cta, #tab-invoices .header-actions .btn-cta { width: 100%; justify-content: center; flex: none; padding-top: 12px; padding-bottom: 12px; }
+      #tab-quotes .header-actions .search-box, #tab-invoices .header-actions .search-box { width: 100%; box-sizing: border-box; }
+      #quote-search, #invoice-search { width: 100% !important; flex: 1; min-width: 0; }
+    }
+    @media (max-width: 900px) and (max-height: 480px) and (orientation: landscape) {
+      #sidebar .sidebar-item.active > span:not(.icon) { display: inline; }
+      .stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
   </style>
 </head>
 <body>
-  <!-- ÉCRAN DE CONNEXION / INSCRIPTION CLOUD -->
   <div id="auth-screen">
     <div class="auth-card">
       <h1 data-translate="auth_title">Áldás Cloud</h1>
@@ -2301,7 +2714,6 @@
     </div>
   </div>
 
-  <!-- TOPBAR -->
   <div class="topbar" style="display:none;">
     <div class="topbar-left">
       <button class="menu-toggle" onclick="toggleMobileSidebar();" aria-label="Menu" title="Menu"><i class="fas fa-bars"></i></button>
@@ -2309,8 +2721,18 @@
         <img id="topbar-logo-img" src="" alt="Logo Áldás">
         <div class="topbar-logo" id="topbar-logo-text">Áldás</div>
       </div>
+      <div class="topbar-hello" id="topbar-hello"><span class="hello-avatar" id="hello-avatar">A</span><span id="hello-text">Bonjour</span></div>
     </div>
+    <nav class="topnav" id="topnav">
+      <button type="button" class="topnav-item active" data-tab="dashboard" onclick="switchDashboardTab('dashboard');"><span data-translate="nav_dashboard">Tableau de bord</span></button>
+      <button type="button" class="topnav-item" data-tab="clients" onclick="switchDashboardTab('clients');"><span data-translate="nav_clients">Clients</span></button>
+      <button type="button" class="topnav-item" data-tab="quotes" onclick="switchDashboardTab('quotes');"><span data-translate="nav_quotes">Devis</span></button>
+      <button type="button" class="topnav-item" data-tab="invoices" onclick="switchDashboardTab('invoices');"><span data-translate="nav_invoices">Factures</span></button>
+      <button type="button" class="topnav-item" data-tab="settings" onclick="switchDashboardTab('settings');"><span data-translate="nav_settings">Paramètres</span></button>
+    </nav>
     <div class="topbar-actions">
+      <button type="button" class="topbar-settings" onclick="switchDashboardTab('settings');" title="Paramètres" aria-label="Paramètres"><i class="fas fa-cog"></i></button>
+      <button type="button" class="topbar-logout" onclick="logoutFromCloud();" title="Déconnexion" aria-label="Déconnexion"><i class="fas fa-power-off"></i></button>
       <span class="sync-indicator" id="sync-indicator" data-state="offline" title="Synchronisation cloud"><i class="fas fa-cloud"></i></span>
       <button class="lang-toggle" onclick="toggleLanguage();" aria-label="Changer de langue">FR</button>
       <div class="currency-toggle-wrapper">
@@ -2354,7 +2776,6 @@
   </div>
 
   <div class="main-content" style="display:none;">
-    <!-- PANEL DASHBOARD -->
     <div class="panel active" id="panel-dashboard">
       <div class="dashboard-layout">
         <div class="sidebar-backdrop" id="sidebar-backdrop" onclick="closeMobileSidebar();"></div>
@@ -2362,7 +2783,7 @@
           <div class="sidebar-brand"></div>
           <div class="sidebar-section" data-translate="nav_general">Général</div>
           <div class="sidebar-item active" onclick="switchDashboardTab('dashboard')">
-            <span class="icon"><i class="fas fa-th-large"></i></span><span data-translate="nav_dashboard">Tableau de bord</span>
+            <span class="icon"><i class="fas fa-house"></i></span><span data-translate="nav_home">Accueil</span>
           </div>
           <div class="sidebar-item" onclick="switchDashboardTab('clients')">
             <span class="icon"><i class="fas fa-users"></i></span><span data-translate="nav_clients">Clients</span>
@@ -2399,25 +2820,26 @@
                 <span class="stat-icon"><i class="fas fa-chart-line"></i></span>
                 <div class="stat-label" data-translate="stat_revenue">Chiffre d'affaires</div>
                 <div class="stat-value" id="stat-revenue">0</div>
-                <div class="stat-sub"><span id="stat-revenue-currency">FCFA</span> · <span id="stat-revenue-count">0 factures</span></div>
               </div>
               <div class="stat-card accent-orange">
                 <span class="stat-icon"><i class="fas fa-paper-plane"></i></span>
                 <div class="stat-label" data-translate="stat_quotes_sent">Devis envoyés</div>
                 <div class="stat-value" id="stat-quotes-sent">0</div>
-                <div class="stat-sub"><span id="stat-quotes-converted">0 convertis</span></div>
               </div>
               <div class="stat-card accent-purple">
                 <span class="stat-icon"><i class="fas fa-clock"></i></span>
                 <div class="stat-label" data-translate="stat_pending_invoices">Factures en attente</div>
                 <div class="stat-value" id="stat-pending-invoices">0</div>
-                <div class="stat-sub"><span id="stat-pending-count">0 factures en attente</span> · <span style="color:var(--accent-green);">À jour</span></div>
               </div>
               <div class="stat-card accent-green">
                 <span class="stat-icon"><i class="fas fa-check-circle"></i></span>
                 <div class="stat-label" data-translate="stat_paid_invoices">Factures payées</div>
                 <div class="stat-value" id="stat-paid-invoices">0</div>
-                <div class="stat-sub"><span id="stat-paid-count">0 factures payées</span></div>
+              </div>
+              <div class="stat-card accent-clients">
+                <span class="stat-icon"><i class="fas fa-users"></i></span>
+                <div class="stat-label" data-translate="nav_clients">Clients</div>
+                <div class="stat-value" id="stat-clients">0</div>
               </div>
             </div>
             <div class="charts-row">
@@ -2449,7 +2871,7 @@
           </div>
           <div id="tab-clients" style="display:none;">
             <div class="dashboard-header"><h1 data-translate="nav_clients">Clients</h1><button class="btn btn-primary" onclick="openClientModal();"><i class="fas fa-plus"></i> <span data-translate="btn_new_client">Nouveau client</span></button></div>
-            <div style="background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;">
+            <div style="padding:0;">
               <div style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap;">
                 <div style="flex:1;min-width:200px;"><input type="text" id="client-search" data-tph="search_placeholder" placeholder="Rechercher un client..." oninput="renderClientList();" style="width:100%;padding:8px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-family:inherit;font-size:0.85rem;background:var(--panel);color:var(--text);outline:none;"></div>
                 <button class="btn btn-ghost" onclick="renderClientList();"><i class="fas fa-sync-alt"></i> <span data-translate="btn_refresh">Actualiser</span></button>
@@ -2458,8 +2880,12 @@
             </div>
           </div>
           <div id="tab-quotes" style="display:none;">
-            <div class="dashboard-header"><h1 data-translate="nav_quotes">Devis</h1><div class="header-actions"><button class="btn btn-primary" onclick="openNewDocModal('quote')"><i class="fas fa-plus"></i> <span data-translate="btn_new_quote">Nouveau devis</span></button></div></div>
-            <div class="doc-list" id="quote-list"><div class="empty-state"><div class="icon"><i class="fas fa-file-signature"></i></div><p data-translate="no_docs">Aucun devis</p></div></div>
+            <div class="dashboard-header"><h1 data-translate="nav_quotes">Devis</h1><div class="header-actions"><button class="btn btn-primary btn-cta" onclick="openNewDocModal('quote')"><i class="fas fa-plus"></i> <span data-translate="btn_new_quote">Nouveau devis</span></button>
+              <div class="search-box" style="display:flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px 12px;">
+                <i class="fas fa-search" style="color:var(--text-muted);font-size:0.8rem;"></i>
+                <input type="text" id="quote-search" data-tph="search_placeholder" placeholder="Rechercher..." oninput="renderQuoteList();" style="border:none;outline:none;font-family:inherit;font-size:0.8rem;background:transparent;color:var(--text);width:160px;">
+              </div></div></div>
+            <div class="invoice-card-list" id="quote-list"><div class="empty-state"><div class="icon"><i class="fas fa-file-signature"></i></div><p data-translate="no_docs">Aucun devis</p></div></div>
           </div>
           <div id="tab-invoices" style="display:none;">
           <button class="btn btn-primary btn-cta fab-new-invoice no-print" onclick="openNewDocModal('invoice')" aria-label="Nouvelle facture"><i class="fas fa-file-circle-plus"></i> <span data-translate="btn_new_invoice">Nouvelle facture</span></button>
@@ -2509,12 +2935,10 @@
             </div>
             <div class="invoice-card-list" id="invoice-list"><div class="empty-state"><div class="icon"><i class="fas fa-receipt"></i></div><p data-translate="no_docs">Aucune facture</p></div></div>
           </div>
-          <!-- ===== SETTINGS PANEL ===== -->
           <div id="tab-settings" style="display:none;">
             <div class="dashboard-header"><h1 data-translate="nav_settings">Paramètres</h1></div>
             <div class="settings-content">
 
-              <!-- Apparence & langue -->
               <div class="settings-section">
                 <div class="settings-section-title" data-translate="settings_appearance_title">Apparence &amp; langue</div>
                 <div class="settings-section-desc" data-translate="settings_appearance_desc">Personnalisez l'interface.</div>
@@ -2563,7 +2987,6 @@
                 </div>
               </div>
 
-              <!-- Logo de l'entreprise -->
               <div class="settings-section">
                 <div class="settings-section-title" data-translate="settings_logo_title">Logo de l'entreprise</div>
                 <div class="settings-section-desc" data-translate="settings_logo_desc">Logo appliqué automatiquement.</div>
@@ -2579,7 +3002,6 @@
                 </div>
               </div>
 
-              <!-- Émetteur -->
               <div class="settings-section">
                 <div class="settings-section-title" data-translate="settings_emitter_title">Émetteur</div>
                 <div class="settings-section-desc" data-translate="settings_emitter_desc">Infos émetteur dans les documents.</div>
@@ -2595,7 +3017,6 @@
                 <button class="btn btn-primary" onclick="saveEmitterInfo();"><i class="fas fa-save"></i> <span data-translate="btn_save">Enregistrer</span></button>
               </div>
 
-              <!-- Arrière-plan -->
               <div class="settings-section">
                 <div class="settings-section-title" data-translate="settings_bg_title">Arrière-plan</div>
                 <div class="settings-section-desc" data-translate="settings_bg_desc">Filigrane sur chaque page.</div>
@@ -2623,7 +3044,6 @@
                 </div>
               </div>
 
-              <!-- CGV -->
               <div class="settings-section">
                 <div class="settings-section-title" data-translate="settings_cgv_title">Conditions générales de vente</div>
                 <div class="settings-section-desc" data-translate="settings_cgv_desc">Modifiez le texte des CGV qui apparaît sur tous les documents.</div>
@@ -2633,7 +3053,6 @@
                 </div>
               </div>
 
-              <!-- Pied de page -->
               <div class="settings-section">
                 <div class="settings-section-title" data-translate="settings_footer_title">Pied de page</div>
                 <div class="settings-section-desc" data-translate="settings_footer_desc">Modifiez le texte affiché en bas de chaque page des devis et factures.</div>
@@ -2643,7 +3062,6 @@
                 </div>
               </div>
 
-              <!-- ===== NOUVEAU : Conditions de règlement & RIB paramétrables ===== -->
               <div class="settings-section">
                 <div class="settings-section-title" data-translate="settings_conditions_title">Conditions de règlement & RIB</div>
                 <div class="settings-section-desc" data-translate="settings_conditions_desc">Ces informations apparaîtront dans le bloc "Conditions" et "RIB" des factures d'acompte.</div>
@@ -2676,7 +3094,6 @@
                 </button>
               </div>
 
-              <!-- Données & sauvegarde -->
               <div class="settings-section">
                 <div class="settings-section-title" data-translate="settings_data_title">Données &amp; sauvegarde</div>
                 <div class="settings-section-desc" data-translate="settings_data_desc">Exportez ou restaurez vos données en toute sécurité.</div>
@@ -2691,7 +3108,6 @@
 
             </div>
           </div>
-          <!-- END SETTINGS -->
 
           <div id="tab-all" style="display:none;">
             <div class="dashboard-header"><h1 data-translate="nav_all">Tous les documents</h1><div class="header-actions"><button class="btn btn-primary" onclick="openNewDocModal()"><i class="fas fa-plus"></i> <span data-translate="btn_new_document">Nouveau document</span></button></div></div>
@@ -2711,10 +3127,8 @@
       </div>
     </div>
 
-    <!-- PANEL EDITEUR (UNIQUE, avec affichage conditionnel selon le type) -->
     <div class="panel" id="panel-editor">
       <div class="editor-layout">
-        <!-- Barre d'éditeur visible uniquement sur téléphone -->
         <div class="mobile-editor-bar no-print">
           <button type="button" class="m-icon-btn" onclick="saveAndCloseEditor();" aria-label="Sauvegarder et fermer" title="Sauvegarder et fermer"><i class="fas fa-arrow-left"></i></button>
           <div class="m-tabs" id="m-tabs">
@@ -2724,14 +3138,13 @@
           <button type="button" class="m-icon-btn pdf" onclick="downloadDocPDF();" aria-label="Télécharger le PDF" title="PDF"><i class="fas fa-file-pdf"></i></button>
         </div>
         <aside class="editor-sidebar">
-          <!-- Bandeau type de document -->
           <div id="doc-type-badge-container">
             <div class="doc-type-badge quote" id="doc-type-badge">
               <i class="fas fa-file-signature"></i> <span id="doc-type-label">Devis</span>
             </div>
           </div>
 
-          <div style="background:rgba(76,175,80,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;">
+          <div style="background:rgba(62,197,76,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;">
             <div style="font-weight:700;color:var(--text);margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid var(--secondary);" data-translate="section_ref"><i class="fas fa-tag"></i> Référence</div>
             
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
@@ -2769,8 +3182,7 @@
             </div>
           </div>
 
-          <!-- Bloc Taxes (caché pour les acomptes) -->
-          <div id="taxes-block" style="background:rgba(76,175,80,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;">
+          <div id="taxes-block" style="background:rgba(62,197,76,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;">
             <div style="font-weight:700;color:var(--text);margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid var(--secondary);" data-translate="section_taxes"><i class="fas fa-percent"></i> Taxes</div>
             <div style="display:flex;align-items:center;gap:8px;">
               <input type="checkbox" id="tva_on" checked onchange="calcTotals(); autoSave();" style="accent-color:var(--secondary);width:16px;height:16px;">
@@ -2780,8 +3192,7 @@
             </div>
           </div>
 
-          <!-- Bloc Remise -->
-          <div id="remise-block" style="background:rgba(76,175,80,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;">
+          <div id="remise-block" style="background:rgba(62,197,76,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;">
             <div style="font-weight:700;color:var(--text);margin-bottom:8px;padding-bottom:4px;border-bottom:2px solid var(--secondary);" data-translate="section_discount"><i class="fas fa-tags"></i> Remise</div>
             <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
               <input type="checkbox" id="remise_on" onchange="toggleRemiseInputs(); calcTotals(); autoSave();" style="accent-color:var(--secondary);width:16px;height:16px;">
@@ -2794,7 +3205,6 @@
             </div>
           </div>
 
-          <!-- Bloc informations acompte (spécifique) -->
           <div id="deposit-info-block" style="display:none;">
             <div class="deposit-info-box">
               <div class="deposit-label"><i class="fas fa-info-circle"></i> <span data-translate="deposit_info_title">Acompte 70%</span></div>
@@ -2828,7 +3238,6 @@
           <div class="preview-label" data-translate="preview_label">ÉDITION DIRECTE</div>
           <div class="inv-scale-box" id="inv-scale-box"><div id="invoice"></div></div>
         </div>
-        <!-- Zoom + ajout de ligne (téléphone) -->
         <div class="mobile-zoom-bar no-print" id="mobile-zoom-bar">
           <button type="button" onclick="zoomInvoice(-1);" aria-label="Dézoomer"><i class="fas fa-magnifying-glass-minus"></i></button>
           <span class="m-zoom-val" id="m-zoom-val">100%</span>
@@ -2838,7 +3247,6 @@
     </div>
   </div>
 
-  <!-- MODALS -->
   <div class="modal-backdrop" id="modal-new">
     <div class="modal">
       <div class="modal-title" data-translate="modal_create_title">Créer un document</div>
@@ -2897,7 +3305,6 @@
     </div>
   </div>
 
-  <!-- MODAL CONVERSION -->
   <div class="modal-backdrop" id="modal-convert">
     <div class="modal">
       <div class="modal-title" data-translate="convert_title">Convertir le devis</div>
@@ -2923,9 +3330,6 @@
     // ============================================================
     'use strict';
     
-    // ============================================================
-    // STOCKAGE RÉSILIENT
-    // ============================================================
     (function() {
       try {
         const probe = '__aldas_probe__';
@@ -2946,10 +3350,6 @@
       }
     })();
 
-
-    // ============================================================
-    // CONSTANTES & ÉTAT
-    // ============================================================
     const STORAGE_KEY = 'aldas_documents_v2';
     const CLIENTS_KEY = 'aldas_clients';
     const SEQUENCE_KEY = 'aldas_sequences';
@@ -2970,22 +3370,14 @@
     const RATES_TIMESTAMP_KEY = 'aldas_exchange_rates_updated';
     const RATES_MAX_AGE_MS = 24 * 60 * 60 * 1000;
     
-    // ===== NOUVELLE CLÉ POUR CONDITIONS & RIB =====
     const CONDITIONS_RIB_KEY = 'aldas_conditions_rib';
 
-    // ============================================================
-    // CONFIGURATION CLOUD SUPABASE
-    // (voir les instructions de configuration en haut du fichier)
-    // ============================================================
     const SUPABASE_URL = 'https://cnmmfiybwfrheeeouamc.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNubW1maXlid2ZyaGVlZW91YW1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA1MzI5MTYsImV4cCI6MjEwNjEwODkxNn0.JHZmDRiaTQfdNpXUHasi_n9fMqGqgzTN5mZi-ayTcYw';
     const supabaseClient = (typeof window.supabase !== 'undefined')
       ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
       : null;
 
-    // Toutes les clés localStorage qui doivent être synchronisées dans le cloud
-    // (le cache des taux de change n'est volontairement pas synchronisé : il est
-    // recalculé localement depuis une source externe).
     const CLOUD_DATA_KEYS = [
       'aldas_documents_v2', 'aldas_clients', 'aldas_sequences', 'aldas_theme',
       'aldas_lang', 'aldas_company_logo', 'aldas_bg_image', 'aldas_bg_opacity',
@@ -2994,16 +3386,13 @@
       'aldas_dashboard_currency', 'aldas_conditions_rib'
     ];
     const CLOUD_UPDATED_AT_KEY = 'aldas_updated_at';
-    // Identifiant du compte à qui appartient le cache local : sert à ne jamais
-    // mélanger les données de deux comptes différents.
     const CLOUD_OWNER_KEY = 'aldas_cache_owner';
 
-    // État de la synchronisation cloud
     let currentUser = null;
     let isCloudSyncing = false;
     let cloudPushTimeout = null;
     let periodicSyncInterval = null;
-    let authMode = 'login'; // 'login' | 'signup'
+    let authMode = 'login';
     
     const DEFAULT_FOOTER = '';
 
@@ -3022,7 +3411,6 @@
 
     const DEFAULT_CGV_EN = '';
 
-    // Cycle de vie métier
     const STATE_TRANSITIONS = {
       draft: ['sent', 'issued', 'archived'],
       sent: ['accepted', 'refused', 'issued', 'draft', 'archived'],
@@ -3042,16 +3430,13 @@
     const MONTHS_FR = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Aoû','Sep','Oct','Nov','Déc'];
     const MONTHS_EN = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-    // ============================================================
-    // TRADUCTIONS
-    // ============================================================
     const translations = {
       fr: {
         app_subtitle: 'Gestion de Documents & Facturation Pro',
         nav_general: 'Général', nav_dashboard: 'Tableau de bord', nav_clients: 'Clients',
         nav_sales: 'Ventes', nav_quotes: 'Devis', nav_invoices: 'Factures',
         nav_config: 'Configuration', nav_settings: 'Paramètres', nav_logout: 'Déconnexion',
-        nav_all: 'Tous les documents', dashboard_title: 'Tableau de bord',
+        nav_all: 'Tous les documents', dashboard_title: 'Tableau de bord', m_widgets: 'Aperçu', nav_home: 'Accueil',
         stat_revenue: 'Chiffre d\'affaires', stat_quotes_sent: 'Devis envoyés',
         stat_pending_invoices: 'Factures en attente', stat_paid_invoices: 'Factures payées',
         chart_revenue: 'Revenus', chart_evolution: 'Évolution des Factures',
@@ -3203,12 +3588,10 @@
         deposit_source_ref: 'Référence du devis',
         deposit_quote_status: 'Statut du devis',
         deposit_no_source: 'Aucune source',
-        // Nouveaux labels pour Conditions & RIB
         settings_conditions_title: 'Conditions de règlement & RIB',
         settings_conditions_desc: 'Ces informations apparaîtront dans le bloc "Conditions" et "RIB" des factures d\'acompte.',
         settings_payment_terms: 'Conditions de règlement',
         settings_payment_method: 'Mode de règlement',
-        // Authentification / synchronisation cloud
         auth_title: 'Áldás Cloud',
         auth_subtitle: 'Connectez-vous pour accéder à vos données depuis n\'importe quel appareil.',
         auth_email_label: 'Adresse e-mail',
@@ -3224,14 +3607,15 @@
         confirm_logout: 'Voulez-vous vraiment vous déconnecter ?',
         toast_sync_ok: 'Données synchronisées avec le cloud',
         toast_sync_error: 'Erreur de synchronisation cloud, nouvelle tentative automatique',
-        toast_offline: 'Hors ligne : vos données sont enregistrées localement'
+        toast_offline: 'Hors ligne : vos données sont enregistrées localement',
+        stack_docs: '{n} documents', stack_last: 'Dernier', stack_open: 'Déployer', stack_close: 'Fermer'
       },
       en: {
         app_subtitle: 'Document Management & Pro Invoicing',
         nav_general: 'General', nav_dashboard: 'Dashboard', nav_clients: 'Clients',
         nav_sales: 'Sales', nav_quotes: 'Quotes', nav_invoices: 'Invoices',
         nav_config: 'Configuration', nav_settings: 'Settings', nav_logout: 'Logout',
-        nav_all: 'All documents', dashboard_title: 'Dashboard',
+        nav_all: 'All documents', dashboard_title: 'Dashboard', m_widgets: 'Overview', nav_home: 'Home',
         stat_revenue: 'Revenue', stat_quotes_sent: 'Quotes Sent',
         stat_pending_invoices: 'Pending Invoices', stat_paid_invoices: 'Paid Invoices',
         chart_revenue: 'Revenue', chart_evolution: 'Invoices Evolution',
@@ -3388,7 +3772,6 @@
         settings_conditions_desc: 'This information will appear in the "Conditions" and "Bank details" block of deposit invoices.',
         settings_payment_terms: 'Payment terms',
         settings_payment_method: 'Payment method',
-        // Authentication / cloud sync
         auth_title: 'Áldás Cloud',
         auth_subtitle: 'Sign in to access your data from any device.',
         auth_email_label: 'Email address',
@@ -3404,7 +3787,8 @@
         confirm_logout: 'Are you sure you want to log out?',
         toast_sync_ok: 'Data synced with the cloud',
         toast_sync_error: 'Cloud sync error, retrying automatically',
-        toast_offline: 'Offline: your data is saved locally'
+        toast_offline: 'Offline: your data is saved locally',
+        stack_docs: '{n} documents', stack_last: 'Latest', stack_open: 'Expand', stack_close: 'Close'
       }
     };
 
@@ -3427,13 +3811,13 @@
     let currentPanel = 'dashboard';
     let currentTab = 'dashboard';
     let currentEditorDocId = null;
-    const APP_TITLE = document.title; // titre de l'application (remis quand on quitte l'éditeur)
+    const APP_TITLE = document.title;
     let editorNativeCurrency = 'XOF';
     let toastTimer = null;
     let autosaveTimer = null;
     let savedClients = {};
     let allRowsData = [];
-    let editorClientData = null; // contenu de la fiche « Facturé à » du document ouvert (survit aux reconstructions)
+    let editorClientData = null;
     let revenueChart = null, evolutionChart = null;
     let activeFilter = 'all';
     let recentSearchTerm = '';
@@ -3445,9 +3829,6 @@
     let pendingConvertQuoteId = null;
     let currentDocType = null;
 
-    // ============================================================
-    // INDICATIFS TÉLÉPHONIQUES
-    // ============================================================
     const COUNTRY_CODES = [
       { code: '+225', label: "CI" }, { code: '+33', label: 'FR' }, { code: '+221', label: 'SN' },
       { code: '+223', label: 'ML' }, { code: '+226', label: 'BF' }, { code: '+228', label: 'TG' },
@@ -3515,9 +3896,6 @@
       { code: '+996', label: 'KG' }, { code: '+998', label: 'UZ' }
     ];
 
-    // ============================================================
-    // OUTILS DE SÉCURITÉ & STOCKAGE FIABLE
-    // ============================================================
     function esc(str) {
       return String(str === null || str === undefined ? '' : str)
         .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -3553,21 +3931,7 @@
     }
     function nowISO() { return new Date().toISOString(); }
 
-    // ============================================================
-    // SYNCHRONISATION CLOUD (SUPABASE)
-    // ============================================================
-    // Toutes les fonctions locales (safeSet, getAllDocs, saveDocs,
-    // getSavedClients, saveClients, CGV, footer, émetteur, RIB, logo,
-    // arrière-plan, thème, langue, devise) continuent d'écrire/lire en
-    // synchrone dans localStorage, exactement comme avant — ce qui préserve
-    // 100% du comportement existant, y compris le mode hors-ligne.
-    // Un hook global (installCloudSyncHooks, plus bas) intercepte chacune de
-    // ces écritures pour les répercuter de façon asynchrone vers Supabase :
-    // c'est ce qui remplace concrètement les accès locaux par une
-    // synchronisation cloud, sans dupliquer ni réécrire chaque fonction.
-
     function setSyncIcon(state) {
-      // state: 'ok' | 'syncing' | 'offline' | 'error'
       const el = document.getElementById('sync-indicator');
       if (!el) return;
       el.setAttribute('data-state', state);
@@ -3583,14 +3947,10 @@
     function collectLocalDataBlob() {
       const blob = {};
       CLOUD_DATA_KEYS.forEach(function(k) { blob[k] = localStorage.getItem(k); });
-      // IMPORTANT : si le cache local est vide (après déconnexion / changement de
-      // compte), on ne doit PAS inventer une date "maintenant", sinon les données
-      // vides paraissent plus récentes que celles du cloud et les écrasent.
       blob.updatedAt = localStorage.getItem(CLOUD_UPDATED_AT_KEY) || null;
       return blob;
     }
 
-    // Vrai si le cache local contient au moins une vraie donnée utilisateur
     function hasLocalUserData() {
       return CLOUD_DATA_KEYS.some(function(k) {
         try { return localStorage.getItem(k) !== null; } catch (e) { return false; }
@@ -3606,8 +3966,6 @@
       if (blob.updatedAt) nativeLocalStorageSetItem.call(localStorage, CLOUD_UPDATED_AT_KEY, blob.updatedAt);
     }
 
-    // Vide entièrement les données locales (sans rien renvoyer vers le cloud :
-    // on utilise les fonctions natives de localStorage, non interceptées).
     function wipeLocalUserData() {
       clearTimeout(cloudPushTimeout);
       cloudPushTimeout = null;
@@ -3622,11 +3980,9 @@
       cloudPushTimeout = setTimeout(function() { syncToCloud(); }, 1500);
     }
 
-    // Retourne true si les données ont bien été enregistrées dans le cloud
     async function syncToCloud() {
       if (!currentUser || !supabaseClient) return false;
       if (!navigator.onLine) { setSyncIcon('offline'); return false; }
-      // Garde-fou : ne jamais envoyer un cache totalement vide vers le cloud
       if (!hasLocalUserData()) return true;
       isCloudSyncing = true;
       setSyncIcon('syncing');
@@ -3666,9 +4022,6 @@
           const localBlob = collectLocalDataBlob();
           const cloudTime = new Date(cloudBlob.updatedAt || data.updated_at || 0).getTime() || 0;
           const localTime = (hasLocalUserData() && localBlob.updatedAt) ? (new Date(localBlob.updatedAt).getTime() || 0) : 0;
-          // Le cloud n'est réappliqué que s'il est STRICTEMENT plus récent (ou si le cache local est vide).
-          // Avant, « >= » réappliquait les mêmes données toutes les 30 s et rechargeait les champs des
-          // paramètres (CGV, pied de page, émetteur…) : le texte en cours de saisie était effacé.
           if (cloudTime > localTime || !hasLocalUserData()) {
             applyCloudBlobToLocal(cloudBlob);
             if (window.__aldasAppInitialized) refreshUIFromLocalData();
@@ -3676,7 +4029,6 @@
             await syncToCloud();
           }
         } else {
-          // Aucune ligne cloud pour cet utilisateur : on envoie l'état local initial
           await syncToCloud();
         }
         setSyncIcon('ok');
@@ -3689,8 +4041,6 @@
       }
     }
 
-    // Champs des paramètres modifiés mais pas encore enregistrés : une synchronisation ou un
-    // rafraîchissement automatique ne doit jamais les écraser.
     const SETTINGS_FIELD_IDS = ['cgv-editor', 'footer-editor', 'emitter-societe', 'emitter-nom', 'emitter-adresse',
       'emitter-pays', 'emitter-tel', 'emitter-mail', 'emitter-site', 'settings-payment-terms',
       'settings-payment-method', 'settings-rib-iban', 'settings-rib-bic', 'settings-rib-titulaire'];
@@ -3706,8 +4056,6 @@
     });
 
     function refreshUIFromLocalData() {
-      // Rafraîchit l'interface après l'arrivée de données plus récentes depuis
-      // le cloud (ex. modifiées sur un autre appareil), sans recharger la page.
       try {
         currentLang = localStorage.getItem(LANG_KEY) || currentLang;
         currentCurrency = localStorage.getItem(CURRENCY_KEY) || currentCurrency;
@@ -3719,7 +4067,6 @@
         applyPersistentLogo();
         applyPersistentBg();
         syncSettingsAppearanceControls();
-        // On garde ce que l'utilisateur est en train de saisir dans les paramètres
         const pendingEdits = {};
         SETTINGS_FIELD_IDS.forEach(function(id) {
           const el = document.getElementById(id);
@@ -3754,9 +4101,6 @@
     });
     window.addEventListener('offline', function() { setSyncIcon('offline'); });
 
-    // Intercepte toutes les écritures localStorage sur les clés synchronisées
-    // pour déclencher automatiquement une synchronisation cloud (asynchrone,
-    // avec cache local de secours conservé intact).
     const nativeLocalStorageSetItem = Storage.prototype.setItem;
     const nativeLocalStorageRemoveItem = Storage.prototype.removeItem;
     function installCloudSyncHooks() {
@@ -3777,7 +4121,6 @@
     }
     installCloudSyncHooks();
 
-    // ---------- Authentification ----------
     function showAuthScreen() {
       document.getElementById('auth-screen').style.display = 'flex';
       document.querySelector('.topbar').style.display = 'none';
@@ -3865,7 +4208,6 @@
       let cacheOwner = null;
       try { cacheOwner = localStorage.getItem(CLOUD_OWNER_KEY); } catch (e) {}
       if (cacheOwner !== user.id) {
-        // Le cache local appartient à un autre compte (ou à personne) : on repart de zéro
         wipeLocalUserData();
         try { nativeLocalStorageSetItem.call(localStorage, CLOUD_OWNER_KEY, user.id); } catch (e) {}
       }
@@ -3902,9 +4244,6 @@
       window.location.reload();
     }
 
-    // ============================================================
-    // ===== NOUVELLE FONCTION : CONDITIONS & RIB =====
-    // ============================================================
     function getConditionsAndRIB() {
       try {
         const saved = localStorage.getItem(CONDITIONS_RIB_KEY);
@@ -3951,9 +4290,6 @@
       markSettingsFieldsClean(['settings-payment-terms', 'settings-payment-method', 'settings-rib-iban', 'settings-rib-bic', 'settings-rib-titulaire']);
     }
 
-    // ============================================================
-    // INIT
-    // ============================================================
     function initApp() {
       currentLang = localStorage.getItem(LANG_KEY) || 'fr';
       document.documentElement.lang = currentLang;
@@ -3974,17 +4310,13 @@
       loadCGV();
       loadFooterText();
       loadEmitterInfo();
-      loadConditionsAndRIB(); // Chargement des conditions & RIB
+      loadConditionsAndRIB();
     }
 
-    // Amorce l'application : vérifie la session cloud avant d'afficher le
-    // tableau de bord. Si l'utilisateur est déjà connecté (session Supabase
-    // valide), on synchronise puis on initialise l'app ; sinon on affiche
-    // l'écran de connexion / inscription.
     document.addEventListener('DOMContentLoaded', async function() {
       currentLang = localStorage.getItem(LANG_KEY) || 'fr';
       document.documentElement.lang = currentLang;
-      translatePage(); // traduit déjà l'écran de connexion selon la langue sauvegardée
+      translatePage();
       if (!supabaseClient) {
         document.getElementById('auth-error').textContent = 'Supabase n\'est pas configuré : renseignez SUPABASE_URL et SUPABASE_ANON_KEY en haut du script (voir le commentaire en tête de fichier).';
         showAuthScreen();
@@ -4011,9 +4343,6 @@
       });
     });
 
-    // ============================================================
-    // THÈME
-    // ============================================================
     function applyTheme() {
       const dark = (localStorage.getItem(THEME_KEY) || 'light') === 'dark';
       if (dark) document.documentElement.setAttribute('data-theme', 'dark');
@@ -4036,9 +4365,6 @@
 
     function toggleThemeFromSettings() { toggleTheme(); }
 
-    // ============================================================
-    // CURRENCY FUNCTIONS
-    // ============================================================
     function toggleCurrencyDropdown() {
       const dropdown = document.getElementById('currency-dropdown');
       dropdown.classList.toggle('open');
@@ -4111,9 +4437,6 @@
       if (invoiceLabel) invoiceLabel.textContent = t('chart_paid_invoices') + ' ' + totalPaidInvoices;
     }
 
-    // ============================================================
-    // TAUX DE CHANGE
-    // ============================================================
     function loadExchangeRates() {
       try {
         const cachedRaw = localStorage.getItem(RATES_CACHE_KEY);
@@ -4151,9 +4474,6 @@
       }
     }
 
-    // ============================================================
-    // STOCKAGE
-    // ============================================================
     function getSavedClients() { try { return JSON.parse(localStorage.getItem(CLIENTS_KEY) || '{}'); } catch { return {}; } }
     function saveClients(c) { savedClients = c; safeSet(CLIENTS_KEY, JSON.stringify(c)); }
 
@@ -4176,9 +4496,6 @@
     function saveDocs(d) { safeSet(STORAGE_KEY, JSON.stringify(d)); }
     function getSequences() { try { return JSON.parse(localStorage.getItem(SEQUENCE_KEY) || '{"quote":0,"invoice":0,"credit":0,"deposit":0}'); } catch { return { quote:0, invoice:0, credit:0, deposit:0 }; } }
 
-    // ============================================================
-    // CGV
-    // ============================================================
     function getCGV() {
       try {
         const key = currentLang === 'fr' ? CGV_KEY_FR : CGV_KEY_EN;
@@ -4206,9 +4523,6 @@
       if (editor) { editor.value = getCGV(); delete editor.dataset.dirty; }
     }
 
-    // ============================================================
-    // TEXTE DU PIED DE PAGE
-    // ============================================================
     function getFooterText() {
       try {
         const saved = localStorage.getItem(FOOTER_KEY);
@@ -4230,9 +4544,6 @@
       if (editor) { editor.value = getFooterText(); delete editor.dataset.dirty; }
     }
 
-    // ============================================================
-    // ÉMETTEUR
-    // ============================================================
     function getEmitterInfo() {
       try {
         const saved = localStorage.getItem(EMITTER_KEY);
@@ -4279,9 +4590,6 @@
       document.querySelectorAll('.e_site').forEach(el => el.textContent = info.site || '');
     }
 
-    // ============================================================
-    // RIB (fonctions conservées pour compatibilité, mais redirigées)
-    // ============================================================
     function getRIBInfo() {
       const data = getConditionsAndRIB();
       return { iban: data.iban, bic: data.bic, titulaire: data.titulaire };
@@ -4302,9 +4610,6 @@
       autoSave();
     }
 
-    // ============================================================
-    // TRADUCTION
-    // ============================================================
     function t(key) { return (translations[currentLang] && translations[currentLang][key]) || (translations.fr[key] || key); }
 
     function translatePage() {
@@ -4346,9 +4651,6 @@
       try { initCharts(); } catch (e) { console.warn('initCharts a échoué, poursuite:', e); }
     }
 
-    // ============================================================
-    // ONGLET PARAMÈTRES — Apparence & langue
-    // ============================================================
     function setLanguageFromSettings(lang) {
       if (lang !== currentLang && (lang === 'fr' || lang === 'en')) {
         toggleLanguage();
@@ -4368,10 +4670,8 @@
       if (currencySelect) currencySelect.value = currentCurrency;
     }
 
-    // ============================================================
-    // NAVIGATION
-    // ============================================================
     function switchDashboardTab(tab) {
+      if (typeof openStackKey !== 'undefined' && openStackKey) closeInvoiceStack(true);
       if (currentPanel !== 'dashboard') switchPanel('dashboard');
       currentTab = tab;
       document.querySelectorAll('[id^="tab-"]').forEach(el => el.style.display = 'none');
@@ -4390,16 +4690,14 @@
         loadCGV(); 
         loadFooterText(); 
         loadEmitterInfo(); 
-        loadConditionsAndRIB(); // Chargement des conditions & RIB
+        loadConditionsAndRIB();
         syncSettingsAppearanceControls(); 
       }
       closeMobileSidebar();
     }
 
     function switchPanel(panel) {
-      // Si on quitte l'éditeur sans passer par « Sauvegarder », on enregistre puis on ferme
-      // proprement le document. Sinon l'éditeur caché reste « actif » : modifier le pied de
-      // page / l'émetteur dans les paramètres le reconstruit à vide et autoSave écrase le document.
+      if (typeof openStackKey !== 'undefined' && openStackKey) closeInvoiceStack(true);
       if (panel !== 'editor' && currentEditorDocId) {
         clearTimeout(autosaveTimer);
         saveEditorData();
@@ -4416,9 +4714,6 @@
       if (panel === 'dashboard') switchDashboardTab(currentTab || 'dashboard');
     }
 
-    // ============================================================
-    // MENU MOBILE
-    // ============================================================
     function toggleMobileSidebar() {
       const sb = document.getElementById('sidebar');
       const bd = document.getElementById('sidebar-backdrop');
@@ -4433,9 +4728,6 @@
       if (bd) bd.classList.remove('show');
     }
 
-    // ============================================================
-    // SUB-TABS pour les factures
-    // ============================================================
     function switchInvoiceSubTab(subtab, btn) {
       currentInvoiceSubTab = subtab;
       document.querySelectorAll('.sub-tab').forEach(el => el.classList.remove('active'));
@@ -4449,9 +4741,6 @@
       renderInvoiceList();
     }
 
-    // ============================================================
-    // CLIENTS
-    // ============================================================
     function openClientModal(clientId) {
       const modal = document.getElementById('modal-client');
       const title = document.getElementById('client-modal-title');
@@ -4532,19 +4821,46 @@
         container.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-users"></i></div><p>' + (search ? esc(t('no_clients_match')) : esc(t('no_clients'))) + '</p></div>';
         return;
       }
-      let html = '<table class="client-table"><thead><tr>'
-        + '<th>' + esc(t('th_societe')) + '</th><th>' + esc(t('th_contact')) + '</th><th>' + esc(t('th_email')) + '</th><th>' + esc(t('th_phone')) + '</th>'
-        + '<th style="text-align:right;">' + esc(t('th_actions')) + '</th></tr></thead><tbody>';
+      const initials = n => (String(n || '?').trim().split(/\s+/).slice(0, 2).map(w => w.charAt(0)).join('') || '?').toUpperCase();
+      const hashIdx = id => { let h = 0; for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0; return h % 8; };
+      let html = '<div class="client-grid">';
       clients.forEach(c => {
-        html += '<tr><td><strong>' + esc(c.societe || '-') + '</strong></td><td>' + esc(c.nom || '-') + '</td><td>' + esc(c.mail || '-') + '</td><td>' + esc(c.tel || '-') + '</td>'
-          + '<td style="text-align:right;"><div class="client-actions"><button class="edit-client" onclick="openClientModal(\'' + c.id + '\');"><i class="fas fa-edit"></i></button>'
-          + '<button class="delete-client" onclick="deleteClient(\'' + c.id + '\');"><i class="fas fa-trash"></i></button></div></td></tr>';
+        const name = c.societe || c.nom || '-';
+        const sub = c.societe && c.nom ? c.nom : '';
+        const tags = [c.pays, c.mail, c.site].filter(Boolean).map(v => '<span class="client-tag">' + esc(v) + '</span>').join('');
+        html += '<div class="client-card">'
+          + '<div class="client-card-top client-c' + hashIdx(String(c.id)) + '">'
+          +   '<div class="client-card-head"><span class="client-pill"><i class="fas fa-user" style="margin-right:6px;font-size:.7rem;"></i>' + esc(t('nav_clients')) + '</span>'
+          +   '<button class="client-icon-btn" title="' + esc(t('btn_edit')) + '" aria-label="' + esc(t('btn_edit')) + '" onclick="openClientModal(\'' + c.id + '\');"><i class="fas fa-pen"></i></button></div>'
+          +   '<div class="client-card-mid"><div class="client-card-labels">' + (sub ? '<div class="client-card-sub">' + esc(sub) + '</div>' : '') + '<div class="client-card-name">' + esc(name) + '</div></div>'
+          +   '<span class="client-avatar">' + esc(initials(name)) + '</span></div>'
+          +   '<div class="client-tags">' + tags + '</div>'
+          + '</div>'
+          + '<div class="client-card-bottom"><div class="client-card-contact"><div class="client-card-phone">' + esc(c.tel || '-') + '</div><div class="client-card-addr">' + esc(c.adresse || '-') + '</div></div>'
+          +   '<div class="client-card-actions"><button class="client-delete-btn" title="' + esc(t('btn_delete')) + '" aria-label="' + esc(t('btn_delete')) + '" onclick="deleteClient(\'' + c.id + '\');"><i class="fas fa-trash"></i></button>'
+          +   '<button class="client-details-btn" onclick="openClientModal(\'' + c.id + '\');">' + esc(t('btn_edit')) + '</button></div></div>'
+          + '</div>';
       });
-      html += '</tbody></table>';
+      html += '</div>';
       container.innerHTML = html;
     }
 
-    function updateSidebarClientCount() { const el = document.getElementById('sidebar-client-count'); if (el) el.textContent = Object.keys(savedClients).length; }
+    function updateSidebarClientCount() {
+      const n = Object.keys(savedClients).length;
+      const el = document.getElementById('sidebar-client-count'); if (el) el.textContent = n;
+      const sc = document.getElementById('stat-clients'); if (sc) sc.textContent = n;
+      try { updateMobileProfile(); } catch (e) {}
+    }
+    function updateMobileProfile() {
+      const email = (typeof currentUser !== 'undefined' && currentUser && currentUser.email) ? currentUser.email : '';
+      let emit = {}; try { emit = getEmitterInfo() || {}; } catch (e) {}
+      const name = emit.societe || emit.nom || (email ? email.split('@')[0] : '') || 'Áldás';
+      const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+      set('m-name', name);
+      set('m-sub', email);
+      set('m-avatar', String(name).trim().charAt(0).toUpperCase() || 'A');
+      set('m-pill-n', Object.keys(getAllDocs()).length);
+    }
 
     function openClientSelector() { closeAutocomplete(); renderClientSelectList(); openModal('modal-client-select'); }
 
@@ -4610,9 +4926,6 @@
 
     function closeAutocomplete() { const el = document.getElementById('client-suggestions'); if (el) el.style.display = 'none'; }
 
-    // ============================================================
-    // LOGO & BG
-    // ============================================================
     function getPersistentLogo() { return localStorage.getItem(LOGO_KEY) || ''; }
     function savePersistentLogo(url) { safeSet(LOGO_KEY, url); }
     function removePersistentLogo() { localStorage.removeItem(LOGO_KEY); }
@@ -4719,9 +5032,6 @@
       applyPersistentLogo();
     }
 
-    // ============================================================
-    // CHARTS
-    // ============================================================
     function hideChartCanvases() {
       ['revenue-chart', 'evolution-chart'].forEach(id => {
         const canvas = document.getElementById(id);
@@ -4760,13 +5070,13 @@
               datasets: [{
                 label: t('stat_revenue'),
                 data: [0,0,0,0,0,0,0,0,0,0,0,0],
-                borderColor: '#4CAF50',
-                backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                borderColor: '#3EC54C',
+                backgroundColor: 'rgba(62,197,76, 0.28)',
                 borderWidth: 2,
                 tension: 0.4,
                 fill: true,
                 pointRadius: 4,
-                pointBackgroundColor: '#4CAF50'
+                pointBackgroundColor: '#3EC54C'
               }]
             },
             options: {
@@ -4788,10 +5098,16 @@
                     color: textColor,
                     font: { family: 'DM Sans', size: 9 },
                     callback: v => {
-                      if (v >= 1e6) return (v / 1e6).toFixed(1) + 'M';
-                      if (v >= 1e3) return (v / 1e3).toFixed(0) + 'k';
-                      return v;
-                    }
+                      if (v >= 1e6) {
+                        const m = v / 1e6;
+                        return (m % 1 === 0 ? m.toFixed(0) : m.toFixed(1)) + 'M';
+                      }
+                      if (v >= 1e3) {
+                        const k = v / 1e3;
+                        return (k % 1 === 0 ? k.toFixed(0) : k.toFixed(1)) + 'k';
+                      }
+                      return v.toLocaleString();
+}
                   }
                 },
                 x: { grid: { display: false }, ticks: { color: textColor, font: { family: 'DM Sans', size: 9 } } }
@@ -4809,13 +5125,13 @@
               datasets: [{
                 label: t('stat_paid_invoices'),
                 data: [0,0,0,0,0,0,0,0,0,0,0,0],
-                borderColor: '#8B5CF6',
-                backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                borderColor: '#2D5D67',
+                backgroundColor: 'rgba(45,93,103, 0.08)',
                 borderWidth: 2,
                 tension: 0.4,
                 fill: true,
                 pointRadius: 4,
-                pointBackgroundColor: '#8B5CF6'
+                pointBackgroundColor: '#2D5D67'
               }]
             },
             options: {
@@ -4858,9 +5174,6 @@
       updateChartTotals();
     }
 
-    // ============================================================
-    // DASHBOARD
-    // ============================================================
     function updateDashboard() {
       const docs = Object.values(getAllDocs());
       const currentYear = new Date().getFullYear();
@@ -4877,16 +5190,10 @@
       rawDashboardData.pendingInvoices = pendingInvoices.length;
       rawDashboardData.paidInvoices = paidInvoices.length;
 
-      const n = paidInvoices.length;
       document.getElementById('stat-revenue').textContent = formatCurrency(totalPaidConverted, currentCurrency);
-      document.getElementById('stat-revenue-currency').textContent = getCurrencySymbol(currentCurrency);
-      document.getElementById('stat-revenue-count').textContent = n + ' ' + t('k_revenue_count');
       document.getElementById('stat-quotes-sent').textContent = rawDashboardData.quotesSent;
-      document.getElementById('stat-quotes-converted').textContent = docs.filter(d => d.type === 'quote' && d.status === 'converted').length + ' ' + t('k_converted_count');
       document.getElementById('stat-pending-invoices').textContent = pendingInvoices.length;
-      document.getElementById('stat-pending-count').textContent = pendingInvoices.length + ' ' + t('k_pending_count');
       document.getElementById('stat-paid-invoices').textContent = paidInvoices.length;
-      document.getElementById('stat-paid-count').textContent = paidInvoices.length + ' ' + t('k_paid_count');
 
       document.getElementById('sidebar-quote-count').textContent = docs.filter(d => d.type === 'quote' && d.status !== 'archived' && d.status !== 'converted').length;
       document.getElementById('sidebar-invoice-count').textContent = docs.filter(d => (d.type === 'invoice' || d.type === 'deposit' || d.type === 'credit') && d.status !== 'archived').length;
@@ -4914,9 +5221,6 @@
       updateCurrentDate();
     }
 
-    // ============================================================
-    // RECENT ACTIVITY
-    // ============================================================
     function filterRecentActivity() {
       const searchInput = document.getElementById('recent-search');
       const clearBtn = document.getElementById('recent-search-clear');
@@ -4980,15 +5284,166 @@
     }
 
     // ============================================================
-    // LISTES DOCUMENTS
+    // LISTE DES DEVIS — même disposition que les factures (grille de cartes + piles par client)
     // ============================================================
     function renderQuoteList() {
-      const docs = Object.values(getAllDocs()).filter(d => d.type === 'quote' && d.status !== 'archived').sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
+      const qSearchEl = document.getElementById('quote-search');
+      const qQuery = qSearchEl ? qSearchEl.value.toLowerCase().trim() : '';
+      const docs = Object.values(getAllDocs()).filter(d => d.type === 'quote' && d.status !== 'archived')
+        .filter(d => !qQuery || ((d.label || '') + ' ' + (d.client || '') + ' ' + (d.number || '')).toLowerCase().includes(qQuery)).sort((a, b) => (b.updatedAt || '').localeCompare(a.updatedAt || ''));
       const list = document.getElementById('quote-list');
       if (!list) return;
-      if (docs.length === 0) { list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-file-signature"></i></div><p>' + esc(t('no_docs')) + '</p></div>'; return; }
-      list.innerHTML = docs.map(d => docCardHTML(d)).join('');
+      if (docs.length === 0) {
+        list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-file-signature"></i></div><p>' + esc(t('no_docs')) + '</p></div>';
+        return;
+      }
+      // Regroupe les devis d'une même société : 2 documents ou plus => une pile dépliable
+      const groups = {}, order = [];
+      docs.forEach(d => {
+        const ck = invoiceClientKey(d);
+        const gk = ck ? 'q:' + ck : 'qsolo:' + d.id;
+        if (!groups[gk]) { groups[gk] = { key: gk, name: d.client || '', docs: [] }; order.push(gk); }
+        groups[gk].docs.push(d);
+      });
+      quoteStackGroups = {};
+      let html = '';
+      order.forEach(gk => {
+        const g = groups[gk];
+        if (g.docs.length >= 2) { quoteStackGroups[gk] = g; html += stackHTML(g); }
+        else html += invoiceCardHTML(g.docs[0]);
+      });
+      list.innerHTML = html;
+      refreshQuoteStackOverlay();
     }
+
+    // ============================================================
+    // PILES DE DEVIS PAR SOCIÉTÉ (même animation que les factures)
+    // ============================================================
+    let quoteStackGroups = {};
+    let openQuoteStackKey = null;
+    let quoteStackAnimating = false;
+
+    function quoteStackHTML(g) { return stackHTML(g); }
+
+    function findQuoteStackEl(key) {
+      return Array.prototype.find.call(document.querySelectorAll('.invoice-stack'), el => el.dataset.stack === key) || null;
+    }
+
+    function openQuoteStack(key) {
+      if (quoteStackAnimating || openQuoteStackKey) return;
+      const g = quoteStackGroups[key];
+      const stackEl = findQuoteStackEl(key);
+      if (!g || !stackEl) return;
+      const r0 = stackEl.querySelector('.stack-face').getBoundingClientRect();
+      openQuoteStackKey = key;
+      quoteStackAnimating = true;
+      const ov = document.createElement('div');
+      ov.id = 'quote-stack-overlay';
+      ov.className = 'stack-overlay';
+      ov.innerHTML = stackOverlayInner(g);
+      ov.addEventListener('click', function(e) {
+        if (e.target === ov || e.target.classList.contains('stack-overlay-inner') || e.target.classList.contains('stack-overlay-grid')) closeQuoteStack();
+      });
+      document.body.appendChild(ov);
+      document.body.classList.add('stack-open');
+      const cards = Array.prototype.slice.call(ov.querySelectorAll('.invoice-card'));
+      const targets = cards.map(c => c.getBoundingClientRect());
+      cards.forEach((c, i) => {
+        const r = targets[i];
+        const dx = (r0.left + r0.width / 2) - (r.left + r.width / 2);
+        const dy = (r0.top + r0.height / 2) - (r.top + r.height / 2);
+        const sc = r0.width / r.width;
+        c.style.transition = 'none';
+        c.style.zIndex = String(cards.length - i);
+        c.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ')';
+        c.style.opacity = i < 3 ? '1' : '0';
+      });
+      stackEl.classList.add('is-open');
+      void ov.offsetWidth;
+      requestAnimationFrame(function() {
+        ov.classList.add('show');
+        cards.forEach((c, i) => {
+          const d = Math.min(i, 8) * 55;
+          c.style.transition = 'transform .65s cubic-bezier(.22,1,.36,1) ' + d + 'ms, opacity .4s ease ' + d + 'ms';
+          c.style.transform = '';
+          c.style.opacity = '1';
+        });
+        setTimeout(function() {
+          cards.forEach(c => { c.style.transition = ''; c.style.zIndex = ''; c.style.opacity = ''; });
+          quoteStackAnimating = false;
+        }, 650 + Math.min(cards.length, 9) * 55 + 60);
+      });
+    }
+
+    function closeQuoteStack(immediate) {
+      const ov = document.getElementById('quote-stack-overlay');
+      const key = openQuoteStackKey;
+      const finish = function() {
+        const o = document.getElementById('quote-stack-overlay');
+        if (o) o.remove();
+        document.body.classList.remove('stack-open');
+        openQuoteStackKey = null;
+        quoteStackAnimating = false;
+        document.querySelectorAll('.invoice-stack.is-open').forEach(el => el.classList.remove('is-open'));
+      };
+      if (!ov) { finish(); return; }
+      const stackEl = key ? findQuoteStackEl(key) : null;
+      if (immediate === true || !stackEl) { finish(); return; }
+      if (quoteStackAnimating) return;
+      quoteStackAnimating = true;
+      const r0 = stackEl.querySelector('.stack-face').getBoundingClientRect();
+      const cards = Array.prototype.slice.call(ov.querySelectorAll('.invoice-card'));
+      const n = cards.length;
+      cards.forEach((c, i) => {
+        const r = c.getBoundingClientRect();
+        const dx = (r0.left + r0.width / 2) - (r.left + r.width / 2);
+        const dy = (r0.top + r0.height / 2) - (r.top + r.height / 2);
+        const sc = r0.width / r.width;
+        const d = Math.min(n - 1 - i, 8) * 40;
+        c.style.zIndex = String(n - i);
+        c.style.transition = 'transform .55s cubic-bezier(.65,0,.35,1) ' + d + 'ms, opacity .3s ease ' + (d + 260) + 'ms';
+        c.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ')';
+        c.style.opacity = i < 3 ? '1' : '0';
+      });
+      ov.classList.remove('show');
+      const total = 550 + Math.min(n, 9) * 40;
+      setTimeout(function() { stackEl.classList.remove('is-open'); }, total - 120);
+      setTimeout(finish, total + 60);
+    }
+
+    function refreshQuoteStackOverlay() {
+      if (!openQuoteStackKey || quoteStackAnimating) return;
+      const ov = document.getElementById('quote-stack-overlay');
+      if (!ov) { openQuoteStackKey = null; return; }
+      const g = quoteStackGroups[openQuoteStackKey];
+      if (!g || g.docs.length < 2) { closeQuoteStack(true); return; }
+      const grid = ov.querySelector('.stack-overlay-grid');
+      if (grid) grid.innerHTML = g.docs.map(d => invoiceCardHTML(d)).join('');
+      const cnt = ov.querySelector('.stack-overlay-count');
+      if (cnt) cnt.textContent = t('stack_docs').replace('{n}', g.docs.length);
+      const el = findQuoteStackEl(openQuoteStackKey);
+      if (el) el.classList.add('is-open');
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        if (openStackKey) closeInvoiceStack();
+        if (openQuoteStackKey) closeQuoteStack();
+      }
+    });
+    window.openQuoteStack = openQuoteStack;
+    window.closeQuoteStack = closeQuoteStack;
+    // Redirige les clics de pile selon le préfixe de la clé (facture "c:" / devis "q:")
+    var _origOpenInvoiceStack = openInvoiceStack;
+    window.openInvoiceStack = function(key) {
+      if (typeof key === 'string' && key.indexOf('q:') === 0) return openQuoteStack(key);
+      return _origOpenInvoiceStack(key);
+    };
+    var _origCloseInvoiceStack = closeInvoiceStack;
+    window.closeInvoiceStack = function(immediate) {
+      if (openQuoteStackKey) return closeQuoteStack(immediate);
+      return _origCloseInvoiceStack(immediate);
+    };
 
     function renderInvoiceList() {
       let allowedTypes = ['invoice', 'credit', 'deposit'];
@@ -5023,29 +5478,155 @@
         list.innerHTML = '<div class="empty-state"><div class="icon"><i class="fas fa-inbox"></i></div><p>' + esc(t('no_docs')) + '</p></div>';
         return;
       }
-      const allDocsMap = getAllDocs();
-      const docIds = new Set(docs.map(d => d.id));
-      const consumed = new Set();
-      let html = '';
+      const groups = {}, order = [];
       docs.forEach(d => {
-        if (consumed.has(d.id)) return;
-        let partner = null;
-        if (d.type === 'deposit' && d.linkedTo && allDocsMap[d.linkedTo] && allDocsMap[d.linkedTo].convertedFrom === d.id && docIds.has(d.linkedTo) && !consumed.has(d.linkedTo)) {
-          partner = allDocsMap[d.linkedTo];
-        } else if (d.type === 'invoice' && d.convertedFrom && allDocsMap[d.convertedFrom] && allDocsMap[d.convertedFrom].type === 'deposit' && allDocsMap[d.convertedFrom].linkedTo === d.id && docIds.has(d.convertedFrom) && !consumed.has(d.convertedFrom)) {
-          partner = allDocsMap[d.convertedFrom];
-        }
-        if (partner) {
-          const finalInvoiceDoc = d.type === 'invoice' ? d : partner;
-          const depositDoc = d.type === 'deposit' ? d : partner;
-          html += '<div class="invoice-card-pair">' + invoiceCardHTML(finalInvoiceDoc) + invoiceCardHTML(depositDoc) + '</div>';
-          consumed.add(d.id);
-          consumed.add(partner.id);
-        } else {
-          html += invoiceCardHTML(d);
-        }
+        const ck = invoiceClientKey(d);
+        const gk = ck ? 'c:' + ck : 'solo:' + d.id;
+        if (!groups[gk]) { groups[gk] = { key: gk, name: d.client || '', docs: [] }; order.push(gk); }
+        groups[gk].docs.push(d);
+      });
+      invoiceStackGroups = {};
+      let html = '';
+      order.forEach(gk => {
+        const g = groups[gk];
+        if (g.docs.length >= 2) { invoiceStackGroups[gk] = g; html += stackHTML(g); }
+        else html += invoiceCardHTML(g.docs[0]);
       });
       list.innerHTML = html;
+      refreshInvoiceStackOverlay();
+    }
+
+    let invoiceStackGroups = {};
+    let openStackKey = null;
+    let stackAnimating = false;
+
+    function invoiceClientKey(doc) { return String(doc.client || '').trim().toLowerCase(); }
+
+    function stackHTML(g) {
+      const docs = g.docs;
+      const latest = docs[0];
+      const counts = {};
+      docs.forEach(d => { counts[d.status] = (counts[d.status] || 0) + 1; });
+      const badges = Object.keys(counts).map(st =>
+        '<span class="badge-status ' + esc(st) + '">' + counts[st] + ' ' + esc(STATUS_LABELS[st] ? STATUS_LABELS[st][currentLang] : st) + '</span>').join('');
+      let dateRef = latest.createdAt;
+      if (latest.data && latest.data.sidebar && latest.data.sidebar.f_date) dateRef = latest.data.sidebar.f_date;
+      return '<div class="invoice-stack" data-stack="' + esc(g.key) + '" role="button" tabindex="0" aria-label="' + esc(g.name) + '" onclick="openInvoiceStack(this.dataset.stack);" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();openInvoiceStack(this.dataset.stack);}">'
+        + '<div class="stack-layer stack-layer-3"></div><div class="stack-layer stack-layer-2"></div>'
+        + '<div class="stack-face">'
+        +   '<div class="stack-face-top"><span class="stack-count"><i class="fas fa-layer-group"></i> ' + esc(t('stack_docs').replace('{n}', docs.length)) + '</span>'
+        +   '<span class="stack-chevron" title="' + esc(t('stack_open')) + '"><i class="fas fa-up-right-and-down-left-from-center"></i></span></div>'
+        +   '<div class="stack-client">' + esc(g.name || '-') + '</div>'
+        +   '<div class="stack-last">' + esc(t('stack_last')) + ' : ' + esc(latest.number) + ' · ' + esc(formatDisplayDate(dateRef)) + '</div>'
+        +   '<div class="stack-badges">' + badges + '</div>'
+        + '</div></div>';
+    }
+
+    function findStackEl(key) {
+      return Array.prototype.find.call(document.querySelectorAll('.invoice-stack'), el => el.dataset.stack === key) || null;
+    }
+
+    function stackOverlayInner(g) {
+      return '<div class="stack-overlay-inner">'
+        + '<div class="stack-overlay-head"><div class="stack-overlay-title"><h2>' + esc(g.name || '-') + '</h2><span class="stack-overlay-count">' + esc(t('stack_docs').replace('{n}', g.docs.length)) + '</span></div>'
+        + '<button type="button" class="stack-close" aria-label="' + esc(t('stack_close')) + '" title="' + esc(t('stack_close')) + '" onclick="closeInvoiceStack();"><i class="fas fa-xmark"></i></button></div>'
+        + '<div class="stack-overlay-grid">' + g.docs.map(d => invoiceCardHTML(d)).join('') + '</div></div>';
+    }
+
+    function openInvoiceStack(key) {
+      if (stackAnimating || openStackKey) return;
+      const g = invoiceStackGroups[key];
+      const stackEl = findStackEl(key);
+      if (!g || !stackEl) return;
+      const r0 = stackEl.querySelector('.stack-face').getBoundingClientRect();
+      openStackKey = key;
+      stackAnimating = true;
+      const ov = document.createElement('div');
+      ov.id = 'stack-overlay';
+      ov.className = 'stack-overlay';
+      ov.innerHTML = stackOverlayInner(g);
+      ov.addEventListener('click', function(e) {
+        if (e.target === ov || e.target.classList.contains('stack-overlay-inner') || e.target.classList.contains('stack-overlay-grid')) closeInvoiceStack();
+      });
+      document.body.appendChild(ov);
+      document.body.classList.add('stack-open');
+      const cards = Array.prototype.slice.call(ov.querySelectorAll('.invoice-card'));
+      const targets = cards.map(c => c.getBoundingClientRect());
+      cards.forEach((c, i) => {
+        const r = targets[i];
+        const dx = (r0.left + r0.width / 2) - (r.left + r.width / 2);
+        const dy = (r0.top + r0.height / 2) - (r.top + r.height / 2);
+        const sc = r0.width / r.width;
+        c.style.transition = 'none';
+        c.style.zIndex = String(cards.length - i);
+        c.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ')';
+        c.style.opacity = i < 3 ? '1' : '0';
+      });
+      stackEl.classList.add('is-open');
+      void ov.offsetWidth;
+      requestAnimationFrame(function() {
+        ov.classList.add('show');
+        cards.forEach((c, i) => {
+          const d = Math.min(i, 8) * 55;
+          c.style.transition = 'transform .65s cubic-bezier(.22,1,.36,1) ' + d + 'ms, opacity .4s ease ' + d + 'ms';
+          c.style.transform = '';
+          c.style.opacity = '1';
+        });
+        setTimeout(function() {
+          cards.forEach(c => { c.style.transition = ''; c.style.zIndex = ''; c.style.opacity = ''; });
+          stackAnimating = false;
+        }, 650 + Math.min(cards.length, 9) * 55 + 60);
+      });
+    }
+
+    function closeInvoiceStack(immediate) {
+      const ov = document.getElementById('stack-overlay');
+      const key = openStackKey;
+      const finish = function() {
+        const o = document.getElementById('stack-overlay');
+        if (o) o.remove();
+        document.body.classList.remove('stack-open');
+        openStackKey = null;
+        stackAnimating = false;
+        document.querySelectorAll('.invoice-stack.is-open').forEach(el => el.classList.remove('is-open'));
+      };
+      if (!ov) { finish(); return; }
+      const stackEl = key ? findStackEl(key) : null;
+      if (immediate === true || !stackEl) { finish(); return; }
+      if (stackAnimating) return;
+      stackAnimating = true;
+      const r0 = stackEl.querySelector('.stack-face').getBoundingClientRect();
+      const cards = Array.prototype.slice.call(ov.querySelectorAll('.invoice-card'));
+      const n = cards.length;
+      cards.forEach((c, i) => {
+        const r = c.getBoundingClientRect();
+        const dx = (r0.left + r0.width / 2) - (r.left + r.width / 2);
+        const dy = (r0.top + r0.height / 2) - (r.top + r.height / 2);
+        const sc = r0.width / r.width;
+        const d = Math.min(n - 1 - i, 8) * 40;
+        c.style.zIndex = String(n - i);
+        c.style.transition = 'transform .55s cubic-bezier(.65,0,.35,1) ' + d + 'ms, opacity .3s ease ' + (d + 260) + 'ms';
+        c.style.transform = 'translate(' + dx + 'px,' + dy + 'px) scale(' + sc + ')';
+        c.style.opacity = i < 3 ? '1' : '0';
+      });
+      ov.classList.remove('show');
+      const total = 550 + Math.min(n, 9) * 40;
+      setTimeout(function() { stackEl.classList.remove('is-open'); }, total - 120);
+      setTimeout(finish, total + 60);
+    }
+
+    function refreshInvoiceStackOverlay() {
+      if (!openStackKey || stackAnimating) return;
+      const ov = document.getElementById('stack-overlay');
+      if (!ov) { openStackKey = null; return; }
+      const g = invoiceStackGroups[openStackKey];
+      if (!g || g.docs.length < 2) { closeInvoiceStack(true); return; }
+      const grid = ov.querySelector('.stack-overlay-grid');
+      if (grid) grid.innerHTML = g.docs.map(d => invoiceCardHTML(d)).join('');
+      const cnt = ov.querySelector('.stack-overlay-count');
+      if (cnt) cnt.textContent = t('stack_docs').replace('{n}', g.docs.length);
+      const el = findStackEl(openStackKey);
+      if (el) el.classList.add('is-open');
     }
 
     function depositRemainingBadgeHTML(doc) {
@@ -5056,7 +5637,7 @@
       if (!quoteAmount) return '';
       const remaining = round2(quoteAmount - (doc.amountTTC || 0));
       const remainingStr = remaining.toLocaleString(locale, { maximumFractionDigits: 2 });
-      return ' <span style="font-size:0.6rem;background:#EDE9FE;color:#6D28D9;border:1px solid #C4B5FD;border-radius:12px;padding:1px 6px;"><i class="fas fa-hand-holding-usd"></i> ' + esc(t('deposit_remaining_label')) + ': ' + remainingStr + ' ' + symbol + '</span>';
+      return ' <span style="font-size:0.6rem;background:#D5DFE1;color:#2D5D67;border:1px solid #ABBEC2;border-radius:12px;padding:1px 6px;"><i class="fas fa-hand-holding-usd"></i> ' + esc(t('deposit_remaining_label')) + ': ' + remainingStr + ' ' + symbol + '</span>';
     }
 
     function invoiceCardHTML(doc) {
@@ -5072,7 +5653,7 @@
       const allDocs = getAllDocs();
       if (doc.linkedTo && allDocs[doc.linkedTo]) {
         const linkedDoc = allDocs[doc.linkedTo];
-        linkedInfo = ' <span style="font-size:0.6rem;background:#EDE9FE;color:#7C3AED;border:1px solid #A78BFA;border-radius:12px;padding:1px 6px;"><i class="fas fa-arrow-right"></i> ' + esc(linkedDoc.number) + '</span>';
+        linkedInfo = ' <span style="font-size:0.6rem;background:#D5DFE1;color:#2D5D67;border:1px solid #82A0A4;border-radius:12px;padding:1px 6px;"><i class="fas fa-arrow-right"></i> ' + esc(linkedDoc.number) + '</span>';
       } else if (doc.convertedFrom && allDocs[doc.convertedFrom]) {
         const linkedDoc = allDocs[doc.convertedFrom];
         linkedInfo = ' <span style="font-size:0.6rem;background:#FEF3C7;color:#92400E;border:1px solid #F59E0B;border-radius:12px;padding:1px 6px;"><i class="fas fa-arrow-left"></i> ' + esc(linkedDoc.number) + '</span>';
@@ -5123,7 +5704,7 @@
       const allDocs = getAllDocs();
       let linkedBadge = '';
       if (doc.linkedTo && allDocs[doc.linkedTo]) linkedBadge = ' <span style="font-size:0.6rem;background:#FEF3C7;color:#92400E;border:1px solid #F59E0B;border-radius:12px;padding:1px 6px;"><i class="fas fa-arrow-right"></i> ' + esc(t('invoice_label')) + '</span>';
-      else if (doc.convertedFrom && allDocs[doc.convertedFrom]) linkedBadge = ' <span style="font-size:0.6rem;background:#EDE9FE;color:#7C3AED;border:1px solid #A78BFA;border-radius:12px;padding:1px 6px;"><i class="fas fa-arrow-left"></i> ' + esc(t('quote_label')) + '</span>';
+      else if (doc.convertedFrom && allDocs[doc.convertedFrom]) linkedBadge = ' <span style="font-size:0.6rem;background:#D5DFE1;color:#2D5D67;border:1px solid #82A0A4;border-radius:12px;padding:1px 6px;"><i class="fas fa-arrow-left"></i> ' + esc(t('quote_label')) + '</span>';
       linkedBadge += depositRemainingBadgeHTML(doc);
       let documentDate = doc.createdAt;
       if (doc.data && doc.data.sidebar && doc.data.sidebar.f_date) documentDate = doc.data.sidebar.f_date;
@@ -5147,7 +5728,7 @@
       const btnConfig = {
         edit: { label: 'btn_edit', cls: 'btn-ghost btn-sm', action: "openInEditor('" + doc.id + "')" },
         send: { label: 'btn_send', cls: 'btn-ghost btn-sm', action: "quickStatus('" + doc.id + "','sent')" },
-        accept: { label: 'btn_accept', cls: 'btn-ghost btn-sm', action: "quickStatus('" + doc.id + "','accepted')", style: 'color:#065F46;' },
+        accept: { label: 'btn_accept', cls: 'btn-ghost btn-sm', action: "quickStatus('" + doc.id + "','accepted')", style: 'color:#2D5D67;' },
         refuse: { label: 'btn_refuse', cls: 'btn-ghost btn-sm', action: "quickStatus('" + doc.id + "','refused')", style: 'color:#991B1B;' },
         convert: { label: 'btn_convert', cls: 'btn-primary btn-sm', action: "openConvertModal('" + doc.id + "')" },
         issue: { label: 'btn_issue', cls: 'btn-primary btn-sm', action: "quickStatus('" + doc.id + "','issued')" },
@@ -5202,9 +5783,6 @@
       return actions;
     }
 
-    // ============================================================
-    // DOCUMENT — CYCLE DE VIE
-    // ============================================================
     function formatDisplayDate(dateString) {
       if (!dateString) return '-';
       try {
@@ -5270,9 +5848,6 @@
       }
     }
 
-    // ============================================================
-    // CONVERSION DEVIS → FACTURE / ACOMPTE (avec calcul 70% affiché)
-    // ============================================================
     function openConvertModal(quoteId) {
       const doc = getAllDocs()[quoteId];
       if (!doc) return;
@@ -5303,7 +5878,6 @@
         return;
       }
 
-      // Calcul du total TTC du devis
       let ht = 0;
       if (quote.data && quote.data.rows) {
         quote.data.rows.forEach(row => {
@@ -5331,13 +5905,11 @@
       let docAmount = htNet, docTTC = totalTTC, docLabel = t('invoice_label') + ' - ' + quote.client;
 
       if (targetType === 'deposit') {
-        // Calcul de l'acompte 70% du TOTAL TTC du devis (net de remise)
         const depositTTC = round2(totalTTC * 0.70);
         const depositHT = round2(htNet * 0.70);
         const newTva = round2(tvaOn ? depositHT * tvaRate / 100 : 0);
         const newAmountTTC = round2(depositHT + newTva);
         
-        // Construction du libellé dynamique avec le numéro du devis
         const quoteNumber = quote.number || 'DEVIS-INCONNU';
         const description = `Acompte de 70% avec TVA à ${tvaRate}% pour le devis (${quoteNumber})`;
 
@@ -5352,8 +5924,6 @@
         invoiceData._quoteAmount = totalTTC;
         invoiceData._quoteCurrency = quoteCurrency;
         invoiceData._depositTTC = depositTTC;
-        // La remise est déjà intégrée dans le montant de l'acompte : on la mémorise
-        // pour la ré-appliquer sur la facture de solde, sans la réappliquer ici.
         invoiceData._remiseInfo = {
           on: !!quoteSidebar.remise_on,
           type: quoteSidebar.remise_type || 'percent',
@@ -5395,9 +5965,6 @@
       renderAll();
     }
 
-    // ============================================================
-    // FACTURE FINALE (SOLDE) — GÉNÉRÉE DEPUIS UN ACOMPTE PAYÉ
-    // ============================================================
     function generateFinalInvoice(depositId) {
       const docs = getAllDocs();
       const deposit = docs[depositId];
@@ -5526,9 +6093,6 @@
       else if (currentTab === 'all') renderAllDocuments();
     }
 
-    // ============================================================
-    // MODALS
-    // ============================================================
     function openNewDocModal(type) {
       document.getElementById('new-type').value = type || 'quote';
       document.getElementById('new-date').value = today();
@@ -5577,7 +6141,6 @@
     }
     document.querySelectorAll('.modal-backdrop').forEach(el => el.addEventListener('click', function(e) { if (e.target === el) closeModal(el.id); }));
 
-    // Raccourcis clavier
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
@@ -5597,10 +6160,9 @@
       }
     });
 
-    // ============================================================
-    // EDITEUR (UNIQUE, avec affichage conditionnel selon le type)
-    // ============================================================
     function openInEditor(docId) {
+      if (typeof openStackKey !== 'undefined' && openStackKey) closeInvoiceStack(true);
+      if (typeof openQuoteStackKey !== 'undefined' && openQuoteStackKey) closeQuoteStack(true);
       const docs = getAllDocs();
       const doc = docs[docId];
       if (!doc) return;
@@ -5609,11 +6171,6 @@
       currentDocType = doc.type;
       switchPanel('editor');
       allRowsData = [];
-      // Purge le DOM du document précédemment ouvert AVANT de charger les
-      // nouvelles données : sans cela, les lignes (desc-1, prix-1, qte-1...)
-      // de l'ancien document restent affichées avec les MÊMES id, et
-      // rebuildInvoice() -> saveCurrentRowValues() les relit par erreur,
-      // écrasant les valeurs fraîchement chargées du nouveau document.
       const invoiceContainerReset = document.getElementById('invoice');
       if (invoiceContainerReset) invoiceContainerReset.innerHTML = '';
 
@@ -5980,17 +6537,12 @@
       return round2(n).toLocaleString(currentLang === 'fr' ? 'fr-FR' : 'en-US') + ' ' + getCurrencySymbol(cur);
     }
 
-    // ============================================================
-    // REBUILD INVOICE (pagination automatique, avec version dépôt)
-    // ============================================================
     const CLIENT_FIELDS = ['societe', 'nom', 'adresse', 'pays', 'tel', 'mail', 'site'];
     function emptyClientData() {
       const o = {};
       CLIENT_FIELDS.forEach(f => { o[f] = ''; });
       return o;
     }
-    // Lit la fiche « Facturé à » actuellement affichée. Si le DOM a été purgé
-    // (aucun champ présent), on garde la dernière valeur connue au lieu de l'écraser.
     function captureClientFromDOM() {
       if (!document.querySelector('#invoice .c_societe')) return;
       const data = emptyClientData();
@@ -6005,14 +6557,12 @@
       const container = document.getElementById('invoice');
       if (!container) return;
 
-      // Mémorise « Facturé à » AVANT de vider le conteneur, sinon la fiche est perdue
       captureClientFromDOM();
 
       const previewPane = document.querySelector('.preview-pane');
       if (previewPane) scrollPosition = previewPane.scrollTop;
 
       saveCurrentRowValues();
-      // Garde la hauteur actuelle pendant la reconstruction : évite que le défilement / l'aperçu saute
       container.style.minHeight = container.offsetHeight + 'px';
       container.innerHTML = '';
 
@@ -6057,8 +6607,6 @@
           if (usedContentHeight(pageRefs.content) > budget) {
             totalsEl.remove();
             if (addedOnThisPage > 1) {
-              // Les totaux ne tiennent pas : la dernière ligne passe avec eux sur la page suivante
-              // (jamais de page contenant uniquement les totaux)
               pageRefs.tbody.removeChild(pageRefs.tbody.lastElementChild);
               rowIndex--;
               pageNum++;
@@ -6109,7 +6657,6 @@
       });
     }
 
-    // Vrai si le contenu d'une page dépasse la zone utile (ex. description devenue plus longue)
     function pagesOverflow() {
       const contents = document.querySelectorAll('#invoice .invoice-page-content');
       if (!contents.length) return false;
@@ -6120,7 +6667,6 @@
       return false;
     }
 
-    // Repagine si nécessaire en conservant le champ et le curseur en cours d'édition
     function repaginateIfNeeded() {
       if (!currentEditorDocId || !pagesOverflow()) return;
       const ae = document.activeElement;
@@ -6171,7 +6717,7 @@
       probe.style.left = '-99999px';
       probe.style.top = '0';
       probe.style.visibility = 'hidden';
-      probe.style.width = '794px'; // largeur réelle d'une page A4 : le pied de page doit être mesuré à cette largeur
+      probe.style.width = '794px';
       const content = document.createElement('div');
       content.className = 'invoice-page-content';
       probe.appendChild(content);
@@ -6246,7 +6792,6 @@
       return el;
     }
 
-    // ===== NOUVEAU : appendConditionsRibBlock avec données paramétrables =====
     function appendConditionsRibBlock(content) {
       const wrap = document.createElement('div');
       const data = getConditionsAndRIB();
@@ -6277,8 +6822,6 @@
       return (currentDocType === 'deposit' || isFinalInvoice) ? appendConditionsRibBlock(content) : appendCgvBlock(content);
     }
 
-    // ===== CGV paginées : le texte est réparti sur autant de pages que nécessaire,
-    // chaque page ayant son propre pied de page =====
     function buildCgvConditionsEl() {
       const condVal = (k, fb) => {
         const el = document.getElementById(k);
@@ -6356,7 +6899,6 @@
 
         const stillToPlace = lines.length - idx;
         if (shared && placed.length < Math.min(MIN_LINES, stillToPlace)) {
-          // Trop peu de place sur cette page : tout le bloc passe sur une nouvelle page
           block.el.remove();
           pageNum++;
           cur = newContinuationPage(container, pageNum);
@@ -6465,7 +7007,7 @@
           '</div>' +
         '</div>';
       } else {
-        html = '<div style="margin-bottom:12px;position:relative;z-index:2;"><div style="font-family:\'DM Sans\',sans-serif;font-size:calc(12px * var(--doc-fs));font-weight:700;color:#1A3A5C;">' + esc(docTypeLabel) + ' - N° ' + esc(document.getElementById('f_num') ? document.getElementById('f_num').value : '000001') + esc(t('continuation')) + '</div></div>';
+        html = '<div style="margin-bottom:12px;position:relative;z-index:2;"><div style="font-family:\'DM Sans\',sans-serif;font-size:calc(12px * var(--doc-fs));font-weight:700;color:#2D5D67;">' + esc(docTypeLabel) + ' - N° ' + esc(document.getElementById('f_num') ? document.getElementById('f_num').value : '000001') + esc(t('continuation')) + '</div></div>';
       }
 
       if (includeTable) {
@@ -6488,9 +7030,6 @@
       return { page: page, content: content, tbody: content.querySelector('.inv-tbody'), tableContainer: content.querySelector('.inv-table-container') };
     }
 
-    // ============================================================
-    // LIGNES DU TABLEAU
-    // ============================================================
     function createRowElement(data) {
       const curSym = getCurrencySymbolEditor();
       const tr = document.createElement('tr');
@@ -6703,7 +7242,6 @@
       document.querySelectorAll('.iv_tva_row').forEach(el => el.style.display = tvaOn ? '' : 'none');
     }
 
-    // Calcule le montant de remise (plafonné au montant HT, jamais négatif)
     function computeRemise(ht, sidebar) {
       sidebar = sidebar || {};
       if (!sidebar.remise_on) return 0;
@@ -6741,9 +7279,6 @@
       return isNaN(n) ? 0 : n;
     }
 
-    // ============================================================
-    // AUTOCOMPLÉTION CLIENT (dans l'éditeur)
-    // ============================================================
     function handleClientInput(el) {
       const val = el.textContent.trim().toLowerCase();
       closeAutocomplete();
@@ -6809,9 +7344,6 @@
       }
     });
 
-    // ============================================================
-    // ÉVÉNEMENTS ÉDITEUR
-    // ============================================================
     function initEditorEvents() {
       document.addEventListener('paste', function(e) {
         if (e.target.isContentEditable) {
@@ -6833,12 +7365,6 @@
       });
     }
 
-    // Nom du fichier à l'impression / « Enregistrer en PDF » : le navigateur (et le pilote
-    // « Microsoft Print to PDF ») prend le titre de la page comme nom de fichier proposé.
-    // Le titre est donc réglé dès l'ouverture du document (et à chaque modification du numéro / de la
-    // date), en caractères simples (sans accents ni symboles) pour que Windows l'accepte, et
-    // remis à celui de l'application quand on quitte l'éditeur.
-    // Format : Type_Numéro_Date (ex. Facture_000012_2026-09-29)
     function computePrintTitle() {
       const typeLabels = { quote: t('quote_label'), invoice: t('invoice_label'), deposit: t('deposit_label'), credit: t('credit_label') };
       const typeName = typeLabels[currentDocType] || t('invoice_label');
@@ -6889,9 +7415,6 @@
       autoSave();
     }
 
-    // ============================================================
-    // EXPORT / IMPORT / SAUVEGARDE
-    // ============================================================
     function downloadFile(content, filename, mime) {
       const blob = new Blob(['\uFEFF' + content], { type: mime + ';charset=utf-8;' });
       const url = URL.createObjectURL(blob);
@@ -7021,9 +7544,6 @@
       toast(t('toast_export_ok'), 'success');
     }
 
-    // ============================================================
-    // DONNÉES DE DÉMONSTRATION
-    // ============================================================
     function computeTotals(rows, tvaOn, tvaRate) {
       let ht = 0;
       rows.forEach(r => { ht += round2((parseNum(r.prix) || 0) * (parseNum(r.qte) || 0)); });
@@ -7110,9 +7630,6 @@
       toast(t('demo_loaded'), 'success');
     }
 
-    // ============================================================
-    // UTILITAIRES
-    // ============================================================
     function toast(msg, type) {
       type = type || 'success';
       const el = document.getElementById('toast');
@@ -7131,9 +7648,6 @@
       toast(t('toast_cleared'), 'warning');
     }
 
-    // ============================================================
-    // TÉLÉCHARGEMENT PDF (nom de fichier maîtrisé : Type_Numéro_Date.pdf)
-    // ============================================================
     function loadExternalScript(src) {
       return new Promise(function(resolve, reject) {
         if (document.querySelector('script[data-lib="' + src + '"]')) { resolve(); return; }
@@ -7179,7 +7693,6 @@
                   el.classList.contains('ra-btn-bottom') || el.classList.contains('row-del-out') || el.classList.contains('no-print'));
               }
             });
-            // Adapte l'image à la page A4 sans la déformer
             let w = PAGE_W, h = canvas.height * PAGE_W / canvas.width;
             if (h > PAGE_H) { w = w * PAGE_H / h; h = PAGE_H; }
             if (i > 0) pdf.addPage();
@@ -7211,9 +7724,6 @@
       setTimeout(() => { refreshDocTitle(); window.print(); }, 500);
     }
 
-    // ============================================================
-    // EXPOSITION GLOBALE
-    // ============================================================
     window.switchDashboardTab = switchDashboardTab;
     window.switchPanel = switchPanel;
     window.openInEditor = openInEditor;
@@ -7291,11 +7801,9 @@
     window.exportClientsCSV = exportClientsCSV;
     window.exportDocumentsCSV = exportDocumentsCSV;
     window.loadDemoData = loadDemoData;
-    // Nouvelles fonctions Conditions & RIB
     window.getConditionsAndRIB = getConditionsAndRIB;
     window.saveConditionsAndRIB = saveConditionsAndRIB;
     window.loadConditionsAndRIB = loadConditionsAndRIB;
-    // Authentification / synchronisation cloud
     window.handleAuthFormSubmit = handleAuthFormSubmit;
     window.toggleAuthMode = toggleAuthMode;
     window.toggleAuthPasswordVisibility = toggleAuthPasswordVisibility;
@@ -7305,13 +7813,12 @@
 
   </script>
 
-  <!-- ==================== ADAPTATION TÉLÉPHONE ==================== -->
   <script>
   (function () {
     'use strict';
-    var DOC_W = 794;                       // largeur réelle d'une page A4 à l'écran
+    var DOC_W = 794;
     var mq = window.matchMedia('(max-width: 768px)');
-    var level = 0;                         // 0 = ajusté à la largeur de l'écran
+    var level = 0;
     function $(id) { return document.getElementById(id); }
 
     function fitScale() {
@@ -7325,7 +7832,6 @@
       return s;
     }
 
-    // Réduit visuellement le document A4 (sa mise en page, elle, ne change jamais)
     function applyScale() {
       var inv = $('invoice'), box = $('inv-scale-box'), pane = document.querySelector('.preview-pane');
       if (!inv || !box || !pane) return;
@@ -7369,7 +7875,6 @@
       if (!panel || !inv || !pane) return;
       panel.setAttribute('data-mtab', 'doc');
 
-      // À l'ouverture d'un document : onglet « Document », ajusté à la largeur
       var wasActive = panel.classList.contains('active');
       new MutationObserver(function () {
         var act = panel.classList.contains('active');
@@ -7387,13 +7892,12 @@
       applyScale();
     }
 
-    // Icône + manifeste générés à la volée : « Ajouter à l'écran d'accueil » donne une vraie icône
     function setupInstallable() {
       try {
         var c = document.createElement('canvas'); c.width = c.height = 512;
         var g = c.getContext('2d');
-        g.fillStyle = '#1A3A5C'; g.fillRect(0, 0, 512, 512);
-        g.fillStyle = '#4CAF50'; g.font = 'bold 300px Arial, sans-serif';
+        g.fillStyle = '#2D5D67'; g.fillRect(0, 0, 512, 512);
+        g.fillStyle = '#3EC54C'; g.font = 'bold 300px Arial, sans-serif';
         g.textAlign = 'center'; g.textBaseline = 'alphabetic';
         g.fillText('A', 256, 360);
         var png512 = c.toDataURL('image/png');
@@ -7407,7 +7911,7 @@
         var manifest = {
           name: 'Áldás – Gestion Complète', short_name: 'Gestfac', lang: 'fr',
           start_url: location.href.split('#')[0], display: 'standalone',
-          background_color: '#F0F4F8', theme_color: '#1A3A5C',
+          background_color: '#F2F6F6', theme_color: '#2D5D67',
           icons: [
             { src: png192, sizes: '192x192', type: 'image/png', purpose: 'any maskable' },
             { src: png512, sizes: '512x512', type: 'image/png', purpose: 'any maskable' }
@@ -7416,11 +7920,47 @@
         var ml = document.createElement('link'); ml.rel = 'manifest';
         ml.href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' }));
         document.head.appendChild(ml);
-      } catch (e) { /* sans gravité : l'app fonctionne sans */ }
+      } catch (e) { }
     }
 
     init();
     setupInstallable();
+  })();
+  </script>
+
+  <script>
+  (function () {
+    'use strict';
+    function syncTopnav() {
+      var ed = document.getElementById('panel-editor');
+      var inEditor = !!(ed && ed.classList.contains('active'));
+      document.querySelectorAll('.topnav-item').forEach(function (b) {
+        b.classList.toggle('active', !inEditor && b.getAttribute('data-tab') === currentTab);
+      });
+    }
+    function updateGreeting() {
+      var email = (typeof currentUser !== 'undefined' && currentUser && currentUser.email) ? currentUser.email : '';
+      var name = email.split('@')[0].replace(/[._\-0-9]+/g, ' ').trim().split(' ')[0] || '';
+      if (name) name = name.charAt(0).toUpperCase() + name.slice(1);
+      var hello = (typeof currentLang !== 'undefined' && currentLang === 'en') ? 'Hello' : 'Bonjour';
+      var t = document.getElementById('hello-text'), a = document.getElementById('hello-avatar');
+      if (t) t.textContent = name ? hello + ', ' + name : hello;
+      if (a) a.textContent = (name || 'A').charAt(0).toUpperCase();
+    }
+    function wrap(name, after) {
+      var orig = window[name];
+      if (typeof orig !== 'function') return;
+      window[name] = function () {
+        var r = orig.apply(this, arguments);
+        try { after(); } catch (e) {}
+        return r;
+      };
+    }
+    wrap('switchDashboardTab', syncTopnav);
+    wrap('switchPanel', syncTopnav);
+    wrap('initApp', updateGreeting);
+    wrap('toggleLanguage', updateGreeting);
+    wrap('refreshUIFromLocalData', updateGreeting);
   })();
   </script>
 </body>
