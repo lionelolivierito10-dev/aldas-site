@@ -1,4 +1,4 @@
-﻿﻿﻿﻿<!DOCTYPE html>
+﻿﻿<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
@@ -507,7 +507,6 @@
       font-weight: 700; 
     }
     .sidebar-item .icon { font-size: 1rem; width: 22px; text-align: center; flex-shrink: 0; font-weight: 400; }
-    .sidebar-item .badge { margin-left: auto; background: rgba(62,197,76, 0.12); color: var(--secondary); font-size: 0.6rem; font-weight: 700; padding: 1px 8px; border-radius: 12px; }
     .sidebar-divider { height: 1px; background: var(--border); margin: 8px 16px; }
     .sidebar-footer { margin-top: auto; padding-top: 12px; border-top: 1px solid var(--border); }
 
@@ -583,45 +582,6 @@
     .empty-state { text-align: center; padding: 30px 20px; color: var(--text-light); }
     .empty-state .icon { font-size: 1.8rem; margin-bottom: 8px; opacity: 0.4; }
     .empty-state p { font-size: 0.85rem; }
-
-    /* ===== MODIFICATION POUR L'ACTIVITÉ RÉCENTE ===== */
-    .doc-item .doc-info {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      flex: 1;
-      min-width: 0;
-    }
-    .doc-item .doc-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      width: 100%;
-    }
-    .doc-item .doc-name {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      flex: 1;
-    }
-    .doc-item .doc-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 0.68rem;
-      color: var(--text-light);
-    }
-    .doc-item .doc-amount {
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: var(--text);
-      margin-top: 2px;
-    }
-    /* ================================================= */
 
     .sub-tabs {
       display: flex;
@@ -2558,7 +2518,7 @@
         box-shadow: 0 -6px 24px rgba(31,70,80,0.12); z-index: 160;
       }
       body:has(#panel-editor.active) .sidebar { display: none !important; }
-      .sidebar-brand, .sidebar-section, .sidebar-divider, .sidebar-item .badge { display: none !important; }
+      .sidebar-brand, .sidebar-section, .sidebar-divider { display: none !important; }
       .sidebar-footer { display: contents; }
       .sidebar-item, .sidebar-item:hover, .sidebar-item.active {
         flex: 1 1 0; min-width: 0; margin: 0; padding: 6px 2px; gap: 3px;
@@ -2722,6 +2682,20 @@
       #sidebar .sidebar-item.active > span:not(.icon) { display: inline; }
       .stats-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     }
+    /* ===== Cartes de documents : prix sur la même ligne que le tag de statut ===== */
+    .doc-break { display: none; }
+    @media (max-width: 768px) {
+      .doc-item {
+        display: grid !important; grid-template-columns: auto minmax(0, 1fr) auto; column-gap: 12px; row-gap: 2px; align-items: start;
+      }
+      .doc-item .doc-icon { grid-column: 1; grid-row: 1 / span 2; margin-right: 0; align-self: center; }
+      .doc-item .doc-info { display: contents; }
+      .doc-item .doc-info .doc-name { grid-column: 2 / 4; grid-row: 1; }
+      .doc-item .doc-info .doc-meta { grid-column: 2; grid-row: 2; gap: 4px 10px; align-items: center; }
+      .doc-item .doc-meta .doc-break { display: block; flex-basis: 100%; height: 0; }
+      .doc-item .doc-amount { grid-column: 3; grid-row: 2; align-self: end; justify-self: end; margin: 0; white-space: nowrap; line-height: 1.6; }
+      .doc-item .doc-status { grid-column: 2 / 4; grid-row: 3; margin: 6px 0 0; }
+    }
     /* ===== Correctif : la notification invisible bloquait les clics sur la barre du bas ===== */
     .toast { pointer-events: none; }
     @media (max-width: 768px) {
@@ -2730,10 +2704,41 @@
     /* ===== Barre du bas : réponse immédiate au toucher ===== */
     @media (max-width: 768px) {
       #sidebar, #sidebar .sidebar-item { touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
-      #sidebar .sidebar-item { transition: background .12s ease, color .12s ease, flex-grow .16s ease; cursor: pointer; }
+      #sidebar .sidebar-item { cursor: pointer; min-width: 0; }
+      .dashboard-content, .dashboard-content * { scroll-behavior: auto; }
       #sidebar .sidebar-item:active { background: rgba(62,197,76,0.18); }
       #sidebar .sidebar-item.active:active { background: var(--forest-2); }
       #sidebar .sidebar-item * { pointer-events: none; }
+    }
+    /* ===== Barre du bas : pastille qui glisse de façon fluide ===== */
+    @media (max-width: 768px) {
+      #sidebar { isolation: isolate; }
+      #sidebar .nav-pill {
+        position: absolute; left: 0; top: 0; width: 0; height: 0; border-radius: 999px; background: var(--forest-2);
+        z-index: 0; pointer-events: none; will-change: transform, width;
+        transition: transform .42s cubic-bezier(.32,.94,.35,1), width .42s cubic-bezier(.32,.94,.35,1), opacity .2s ease;
+      }
+      #sidebar .nav-pill.no-anim { transition: none; }
+      [data-theme="dark"] #sidebar .nav-pill { background: var(--lime); }
+
+      #sidebar .sidebar-item, #sidebar .sidebar-item:hover, #sidebar .sidebar-item.active, [data-theme="dark"] #sidebar .sidebar-item.active {
+        position: relative; z-index: 1; background: transparent !important; gap: 0; padding: 0;
+        transition: flex-grow .42s cubic-bezier(.32,.94,.35,1), color .28s ease !important;
+      }
+      #sidebar .sidebar-item.active:active, #sidebar .sidebar-item:active { background: transparent !important; }
+      #sidebar .sidebar-item > span:not(.icon), #sidebar .sidebar-item.active > span:not(.icon) {
+        display: inline-block !important; max-width: 0; opacity: 0; margin-left: 0; overflow: hidden; white-space: nowrap;
+        transition: max-width .42s cubic-bezier(.32,.94,.35,1), margin-left .42s cubic-bezier(.32,.94,.35,1), opacity .18s ease !important;
+      }
+      #sidebar .sidebar-item.active > span:not(.icon) {
+        max-width: 96px; opacity: 1; margin-left: 8px;
+        transition: max-width .42s cubic-bezier(.32,.94,.35,1), margin-left .42s cubic-bezier(.32,.94,.35,1), opacity .25s ease .14s !important;
+      }
+      #sidebar .sidebar-item .icon { transition: transform .3s cubic-bezier(.32,.94,.35,1); }
+      #sidebar .sidebar-item:active .icon { transform: scale(.88); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      #sidebar .nav-pill, #sidebar .sidebar-item, #sidebar .sidebar-item > span { transition: none !important; }
     }
   </style>
 </head>
@@ -2839,16 +2844,13 @@
           </div>
           <div class="sidebar-item" onclick="switchDashboardTab('clients')">
             <span class="icon"><i class="fas fa-users"></i></span><span data-translate="nav_clients">Clients</span>
-            <span class="badge" id="sidebar-client-count">0</span>
           </div>
           <div class="sidebar-section" data-translate="nav_sales">Ventes</div>
           <div class="sidebar-item" onclick="switchDashboardTab('quotes')">
             <span class="icon"><i class="fas fa-file-signature"></i></span><span data-translate="nav_quotes">Devis</span>
-            <span class="badge" id="sidebar-quote-count">0</span>
           </div>
           <div class="sidebar-item" onclick="switchDashboardTab('invoices')">
             <span class="icon"><i class="fas fa-receipt"></i></span><span data-translate="nav_invoices">Factures</span>
-            <span class="badge" id="sidebar-invoice-count">0</span>
           </div>
           <div class="sidebar-divider"></div>
           <div class="sidebar-section" data-translate="nav_config">Configuration</div>
@@ -4899,7 +4901,6 @@
 
     function updateSidebarClientCount() {
       const n = Object.keys(savedClients).length;
-      const el = document.getElementById('sidebar-client-count'); if (el) el.textContent = n;
       const sc = document.getElementById('stat-clients'); if (sc) sc.textContent = n;
       try { updateMobileProfile(); } catch (e) {}
     }
@@ -5219,8 +5220,9 @@
 
     function updateCharts(revenueData, paidInvoicesData) {
       const convertedRevenueData = (revenueData || []).map(v => convertCurrency(v, 'XOF'));
-      if (revenueChart) { revenueChart.data.datasets[0].data = convertedRevenueData; revenueChart.update(); }
-      if (evolutionChart) { evolutionChart.data.datasets[0].data = paidInvoicesData || [0,0,0,0,0,0,0,0,0,0,0,0]; evolutionChart.update(); }
+      const chartMode = window.matchMedia('(max-width: 768px)').matches ? 'none' : undefined;
+      if (revenueChart) { revenueChart.data.datasets[0].data = convertedRevenueData; revenueChart.update(chartMode); }
+      if (evolutionChart) { evolutionChart.data.datasets[0].data = paidInvoicesData || [0,0,0,0,0,0,0,0,0,0,0,0]; evolutionChart.update(chartMode); }
       rawDashboardData.monthlyRevenue = revenueData || [];
       rawDashboardData.monthlyPaidInvoices = paidInvoicesData || [];
       updateChartTotals();
@@ -5247,8 +5249,6 @@
       document.getElementById('stat-pending-invoices').textContent = pendingInvoices.length;
       document.getElementById('stat-paid-invoices').textContent = paidInvoices.length;
 
-      document.getElementById('sidebar-quote-count').textContent = docs.filter(d => d.type === 'quote' && d.status !== 'archived' && d.status !== 'converted').length;
-      document.getElementById('sidebar-invoice-count').textContent = docs.filter(d => (d.type === 'invoice' || d.type === 'deposit' || d.type === 'credit') && d.status !== 'archived').length;
       updateSidebarClientCount();
 
       const monthlyRevenue = Array(12).fill(0);
@@ -5319,20 +5319,7 @@
         const clickAttr = isClickable ? 'onclick="openInEditor(\'' + doc.id + '\')"' : '';
         const cursorStyle = isClickable ? 'cursor:pointer;' : 'cursor:default;';
         
-        return '<div class="doc-item" ' + clickAttr + ' style="' + cursorStyle + '">'
-          + '<div class="doc-icon ' + iconClass + '">' + iconHtml + '</div>'
-          + '<div class="doc-info">'
-          +   '<div class="doc-header">'
-          +     '<div class="doc-name">' + label + '</div>'
-          +     '<span class="badge-status ' + esc(doc.status) + '">' + esc(statusLabel) + '</span>'
-          +   '</div>'
-          +   '<div class="doc-meta">'
-          +     '<span>' + esc(doc.number) + '</span>'
-          +     '<span>' + esc(formatDisplayDate(doc.createdAt)) + '</span>'
-          +   '</div>'
-          +   '<div class="doc-amount">' + convertedAmount.toLocaleString() + ' ' + symbol + '</div>'
-          + '</div>'
-          + '</div>';
+        return '<div class="doc-item" ' + clickAttr + ' style="' + cursorStyle + '"><div class="doc-icon ' + iconClass + '">' + iconHtml + '</div><div class="doc-info"><div class="doc-name">' + label + '</div><div class="doc-meta"><span>' + esc(doc.number) + '</span><span>' + esc(formatDisplayDate(doc.createdAt)) + '</span><span class="doc-break"></span><span class="badge-status ' + esc(doc.status) + '">' + esc(statusLabel) + '</span></div></div><div class="doc-amount">' + convertedAmount.toLocaleString() + ' ' + symbol + '</div></div>';
       }).join('');
       if (recentSearchTerm && docs.length > 10) {
         list.innerHTML += '<div style="text-align:center;padding:8px;font-size:0.75rem;color:var(--text-muted);">' + esc(t('results_found').replace('{n}', docs.length)) + '</div>';
@@ -5730,7 +5717,7 @@
       const cursorStyle = isClickable ? 'cursor:pointer;' : 'cursor:default;';
       
       return '<div class="invoice-card" ' + clickAttr + ' style="' + cursorStyle + '">'
-        + '<div class="invoice-card-top"><span class="invoice-card-number">' + esc(doc.number) + '</span><span class="badge-status ' + esc(doc.status) + '">' + esc(statusLabel) + '</span>' + linkedInfo + '</div>'
+        + '<div class="invoice-card-top"><span class="invoice-card-number">' + esc(doc.number) + '</span><span class="doc-break"></span><span class="badge-status ' + esc(doc.status) + '">' + esc(statusLabel) + '</span>' + linkedInfo + '</div>'
         + '<div class="invoice-card-client">' + esc(doc.client || '-') + '</div>'
         + '<div class="invoice-card-row">'
         + '<span class="amounts"><i class="fas fa-file"></i> ' + ht + ' ' + symbol + ' HT <span class="ttc">' + ttc + ' ' + symbol + ' TTC</span></span>'
@@ -5785,7 +5772,7 @@
       const clickAttr = isClickable ? 'onclick="openInEditor(\'' + doc.id + '\')"' : '';
       const cursorStyle = isClickable ? 'cursor:pointer;' : 'cursor:default;';
 
-      return '<div class="doc-item" ' + clickAttr + ' style="' + cursorStyle + '"><div class="doc-icon ' + iconClass + '">' + iconHtml + '</div><div class="doc-info"><div class="doc-name">' + esc(doc.label) + linkedBadge + '</div><div class="doc-meta"><span>' + esc(doc.number) + '</span><span>' + esc(formatDisplayDate(documentDate)) + '</span><span class="badge-status ' + esc(doc.status) + '">' + esc(statusLabel) + '</span></div></div><div class="doc-amount">' + amount + '</div><div class="doc-status"><button class="btn btn-print btn-sm" onclick="event.stopPropagation();downloadPDFForDoc(\'' + doc.id + '\');" title="PDF"><i class="fas fa-file-pdf"></i> PDF</button>' + actionButtons + '</div></div>';
+      return '<div class="doc-item" ' + clickAttr + ' style="' + cursorStyle + '"><div class="doc-icon ' + iconClass + '">' + iconHtml + '</div><div class="doc-info"><div class="doc-name">' + esc(doc.label) + linkedBadge + '</div><div class="doc-meta"><span>' + esc(doc.number) + '</span><span>' + esc(formatDisplayDate(documentDate)) + '</span><span class="doc-break"></span><span class="badge-status ' + esc(doc.status) + '">' + esc(statusLabel) + '</span></div></div><div class="doc-amount">' + amount + '</div><div class="doc-status"><button class="btn btn-print btn-sm" onclick="event.stopPropagation();downloadPDFForDoc(\'' + doc.id + '\');" title="PDF"><i class="fas fa-file-pdf"></i> PDF</button>' + actionButtons + '</div></div>';
     }
 
     function renderActionButtons(doc) {
@@ -8034,7 +8021,41 @@
     // Navigation instantanée : on réagit dès le toucher (pointerdown), sans attendre le "click"
     var sb = document.getElementById('sidebar');
     if (!sb) return;
-    var lastHandled = 0;
+
+    // Pastille animée qui glisse sous le bouton actif
+    var pill = document.createElement('div');
+    pill.className = 'nav-pill no-anim';
+    sb.insertBefore(pill, sb.firstChild);
+    var placedOnce = false;
+    function placePill(animate) {
+      if (!window.matchMedia('(max-width: 768px)').matches || !sb.clientWidth) return;
+      var items = Array.prototype.filter.call(sb.querySelectorAll('.sidebar-item'), function (i) { return i.getClientRects().length > 0; });
+      var act = items.filter(function (i) { return i.classList.contains('active'); })[0];
+      if (!act) { pill.style.opacity = '0'; return; }
+      pill.style.opacity = '1';
+      var cs = getComputedStyle(sb);
+      var padL = parseFloat(cs.paddingLeft) || 0, padR = parseFloat(cs.paddingRight) || 0;
+      var gap = parseFloat(cs.columnGap) || 0;
+      var inner = sb.clientWidth - padL - padR - gap * (items.length - 1);
+      var unit = inner / (items.length - 1 + 2.4);
+      var idx = items.indexOf(act);
+      var left = padL + idx * (unit + gap);
+      var instant = !animate || !placedOnce;
+      if (instant) pill.classList.add('no-anim');
+      pill.style.top = act.offsetTop + 'px';
+      pill.style.height = act.offsetHeight + 'px';
+      pill.style.width = (unit * 2.4) + 'px';
+      pill.style.transform = 'translateX(' + left + 'px)';
+      if (instant) { void pill.offsetWidth; pill.classList.remove('no-anim'); }
+      placedOnce = true;
+    }
+    new MutationObserver(function () { placePill(true); }).observe(sb, { subtree: true, attributes: true, attributeFilter: ['class'] });
+    if (window.ResizeObserver) new ResizeObserver(function () { placePill(false); }).observe(sb);
+    window.addEventListener('resize', function () { placePill(false); });
+    window.addEventListener('orientationchange', function () { setTimeout(function () { placePill(false); }, 150); });
+    setTimeout(function () { placePill(false); }, 0);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { placePill(false); });
+    var lastHandled = 0, pending = null, scheduled = false;
     function tabOf(item) {
       var m = /switchDashboardTab\('(\w+)'\)/.exec(item.getAttribute('onclick') || '');
       return m ? m[1] : null;
@@ -8046,9 +8067,19 @@
       var tab = item ? tabOf(item) : null;
       if (!tab) return;
       lastHandled = Date.now();
-      // retour visuel immédiat
+      // 1) retour visuel immédiat (sans attendre le rendu de la page)
       sb.querySelectorAll('.sidebar-item').forEach(function (it) { it.classList.toggle('active', it === item); });
-      if (typeof window.switchDashboardTab === 'function') window.switchDashboardTab(tab);
+      // 2) le travail lourd (graphiques, listes) se fait juste après le premier affichage
+      pending = tab;
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(function () {
+        setTimeout(function () {
+          scheduled = false;
+          var target = pending; pending = null;
+          if (target && typeof window.switchDashboardTab === 'function') window.switchDashboardTab(target);
+        }, 0);
+      });
     }, true);
     // Évite un double déclenchement par le "click" qui suit le toucher
     sb.addEventListener('click', function (e) {
