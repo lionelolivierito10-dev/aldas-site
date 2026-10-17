@@ -704,6 +704,20 @@
     .client-pill { background: #fff; border-radius: 999px; padding: 8px 16px; font-size: 0.78rem; font-weight: 600; color: #1B3A42; max-width: 70%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .client-icon-btn { width: 34px; height: 34px; border-radius: 50%; border: 0; background: #fff; color: #1B3A42; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; transition: all .2s ease; }
     .client-icon-btn:hover { background: #1B3A42; color: #fff; }
+    .client-initials-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #fff;
+  color: #1B3A42;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+}
     .client-icon-btn.danger:hover { background: #DC2626; }
     .client-card-mid { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 4px; }
     .client-card-labels { min-width: 0; }
@@ -4885,9 +4899,8 @@
         html += '<div class="client-card">'
           + '<div class="client-card-top client-c' + hashIdx(String(c.id)) + '">'
           +   '<div class="client-card-head"><span class="client-pill"><i class="fas fa-user" style="margin-right:6px;font-size:.7rem;"></i>' + esc(t('nav_clients')) + '</span>'
-          +   '<button class="client-icon-btn" title="' + esc(t('btn_edit')) + '" aria-label="' + esc(t('btn_edit')) + '" onclick="openClientModal(\'' + c.id + '\');"><i class="fas fa-pen"></i></button></div>'
-          +   '<div class="client-card-mid"><div class="client-card-labels">' + (sub ? '<div class="client-card-sub">' + esc(sub) + '</div>' : '') + '<div class="client-card-name">' + esc(name) + '</div></div>'
-          +   '<span class="client-avatar">' + esc(initials(name)) + '</span></div>'
+          +   '<span class="client-initials-badge">' + esc(initials(name)) + '</span></div>'
+          +   '<div class="client-card-mid"><div class="client-card-labels">' + (sub ? '<div class="client-card-sub">' + esc(sub) + '</div>' : '') + '<div class="client-card-name">' + esc(name) + '</div></div></div>'
           +   '<div class="client-tags">' + tags + '</div>'
           + '</div>'
           + '<div class="client-card-bottom"><div class="client-card-contact"><div class="client-card-phone">' + esc(c.tel || '-') + '</div><div class="client-card-addr">' + esc(c.adresse || '-') + '</div></div>'
