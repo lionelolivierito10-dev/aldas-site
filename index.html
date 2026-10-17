@@ -4750,7 +4750,7 @@
       const items = document.querySelectorAll('.sidebar-item');
       const idx = tab === 'dashboard' ? 0 : tab === 'clients' ? 1 : tab === 'quotes' ? 2 : tab === 'invoices' ? 3 : tab === 'settings' ? 4 : -1;
       if (idx >= 0 && items[idx]) items[idx].classList.add('active');
-      if (tab === 'dashboard') updateDashboard();
+      if (tab === 'dashboard') { updateDashboard(); setTimeout(redrawCharts, 50); setTimeout(redrawCharts, 400); }
       if (tab === 'clients') renderClientList();
       if (tab === 'quotes') renderQuoteList();
       if (tab === 'invoices') renderInvoiceList();
@@ -5149,6 +5149,7 @@
             options: {
               responsive: true,
               maintainAspectRatio: false,
+              animation: false,
               plugins: {
                 legend: { display: false },
                 tooltip: {
@@ -5204,6 +5205,7 @@
             options: {
               responsive: true,
               maintainAspectRatio: false,
+              animation: false,
               plugins: {
                 legend: { display: false },
                 tooltip: {
@@ -5232,11 +5234,22 @@
       }
     }
 
+    // Redessine les graphiques sans animation (évite la courbe "écrasée" à 0 sur mobile) et force un recalcul de taille
+    function redrawCharts() {
+      [revenueChart, evolutionChart].forEach(function(c) {
+        if (!c) return;
+        try { c.resize(); c.update('none'); } catch (e) {}
+      });
+    }
+    window.addEventListener('resize', function() { redrawCharts(); });
+    window.addEventListener('orientationchange', function() { setTimeout(redrawCharts, 250); });
+    document.addEventListener('visibilitychange', function() { if (!document.hidden) setTimeout(redrawCharts, 100); });
+
     function updateCharts(revenueData, paidInvoicesData) {
       const convertedRevenueData = (revenueData || []).map(v => convertCurrency(v, 'XOF'));
-      const chartMode = window.matchMedia('(max-width: 768px)').matches ? 'none' : undefined;
-      if (revenueChart) { revenueChart.data.datasets[0].data = convertedRevenueData; revenueChart.update(chartMode); }
-      if (evolutionChart) { evolutionChart.data.datasets[0].data = paidInvoicesData || [0,0,0,0,0,0,0,0,0,0,0,0]; evolutionChart.update(chartMode); }
+      if (revenueChart) { revenueChart.data.datasets[0].data = convertedRevenueData; }
+      if (evolutionChart) { evolutionChart.data.datasets[0].data = paidInvoicesData || [0,0,0,0,0,0,0,0,0,0,0,0]; }
+      redrawCharts();
       rawDashboardData.monthlyRevenue = revenueData || [];
       rawDashboardData.monthlyPaidInvoices = paidInvoicesData || [];
       updateChartTotals();
