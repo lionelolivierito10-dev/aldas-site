@@ -2256,8 +2256,8 @@
       .btn, .btn::after, .invoice-card, .sub-tab, .sidebar-item { transition: none !important; }
     }
 
-    .bg-image-container { bottom: auto; height: 1123px; align-items: center; justify-content: center; }
-    .bg-image-container img { flex-shrink: 0; max-width: none; }
+    .bg-image-container { bottom: 0; height: 100%; align-items: center; justify-content: center; }
+    .bg-image-container img { flex-shrink: 0; max-width: none; object-fit: cover; }
 
     .inv-table-container { position: relative; }
     .row-actions-bottom { position: absolute; left: 0; top: 100%; margin: 5px 0 0 0; z-index: 3; }
@@ -3298,12 +3298,8 @@
             <button class="btn btn-primary" onclick="saveAndCloseEditor();" style="flex:1;justify-content:center;"><i class="fas fa-save"></i> <span data-translate="save_close">Sauvegarder</span></button>
             <button class="btn btn-print" id="btn-download-pdf" onclick="downloadDocPDF();" title="Télécharger le PDF"><i class="fas fa-file-pdf"></i></button>
           </div>
-          <div class="autosave-indicator no-print" id="autosave-indicator">
-            <i class="fas fa-check-circle"></i> <span id="autosave-indicator-text" data-translate="autosave_hint">Enregistrement automatique activé</span>
-          </div>
         </aside>
         <div class="preview-pane">
-          <div class="preview-label" data-translate="preview_label">ÉDITION DIRECTE</div>
           <div class="inv-scale-box" id="inv-scale-box"><div id="invoice"></div></div>
         </div>
         <div class="mobile-zoom-bar no-print" id="mobile-zoom-bar">
@@ -5082,7 +5078,7 @@
         const bgImg = page.querySelector('.bg-image-container img');
         const overlay = page.querySelector('.bg-overlay');
         if (img && img.startsWith('data:image') && bgContainer && bgImg) {
-          bgImg.src = img; bgImg.style.width = size + '%'; bgImg.style.height = 'auto';
+          bgImg.src = img; bgImg.style.width = size + '%'; bgImg.style.height = size + '%'; bgImg.style.objectFit = 'cover';
           bgContainer.style.display = 'flex';
           if (overlay) overlay.style.background = 'rgba(255,255,255,' + (1 - opacity) + ')';
         } else if (bgContainer) bgContainer.style.display = 'none';
@@ -7017,7 +7013,8 @@
         const bgImg = document.createElement('img');
         bgImg.src = bgImage;
         bgImg.style.width = bgSize + '%';
-        bgImg.style.height = 'auto';
+        bgImg.style.height = bgSize + '%';
+        bgImg.style.objectFit = 'cover';
         bgContainer.appendChild(bgImg);
       }
       page.appendChild(bgContainer);
