@@ -2257,6 +2257,7 @@
     }
 
     .bg-image-container { bottom: 0; height: 100%; align-items: center; justify-content: center; }
+    #invoice .invoice-page { height: 1123px; min-height: 1123px; overflow: hidden; }
     .bg-image-container img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; transform-origin: center center; }
     @media print {
       .bg-image-container { position: absolute !important; left: 0 !important; right: 0 !important; top: 0 !important; bottom: 0 !important; width: 100% !important; height: 100% !important; overflow: hidden !important; }
@@ -6772,7 +6773,8 @@
       const cs = getComputedStyle(content);
       const padTop = parseFloat(cs.paddingTop) || 0;
       const lastRect = last.getBoundingClientRect();
-      return (lastRect.bottom - contentRect.top) / (window.__invScale || 1) - padTop;
+      const lastMb = parseFloat(getComputedStyle(last).marginBottom) || 0;
+      return (lastRect.bottom - contentRect.top) / (window.__invScale || 1) - padTop + lastMb;
     }
 
     function measurePageContentBudget() {
@@ -7753,15 +7755,50 @@
         document.body.classList.add('pdf-exporting');
         try {
           for (let i = 0; i < pages.length; i++) {
-            const canvas = await window.html2canvas(pages[i], {
-              scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false, windowWidth: Math.max(window.innerWidth, 1100),
+            const bgSrc = getPersistentBg();
+            const useBg = !!(bgSrc && bgSrc.startsWith('data:image'));
+            const contentCanvas = await window.html2canvas(pages[i], {
+              scale: 2, useCORS: true, backgroundColor: useBg ? null : '#ffffff', logging: false, windowWidth: Math.max(window.innerWidth, 1100),
               ignoreElements: function(el) {
                 return el.classList && (el.classList.contains('row-actions-bottom') || el.classList.contains('btn-add-line-container') ||
-                  el.classList.contains('ra-btn-bottom') || el.classList.contains('row-del-out') || el.classList.contains('no-print'));
+                  el.classList.contains('ra-btn-bottom') || el.classList.contains('row-del-out') || el.classList.contains('no-print') ||
+                  (useBg && (el.classList.contains('bg-image-container') || el.classList.contains('bg-overlay'))));
+              },
+              onclone: function(clonedDoc) {
+                if (!useBg) return;
+                const inv = clonedDoc.getElementById('invoice');
+                if (inv) { inv.style.background = 'transparent'; inv.style.boxShadow = 'none'; }
+                clonedDoc.querySelectorAll('#invoice .invoice-page').forEach(function(pg) { pg.style.background = 'transparent'; });
               }
             });
+            let canvas = contentCanvas;
+            if (useBg) {
+              // L'arrière-plan est dessiné ici, en pleine page (bord à bord), puis le contenu est posé par-dessus
+              const bgImgEl = await new Promise(function(res, rej) {
+                const im = new Image(); im.onload = function() { res(im); }; im.onerror = rej; im.src = bgSrc;
+              });
+              const W = contentCanvas.width, H = contentCanvas.height;
+              const out = document.createElement('canvas');
+              out.width = W; out.height = H;
+              const cx = out.getContext('2d');
+              cx.fillStyle = '#ffffff'; cx.fillRect(0, 0, W, H);
+              const sz = parseInt(getPersistentBgSize()) / 100;
+              const op = parseInt(getPersistentBgOpacity()) / 100;
+              const cover = Math.max(W / bgImgEl.naturalWidth, H / bgImgEl.naturalHeight) * sz;
+              const dw = bgImgEl.naturalWidth * cover, dh = bgImgEl.naturalHeight * cover;
+              cx.drawImage(bgImgEl, (W - dw) / 2, (H - dh) / 2, dw, dh);
+              cx.fillStyle = 'rgba(255,255,255,' + (1 - op) + ')';
+              cx.fillRect(0, 0, W, H);
+              cx.drawImage(contentCanvas, 0, 0);
+              canvas = out;
+            }
             let w = PAGE_W, h = canvas.height * PAGE_W / canvas.width;
-            if (h > PAGE_H) { w = w * PAGE_H / h; h = PAGE_H; }
+            if (h > PAGE_H) {
+              // Page légèrement plus haute qu'un A4 : on l'ajuste à la hauteur A4 en gardant toute la largeur
+              // (évite les bandes blanches à gauche/droite de l'arrière-plan)
+              if (h <= PAGE_H * 1.10) { h = PAGE_H; }
+              else { w = w * PAGE_H / h; h = PAGE_H; }
+            } else if (h < PAGE_H && h >= PAGE_H * 0.94) { h = PAGE_H; }
             if (i > 0) pdf.addPage();
             pdf.addImage(canvas.toDataURL('image/jpeg', 0.92), 'JPEG', (PAGE_W - w) / 2, 0, w, h, undefined, 'FAST');
           }
