@@ -4568,9 +4568,25 @@
       try {
         const key = currentLang === 'fr' ? CGV_KEY_FR : CGV_KEY_EN;
         const saved = localStorage.getItem(key);
-        if (saved) return saved;
+        if (saved) return dedupeCGV(saved);
         return currentLang === 'fr' ? DEFAULT_CGV_FR : DEFAULT_CGV_EN;
       } catch { return currentLang === 'fr' ? DEFAULT_CGV_FR : DEFAULT_CGV_EN; }
+    }
+
+    // Si le texte des CGV est écrit deux fois (collé en double, même légèrement différent), on ne garde qu'une seule version :
+    // on coupe au moment où la première phrase du texte réapparaît.
+    function dedupeCGV(text) {
+      const lines = String(text).split('\n');
+      const norm = function(l) { return l.replace(/\s+/g, ' ').trim().toLowerCase(); };
+      let start = -1;
+      for (let i = 0; i < lines.length; i++) { if (norm(lines[i])) { start = i; break; } }
+      if (start < 0) return text;
+      const head = norm(lines[start]);
+      if (head.length < 12) return text;
+      for (let k = start + 1; k < lines.length; k++) {
+        if (norm(lines[k]) === head) return lines.slice(0, k).join('\n').replace(/\s+$/, '');
+      }
+      return text;
     }
 
     function saveCGV() {
@@ -5092,8 +5108,6 @@
           if (logo && logo.startsWith('data:image')) { logoImg.src = logo; logoImg.style.display = 'block'; logoTextWrap.style.display = 'none'; }
           else { logoImg.style.display = 'none'; logoTextWrap.style.display = 'flex'; }
         }
-        const cgvBody = page.querySelector('.inv-cgv-body');
-        if (cgvBody) cgvBody.innerHTML = esc(getCGV()).replace(/\n/g, '<br>');
       });
       applyPersistentLogo();
     }
