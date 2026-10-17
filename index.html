@@ -2257,7 +2257,6 @@
     }
 
     .bg-image-container { bottom: 0; height: 100%; align-items: center; justify-content: center; }
-    #invoice .invoice-page { height: 1123px; min-height: 1123px; overflow: hidden; }
     .bg-image-container img { position: absolute; left: 0; top: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; transform-origin: center center; }
     @media print {
       .bg-image-container { position: absolute !important; left: 0 !important; right: 0 !important; top: 0 !important; bottom: 0 !important; width: 100% !important; height: 100% !important; overflow: hidden !important; }
@@ -6786,8 +6785,7 @@
       const cs = getComputedStyle(content);
       const padTop = parseFloat(cs.paddingTop) || 0;
       const lastRect = last.getBoundingClientRect();
-      const lastMb = parseFloat(getComputedStyle(last).marginBottom) || 0;
-      return (lastRect.bottom - contentRect.top) / (window.__invScale || 1) - padTop + lastMb;
+      return (lastRect.bottom - contentRect.top) / (window.__invScale || 1) - padTop;
     }
 
     function measurePageContentBudget() {
