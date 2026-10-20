@@ -693,8 +693,25 @@
     @media (max-width: 900px) {
       #client-list-container .client-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
+    /* Mobile : cartes clients deux à deux, version compacte */
     @media (max-width: 600px) {
-      #client-list-container .client-grid { grid-template-columns: 1fr; }
+      #client-list-container .client-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+      #client-list-container .client-card { border-radius: 20px; padding: 4px; }
+      #client-list-container .client-card-top { border-radius: 17px; padding: 10px 10px 12px; gap: 6px; min-height: 140px; }
+      #client-list-container .client-pill { padding: 5px 9px; font-size: 0.64rem; max-width: 72%; }
+      #client-list-container .client-pill i { display: none; }
+      #client-list-container .client-initials-badge { width: 26px; height: 26px; font-size: 0.6rem; }
+      #client-list-container .client-card-mid { margin-top: 2px; }
+      #client-list-container .client-card-sub { font-size: 0.62rem; margin-bottom: 2px; }
+      #client-list-container .client-card-name { font-size: 0.95rem; letter-spacing: -0.2px; }
+      #client-list-container .client-tags { gap: 4px; }
+      #client-list-container .client-tag { padding: 2px 7px; font-size: 0.58rem; }
+      #client-list-container .client-card-bottom { flex-direction: column; align-items: stretch; gap: 8px; padding: 8px 6px 6px; }
+      #client-list-container .client-card-phone { font-size: 0.74rem; }
+      #client-list-container .client-card-addr { font-size: 0.62rem; }
+      #client-list-container .client-card-actions { justify-content: space-between; gap: 6px; }
+      #client-list-container .client-details-btn { flex: 1; padding: 8px 10px; font-size: 0.72rem; }
+      #client-list-container .client-delete-btn { width: 32px; height: 32px; font-size: 0.72rem; }
     }
 
     .client-card { background: var(--panel); border-radius: 28px; padding: 6px; box-shadow: 0 2px 12px rgba(31,70,80,0.06); transition: transform .25s ease, box-shadow .25s ease; display: flex; flex-direction: column; min-width: 0; }
